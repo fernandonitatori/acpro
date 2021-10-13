@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'core',
     'bootstrap4',
     'stdimage',
+    'widget_tweaks',
+
 ]
 
 MIDDLEWARE = [
@@ -139,5 +141,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_REDIRECT_URL = 'site'
+LOGIN_REDIRECT_URL = 'sistema'
 LOGOUT_REDIRECT_URL = 'index'

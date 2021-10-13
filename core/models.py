@@ -35,3 +35,205 @@ class Parametro(Base):
 
     def __str__(self):
         return self.descricao
+
+class Local(Base):
+    descricao = models.CharField('Descrição', max_length=50)
+
+    class Meta:
+        verbose_name = 'Local'
+        verbose_name_plural = 'Locais'
+
+    def __str__(self):
+        return self.descricao
+
+class Linguagem(Base):
+    descricao = models.CharField('Descrição', max_length=50)
+
+    class Meta:
+        verbose_name = 'Linguagem'
+        verbose_name_plural = 'Linguagens'
+
+    def __str__(self):
+        return self.descricao
+
+class Projeto(Base):
+    descricao = models.CharField('Descrição', max_length=50)
+
+    class Meta:
+        verbose_name = 'Projeto'
+        verbose_name_plural = 'Projetos'
+
+    def __str__(self):
+        return self.descricao
+
+class TipoLocacao(Base):
+    descricao = models.CharField('Descrição', max_length=50)
+
+    class Meta:
+        verbose_name = 'Tipo de Locação'
+        verbose_name_plural = 'Tipos de Locação'
+
+    def __str__(self):
+        return self.descricao
+
+class Tipo_Status(Base):
+    descricao = models.CharField('Descrição', max_length=50)
+
+    class Meta:
+        verbose_name = 'Tipo de Status'
+        verbose_name_plural = 'Tipos de Status'
+
+    def __str__(self):
+        return self.descricao
+
+class Status(Base):
+    tipo_status = models.ForeignKey('Tipo_Status',verbose_name='tipo de Status',on_delete=models.CASCADE,default='')
+    descricao = models.CharField('Descrição', max_length=50)
+
+    class Meta:
+        verbose_name = 'Status'
+        verbose_name_plural = 'Status'
+
+    def __str__(self):
+        return self.descricao
+
+
+class Memorial(Base):
+    descricao = models.CharField('Descrição', max_length=50)
+    data_memorial = models.DateField('Data do Memorial')
+
+    class Meta:
+        verbose_name = 'Memorial'
+        verbose_name_plural = 'Memoriais'
+
+    def __str__(self):
+        return self.descricao
+
+class Periodo(Base):
+    etapa = models.CharField('Etapa', max_length=50)
+    data_inicio = models.DateField('Data de Início')
+    data_termino = models.DateField('Data de Término')
+    locacao_acao = models.ForeignKey('Locacao_Acao', on_delete=models.SET_DEFAULT,default=99)
+
+    class Meta:
+        verbose_name = 'Período'
+        verbose_name_plural = 'Períodos'
+
+    def __str__(self):
+        return self.descricao
+
+class Acao(Base):
+    nome = models.CharField('Nome', max_length=50)
+    descricao = models.CharField('Descrição', max_length=100)
+    observacoes = models.CharField('Observações', max_length=100)
+    data_base = models.DateField('Data Base')
+    projeto = models.ForeignKey('Projeto', verbose_name='projeto',on_delete=models.SET_DEFAULT,default='')
+    linguagem = models.ForeignKey('Linguagem', verbose_name='linguagem',on_delete=models.SET_DEFAULT,default='')
+    local = models.ForeignKey('Local', verbose_name='local',on_delete=models.SET_DEFAULT,default='')
+
+    class Meta:
+        verbose_name = 'Ação'
+        verbose_name_plural = 'Ações'
+
+    def __str__(self):
+        return self.nome
+
+class Locacao_Acao(Base):
+    tipo_locacao = models.ForeignKey('TipoLocacao',verbose_name='tipo de Locaçao',on_delete=models.CASCADE)
+    acao = models.ForeignKey('Acao',verbose_name='açao',on_delete=models.CASCADE)
+    memorial = models.ForeignKey('Memorial',verbose_name='memorial',on_delete=models.CASCADE)
+    status = models.ForeignKey('Status',verbose_name='status',on_delete=models.CASCADE)
+    descricao = models.CharField('Descriçao', max_length=50, default='')
+
+    class Meta:
+        verbose_name = 'Solicitação de Locação'
+        verbose_name_plural = 'Solicitações de Locação'
+
+    def __str__(self):
+        return self.descricao
+
+class TRP(Base):
+    numeroTRP = models.IntegerField('Número da TRP')
+    descricao = models.CharField('Descrição', max_length=50)
+    data_fim_contrato = models.DateField('Data Final do Contrato')
+    data_fim_contrato_pror = models.DateField('Data Final do Contrato prorrogado')
+    observacoes = models.CharField('Observaçoes', max_length=100)
+
+    class Meta:
+        verbose_name = 'TRP'
+        verbose_name_plural = 'TRPs'
+
+    def __str__(self):
+        return f'{self.id} {self.descricao}'
+
+class CatFornecedor(Base):
+    descricao = models.CharField('Descrição', max_length=50)
+    cnpj = models.CharField('CNPJ', max_length=50)
+    fornecedor = models.ForeignKey(Fornecedor,on_delete=models.CASCADE,default='')
+
+    class Meta:
+        verbose_name = 'Categoria de Fornecedor'
+        verbose_name_plural = 'Categorias de Fornecedores'
+
+    def __str__(self):
+        return f'{self.id} {self.descricao} {self.cnpj}'
+
+class EndFornecedor(Base):
+    logradouro = models.CharField('Logradouro', max_length=60)
+    numero = models.IntegerField('Numero')
+    complemento = models.CharField('Complemento', max_length=60)
+    CEP = models.CharField('CEP', max_length=10)
+    bairro = models.CharField('Bairro', max_length=60)
+    cidade = models.CharField('Cidade', max_length=60)
+    estado = models.CharField('Estado', max_length=60)
+    pais = models.CharField('Pais', max_length=60)
+    fornecedor = models.ForeignKey(Fornecedor,on_delete=models.CASCADE,default='')
+
+    class Meta:
+        verbose_name = 'Endereço de Fornecedor'
+        verbose_name_plural = 'Endereços de Fornecedores'
+
+    def __str__(self):
+        return f'{self.id} {self.logradouro} {self.numero}'
+
+class ContFornecedor(Base):
+    Nome = models.CharField('Nome', max_length=60)
+    telefone = models.CharField('Telefone', max_length=10)
+    email = models.CharField('E-mail', max_length=60)
+    observacoes = models.CharField('Observações', max_length=10)
+    fornecedor = models.ForeignKey(Fornecedor,on_delete=models.CASCADE,default='')
+
+    class Meta:
+        verbose_name = 'Contato de Fornecedor'
+        verbose_name_plural = 'Contatos de Fornecedores'
+
+    def __str__(self):
+        return f'{self.id} {self.nome} {self.telefone} {self.email}'
+
+class Compras_Locacao(Base):
+    descricao = models.CharField('Descrição', max_length=60)
+    numero = models.IntegerField('Número')
+    data = models.DateField('Data')
+    observacoes = models.CharField('Observaçoes',max_length=100)
+    locacao = models.ForeignKey(Locacao_Acao,verbose_name='ação',on_delete=models.CASCADE, default='')
+    trp = models.ForeignKey(TRP, verbose_name='status',on_delete=models.CASCADE, default='')
+    status = models.ForeignKey(Status,verbose_name='status',on_delete=models.CASCADE, default='')
+
+    class Meta:
+        verbose_name = 'Compras - Locaçao'
+        verbose_name_plural = 'Compras - Locaçao'
+
+    def __str__(self):
+        return f'{self.id} {self.descricao} {self.numero} {observacoes} {status}'
+
+class Orcamento(Base):
+    compras_loc = models.ForeignKey(Compras_Locacao,on_delete=models.CASCADE,default='')
+    fornecedor = models.ForeignKey(Fornecedor,on_delete=models.CASCADE,default='')
+    valor = models.DecimalField('Valor',max_digits=10,decimal_places=2)
+    observacoes = models.CharField('Observaçoes',max_length=100)
+    class Meta:
+        verbose_name = 'Orçamento'
+        verbose_name_plural = 'Orçamentos'
+
+    def __str__(self):
+        return f'{self.id} {self.valor}'
