@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Fornecedor, Parametro, Local, Linguagem, Projeto, TipoLocacao, Tipo_Status, Status, Memorial, Periodo, Acao, Locacao_Acao
+from .models import Fornecedor, Parametro, Local, Linguagem, Projeto, TipoLocacao, Tipo_Status, Status, Memorial, Periodo, Acao, Locacao_Acao, TRP, CatFornecedor, EndFornecedor, ContFornecedor, Compras_Locacao, Orcamento, Licitacao, Aprovacao, DCA, Cronograma, TipoPagto, Pagamento, Contrato_Locacao
 
 @admin.register(Fornecedor)
 class FornecedorAdmin(admin.ModelAdmin):
@@ -50,7 +50,54 @@ class AcaoAdmin(admin.ModelAdmin):
 class Locacao_AcaoAdmin(admin.ModelAdmin):
     list_display = ['tipo_locacao','acao','memorial','status',]
 
+@admin.register(TRP)
+class TRPAdmin(admin.ModelAdmin):
+    list_display = ['id', 'descricao',]
 
+@admin.register(CatFornecedor)
+class CatFornecedorAdmin(admin.ModelAdmin):
+    list_display = ['id','descricao',]
 
+@admin.register(EndFornecedor)
+class EndFornecedorAdmin(admin.ModelAdmin):
+    list_display = ['id','logradouro','numero',]
 
+@admin.register(ContFornecedor)
+class ContFornecedorAdmin(admin.ModelAdmin):
+    list_display = ['id','nome','telefone','email',]
 
+@admin.register(Compras_Locacao)
+class Compras_LocacaoAdmin(admin.ModelAdmin):
+    list_display = ['id','descricao','numero','observacoes','status',]
+
+@admin.register(Orcamento)
+class OrcamentoAdmin(admin.ModelAdmin):
+    list_display = ['id','valor',]
+
+@admin.register(Licitacao)
+class LicitacaoAdmin(admin.ModelAdmin):
+    list_display = ['id','dataabertura','datapregao','dataassinatura','datahomologacao','vencedor','valor',]
+
+@admin.register(DCA)
+class DCAAdmin(admin.ModelAdmin):
+    list_display = ['id','dataminuta','datadca','licitacao','locacao_acao','status',]
+
+@admin.register(Aprovacao)
+class AprovacaoAdmin(admin.ModelAdmin):
+    list_display = ['id','setor','dca',]
+
+@admin.register(Cronograma)
+class CronogramaAdmin(admin.ModelAdmin):
+    list_display = ['id','locacao_acao','datainicio','datafim','anotacoes','status',]
+
+@admin.register(TipoPagto)
+class TipoPagtoAdmin(admin.ModelAdmin):
+    list_display = ['id','descricao',]
+
+@admin.register(Pagamento)
+class PagamentoAdmin(admin.ModelAdmin):
+    list_display = ['id','tipo_pagto','valor','anotacoes',]
+
+@admin.register(Contrato_Locacao)
+class Contrato_LocacaoAdmin(admin.ModelAdmin):
+    list_display = ['id','processo','dataprocesso','datacontrato','valorlocacao','status',]

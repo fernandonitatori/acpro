@@ -197,7 +197,7 @@ class EndFornecedor(Base):
         return f'{self.id} {self.logradouro} {self.numero}'
 
 class ContFornecedor(Base):
-    Nome = models.CharField('Nome', max_length=60)
+    nome = models.CharField('Nome', max_length=60)
     telefone = models.CharField('Telefone', max_length=10)
     email = models.CharField('E-mail', max_length=60)
     observacoes = models.CharField('Observações', max_length=10)
@@ -216,7 +216,7 @@ class Compras_Locacao(Base):
     data = models.DateField('Data')
     observacoes = models.CharField('Observaçoes',max_length=100)
     locacao = models.ForeignKey(Locacao_Acao,verbose_name='ação',on_delete=models.CASCADE, default='')
-    trp = models.ForeignKey(TRP, verbose_name='status',on_delete=models.CASCADE, default='')
+    trp = models.ForeignKey(TRP, verbose_name='tRP',on_delete=models.CASCADE, default='')
     status = models.ForeignKey(Status,verbose_name='status',on_delete=models.CASCADE, default='')
 
     class Meta:
@@ -237,3 +237,110 @@ class Orcamento(Base):
 
     def __str__(self):
         return f'{self.id} {self.valor}'
+
+class Licitacao(Base):
+    dataabertura = models.DateField('Data de Abertura')
+    datapregao = models.DateField('Data do Pregão')
+    dataassinatura = models.DateField('Data da Assinatura')
+    datahomologacao = models.DateField('Data de Homologação')
+    vencedor = models.CharField('Vencedor', max_length=50)
+    valor = models.DecimalField(max_digits=10,decimal_places=2)
+
+    class Meta:
+        verbose_name = 'Licitação'
+        verbose_name_plural = 'Licitações'
+
+    def __str__(self):
+        return f'{self.id} {self.dataabertura} {self.datapregao} {self.dataassinatura} {self.datahomologacao} {self.vencedor} {self.valor} '
+
+class DCA(Base):
+    numero = models.CharField('Vencedor', max_length=50)
+    dataminuta = models.DateField('Data Minuta')
+    datadca = models.DateField('Data DCA')
+    anotacoes = models.CharField('Anotaçoes', max_length=100)
+    licitacao = models.ForeignKey(Licitacao,verbose_name='Licitação',on_delete=models.CASCADE,default='')
+    locacao_acao = models.ForeignKey(Locacao_Acao, verbose_name='Solicitação', on_delete=models.CASCADE, default='')
+    status = models.ForeignKey(Status, verbose_name='Status', on_delete=models.CASCADE, default='')
+
+    class Meta:
+        verbose_name = 'DCA'
+        verbose_name_plural = 'DCAs'
+
+    def __str__(self):
+        return f'{self.id} {self.dataminuta} {self.datadca} {self.licitacao} {self.locacao_acao} {self.status}'
+
+class Aprovacao(Base):
+    setor = models.CharField('Observaçoes', max_length=50)
+    data = models.DateField('Data')
+    dca = models.ForeignKey(DCA,verbose_name='DCA',on_delete=models.CASCADE,default='')
+
+    class Meta:
+        verbose_name = 'Aprovaçao'
+        verbose_name_plural = 'Aprovaçoes'
+
+    def __str__(self):
+        return f'{self.id} {self.setor} {self.dca}'
+
+class Cronograma(Base):
+    locacao_acao = models.ForeignKey(Locacao_Acao, verbose_name='Solicitação', on_delete=models.CASCADE, default='')
+    atividade = models.CharField('Atividade', max_length=100)
+    datainicio = models.DateField('Data Inicial')
+    datafim = models.DateField('Data Final')
+    anotacoes = models.CharField('Anotaçoes', max_length=100)
+    status = models.ForeignKey(Status, verbose_name='Status', on_delete=models.CASCADE, default='')
+
+    class Meta:
+        verbose_name = 'Cronogramas'
+        verbose_name_plural = 'Cronogramas'
+
+    def __str__(self):
+        return f'{self.id} {self.locacao_acao} {self.datainicio} {self.datafim} {self.anotacoes} {self.status}'
+
+class TipoPagto(Base):
+    descricao = models.CharField('Descrição', max_length=50)
+
+    class Meta:
+        verbose_name = 'Tipo de Pagamento'
+        verbose_name_plural = 'Tipos de Pagamento'
+
+    def __str__(self):
+        return f'{self.id} {self.descricao}'
+
+class Pagamento(Base):
+    tipo_pagto = models.ForeignKey(TipoPagto, verbose_name='Tipo de Pagamento', on_delete=models.CASCADE, default='')
+    atividade = models.CharField('Atividade', max_length=100)
+    parcela = models.DecimalField('Parcela',max_digits=10,decimal_places=2)
+    qtde_parcelas = models.IntegerField('Quantidade de Parcelas')
+    valor = models.DecimalField('Valor', max_digits=10, decimal_places=2)
+    dataprevnota = models.DateField('Data Prev Nota')
+    tiponota = models.CharField('Tipo da nota', max_length=5)
+    numnota = models.IntegerField('Numero da Nota')
+    dataemissnota = models.DateField('Data de Emisso da Nota')
+    serienota = models.CharField('Série da Nota', max_length=100)
+    xml = models.CharField('XML', max_length=100)
+    anotacoes = models.CharField('Anotaçoes', max_length=100)
+
+    class Meta:
+        verbose_name = 'Pagamento'
+        verbose_name_plural = 'Pagamentos'
+
+    def __str__(self):
+        return f'{self.id} {self.tipo_pagto} {self.valor} {self.anotacoes}'
+
+class Contrato_Locacao(Base):
+    processo = models.CharField('Processo', max_length=50)
+    dataprocesso = models.DateField('Data do Processo')
+    instrcontratual = models.CharField('Instrumento Contratual', max_length=50)
+    datacontrato = models.DateField('Data do Contrato')
+    valorservico= models.DecimalField('Valor do Serviço', max_digits=10, decimal_places=2)
+    valorlocacao = models.DecimalField('Valor da Locação', max_digits=10, decimal_places=2)
+    pagto = models.ForeignKey(Pagamento, verbose_name='Pagamento', on_delete=models.CASCADE, default='')
+    locacao_acao = models.ForeignKey(Locacao_Acao, verbose_name='Solicitação', on_delete=models.CASCADE, default='')
+    status = models.ForeignKey(Status, verbose_name='Status', on_delete=models.CASCADE, default='')
+
+    class Meta:
+        verbose_name = 'Contrato Locação'
+        verbose_name_plural = 'Contratos Locação'
+
+    def __str__(self):
+        return f'{self.id} {self.processo} {self.dataprocesso} {self.datacontrato} {self.valorlocacao} {self.status}'
