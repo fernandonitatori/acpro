@@ -7,7 +7,7 @@ body {
   background: #fff;
   font-size: 14px;
   font-weight: 400;
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Oswald', sans-serif;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -20,7 +20,7 @@ body {
 }
 
 h1, h2, h3, h4 {
-  font-size: 38px;
+  font-size: 30px;
   color: #222222;
   font-weight: 700;
   font-family: 'Arvo', serif;
@@ -106,7 +106,7 @@ a:not([href]):not([tabindex]) {
 }
 
 .btn {
-  font-size: 14px;
+  font-size: 12px;
   padding: 10px 30px;
   cursor: pointer;
   font-weight: 400;
@@ -1413,4 +1413,31 @@ textarea {
 
 .social-icon .google:hover {
   background: #CE332A;
+}
+
+.conteudo_tabela {
+    font-size: 10px;
+    font-family: 'Oswald',sans-serif;
+}
+
+.conteudo_form {
+    font-size: 12px;
+}
+
+.titulo_listview {
+    padding: 10px 10px 15px;
+    font-size: 20px;
+    font-family: 'Oswald',sans-serif;
+}
+
+.titulo_cadastro {
+    padding: 10px 10px 10px;
+    font-size: 20px;
+    font-family: 'Oswald',sans-serif;
+}
+
+
+.link_visualizar {
+    color: #FFFFFF;
+
 }

@@ -2,9 +2,10 @@ from django.db import models
 from django.db.models import signals
 from django.template.defaultfilters import slugify
 
+
 class Base(models.Model):
     criado = models.DateField('Data de criação', auto_now_add=True)
-    modificado = models.DateField('Data de criação', auto_now=True)
+    modificado = models.DateField('Data de modificação', auto_now=True)
     ativo = models.BooleanField('Ativo?', default=True)
 
     class Meta:
@@ -143,6 +144,7 @@ class Locacao_Acao(Base):
     acao = models.ForeignKey('Acao',verbose_name='açao',on_delete=models.CASCADE)
     memorial = models.ForeignKey('Memorial',verbose_name='memorial',on_delete=models.CASCADE)
     status = models.ForeignKey('Status',verbose_name='status',on_delete=models.CASCADE)
+    datasolicitacao = models.DateTimeField('Data da Solicitação',blank=True,auto_now_add=True)
     descricao = models.CharField('Descriçao', max_length=50, default='')
 
     class Meta:

@@ -4,6 +4,12 @@ from django.urls import reverse_lazy
 
 from .models import Locacao_Acao
 
+class ListLocacaoAcaoView(ListView):
+    model = Locacao_Acao
+    template_name = 'locacao_acao_listview.html'
+    queryset = Locacao_Acao.objects.all()
+    context_object_name = 'locacoes'
+
 class IndexView(TemplateView):
         template_name = 'index.html'
 
@@ -17,5 +23,5 @@ class SistemaView(TemplateView):
 class CreateSolicitView(CreateView):
     model = Locacao_Acao
     template_name = 'form_solicit_loc.html'
-    fields = ['tipo_locacao', 'acao', 'memorial', 'descricao','status']
+    fields = ['tipo_locacao','acao','memorial','status']
     success_url = reverse_lazy('sistema')
