@@ -1,0 +1,111 @@
+{% extends 'base_sistema.html' %}
+{% load static %}
+{% block content %}
+
+
+            <div class="col-10 container conteudo_tabela">
+                <div class="row">
+                    <div class="col-10 titulo_listview"><b>Processo de Locação n° {{ consulta.id }}</b></div>
+                </div>
+                <div class="text-center"><hr style="height:4px;border-width:0;color:gray;background-color:gray"></div>
+                <div class="filtro_processo" align="center">
+                            <table style="border-collapse:separate; border-spacing:10px 2px ">
+                                    <tbody>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Tipo de Locação:</b></div></td>
+                                                <td  align="left">{{ consulta.tipo_locacao }}</td>
+
+                                            </tr>
+                                            <tr>
+                                                <td align="right"><div class="form-horizontal"><b>Ação:</b></div></td>
+                                                <td align="left">{{ consulta.acao }}</td>
+
+                                            </tr>
+                                            <tr>
+                                                <td align="right"><div class="form-horizontal"><b>Memorial:</b></div></td>
+                                                <td align="left">{{ consulta.memorial }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td align="right"><div class="form-horizontal"><b>Data de Solicitação:</b></div></td>
+                                                <td align="left">{{ consulta.criado }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td align="right"><div class="form-horizontal"><b>Status:</b></div></td>
+                                                <td align="left">{{ consulta.status }}</td>
+                                            </tr>
+                                     </tbody>
+                            </table>
+                            <a class="link_visualizar" href="../../listlocacoes"><button type="button" class="btn btn-primary">Voltar</button></a>
+                </div>
+                <div class="text-center"><hr style="height:4px;border-width:0;color:gray;background-color:gray"></div>
+                <div class="col-12" align="center">
+                    <table>
+                        <tr>
+                            <td class="retangulo">
+                                    Solicitação
+                            </td>
+                            <td></td>
+                            <td class="retangulo">
+                                    Compras
+                            </td>
+                            <td></td>
+                            <td class="retangulo">
+                                    Sede
+                            </td>
+                            <td></td>
+                            <td class="retangulo">
+                                    Contratação
+                            </td>
+                            <td></td>
+                            <td class="retangulo">
+                                    Pagamento
+                            </td>
+                            <td></td>
+                            <td class="retangulo">
+                                    Recebimento
+                            </td>
+                            <td></td>
+                            <td class="retangulo">
+                                    Finalização
+                            </td>
+                        </tr>
+                        <tr>
+
+                            {%if consulta.status|stringformat:'s' == status_chave %}
+                            <td class="quadrado_azul">
+                                    {{ consulta.status }}
+                            </td>
+                            {%else%}
+                            <td class="quadrado">
+                                    {{ consulta.status }}
+                            </td>
+                            {%endif%}
+                            <td><img src="/static/img/seta_proximo.gif"></td>
+                            <td class="quadrado">
+
+                            </td>
+                            <td><img src="/static/img/seta_proximo.gif"></td>
+                            <td class="quadrado">
+
+                            </td>
+                            <td><img src="/static/img/seta_proximo.gif"></td>
+                            <td class="quadrado">
+
+                            </td>
+                            <td><img src="/static/img/seta_proximo.gif"></td>
+                            <td class="quadrado">
+
+                            </td>
+                            <td><img src="/static/img/seta_proximo.gif"></td>
+                            <td class="quadrado">
+
+                            </td>
+                            <td><img src="/static/img/seta_proximo.gif"></td>
+                            <td class="quadrado">
+
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+{% endblock %}

@@ -1416,28 +1416,87 @@ textarea {
 }
 
 .conteudo_tabela {
-    font-size: 10px;
+    font-size: 11px;
     font-family: 'Oswald',sans-serif;
 }
 
 .conteudo_form {
     font-size: 12px;
+    padding: 0px 0px 0px 0px;
 }
 
 .titulo_listview {
-    padding: 10px 10px 15px;
+    padding: 5px 15px 0px;
     font-size: 20px;
     font-family: 'Oswald',sans-serif;
 }
 
 .titulo_cadastro {
-    padding: 10px 10px 10px;
+    padding: 5px 15px 0px;
     font-size: 20px;
     font-family: 'Oswald',sans-serif;
 }
 
+.filtro_processo {
+        padding: 0px 0px 0px 0px;
+}
+
+.grupo_botoes_form {
+    padding: 20px 20px 20px 20px;
+}
 
 .link_visualizar {
     color: #FFFFFF;
+}
 
+.caixa_input {
+    width: 70px;
+    height: 20px;
+}
+
+.retangulo {
+    border-top: 2px solid black;
+    border-left: 2px solid black;
+    border-bottom: 2px solid black;
+    border-right: 2px solid black;
+    width: 100px;
+    height: 20px;
+    text-align: center;
+    font-weight: bold;
+    background-color: #ECF0F1 ;
+}
+
+.quadrado {
+    border-top: 2px solid black;
+    border-left: 2px solid black;
+    border-bottom: 2px solid black;
+    border-right: 2px solid black;
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.quadrado_azul {
+    border-top: 2px solid black;
+    border-left: 2px solid black;
+    border-bottom: 2px solid black;
+    border-right: 2px solid black;
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    font-weight: bold;
+    background-color: #AED6F1;
+}
+
+.login-header {
+    width: 100%;
+    height: 100px;
+    align: center;
+}
+
+.login-body {
+    width: 100%;
+    height: 300x;
+    align: center;
 }

@@ -4,7 +4,7 @@
 
             <div class="col-10 container conteudo_tabela">
                 <div class="row">
-                    <div class="col-10 titulo_listview"><b>Consulta de Locações</b></div>
+                    <div class="col-10 titulo_listview"><b>Atualização de Processos de Locações</b></div>
                 </div>
                     <div class="text-center"><hr style="height:4px;border-width:0;color:gray;background-color:gray"></div>
                     <div class="filtro_processo" align="center">
@@ -58,15 +58,15 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for locacao in locacoes %}
+                                    {% for updlocacao in updlocacoes %}
                                         <tr>
-                                            <td>{{ locacao.id }}</td>
-                                            <td>{{ locacao.tipo_locacao }}</td>
-                                            <td> <a href="../{{locacao.pk}}/consultalocacao">{{ locacao.acao }}</a></td>
-                                            <td> {{ locacao.memorial }}</td>
-                                            <td> {{ locacao.criado }} </td>
-                                            <td>{{ locacao.status }}</td>
-                                            <td> <a href="../{{locacao.pk}}/consultalocacao"><img src="/static/img/visualizar.png"></a></td>
+                                            <td>{{ updlocacao.id }}</td>
+                                            <td>{{ updlocacao.tipo_locacao }}</td>
+                                            <td> <a href="../{{updlocacao.pk}}/consultalocacao">{{ updlocacao.acao }}</a></td>
+                                            <td> {{ updlocacao.memorial }}</td>
+                                            <td> {{ updlocacao.criado }} </td>
+                                            <td> {{ updlocacao.status }}</td>
+                                            <td> <a href="../{{updlocacao.pk}}/consultalocacao"><img src="/static/img/visualizar.png"></a></td>
                                         </tr>
                                     {% endfor %}
                                 </tbody>

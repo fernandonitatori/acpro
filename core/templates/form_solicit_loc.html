@@ -14,8 +14,8 @@
                        <hr style="height:5px;border-width:0;color:gray;background-color:gray">
                   </div>
                </div>
-               <div class="conteudo_form row text-center align-items-start">
-                   <div class="col-06 m-auto pt-4 pb-2 text-center align-items-start border">
+               <div class="conteudo_form row" align="center">
+                   <div class="col-12">
                         <form method="post" autocomplete="off" >
                             {% csrf_token %}
                             <table style="border-collapse:separate; border-spacing:20px 20px">
@@ -40,7 +40,9 @@
                                         </tr>
                                  </tbody>
                             </table>
-
+                   </div>
+                   <div class="col-12">
+                       <div class="grupo_botoes_form">
                                 {% buttons %}
                                     <button type="submit" class="btn btn-primary">Salvar</button>
                                     <button type="button" class="btn btn-warning">
@@ -48,7 +50,10 @@
                                     </button>
                                 {% endbuttons %}
                         </form>
+                        </div>
                    </div>
+
+
                </div>
            </div>
 
