@@ -21,18 +21,22 @@
                             <table style="border-collapse:separate; border-spacing:20px 20px">
                                 <tbody>
                                         <tr>
-                                            <td  align="right"><div class="form-horizontal"><b>Tipo de Locação:</b></td>
-                                            <td  align="left">{{form.tipo_locacao}}<a href="#"><img src="/static/admin/img/icon-addlink.svg"></a></td>
-                                            <td></td>
+                                            <td  align="right"><div class="form-horizontal"><b>Tipo de Locação:</b></div></td>
+                                            <td  align="left"> {{form.tipo_locacao}} <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#ModalTipoLoc" class="tooltip-test" title="Adiciona Tipo de Locação"><img src="/static/img/plus.svg"></button></td>
+                                            <td align="left">{% if messages %}
+                                                    {% for message in messages %}
+                                                        {{ message }}
+                                                    {% endfor %}
+                                                {% endif %}</td>
                                         </tr>
                                         <tr>
                                             <td align="right"><div class="form-horizontal"><b>Ação:</b></div></td>
-                                            <td align="left">{{form.acao}} <a href="#"><img src="/static/admin/img/icon-addlink.svg"></a></td>
+                                            <td align="left">{{form.acao}} <a href="../add_acao"><img src="/static/admin/img/icon-addlink.svg"></a></td>
                                             <td></td>
                                         </tr>
                                         <tr>
                                             <td align="right"><div class="form-horizontal"><b>Memorial:</b></div></td>
-                                            <td align="left">{{form.memorial}}<a href="#"><img src="/static/admin/img/icon-addlink.svg"></a></td>
+                                            <td align="left">{{form.memorial}}<a href="../add_memorial"><img src="/static/admin/img/icon-addlink.svg"></a></td>
                                         </tr>
                                         <tr>
                                             <td align="right"><div class="form-horizontal"><b>Status:</b></div></td>
@@ -40,22 +44,55 @@
                                         </tr>
                                  </tbody>
                             </table>
-                   </div>
-                   <div class="col-12">
-                       <div class="grupo_botoes_form">
+                            <div class="grupo_botoes_form">
                                 {% buttons %}
                                     <button type="submit" class="btn btn-primary">Salvar</button>
                                     <button type="button" class="btn btn-warning">
                                         <a href="{% url 'sistema' %}">Cancelar</a>
                                     </button>
                                 {% endbuttons %}
-                        </form>
-                        </div>
+                            </div>
+                       </form>
                    </div>
-
-
                </div>
            </div>
 
+
+
+    <!-- Modal -->
+            <div id="ModalTipoLoc" class="modal fade" role="dialog">
+              <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                  <div class="modal-header">
+                       <div class="titulo_modal">Adicionar Tipo de Locação</div>
+                  </div>
+                  <div class="modal-body">
+                        <form method="POST" autocomplete="off" action="{% url 'salvatipoloc' %}" >
+                            {% csrf_token %}
+                            <table style="border-collapse:separate; border-spacing:20px 20px">
+                                <tbody>
+                                        <tr>
+                                            <td  align="right"><div class="form-horizontal"><b>Descrição:</b></div></td>
+                                            <td  align="left"><input type="text" name="descricao" id="descricao" maxlength="50" required ></td>
+                                            <td></td>
+                                        </tr>
+                                 </tbody>
+                            </table>
+
+                            <div class="grupo_botoes_form">
+                                    {% buttons %}
+                                        <button type="submit" class="btn btn-primary">Salvar</button>
+                                        <button type="button" class="btn btn-warning" data-dismiss="modal">
+                                            <a href="{% url 'sistema' %}">Cancelar</a>
+                                        </button>
+                                    {% endbuttons %}
+                            </div>
+                        </form>
+                  </div>
+                </div>
+              </div>
+            </div>
     </div>
 {% endblock %}

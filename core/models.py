@@ -25,6 +25,7 @@ class Fornecedor(Base):
     def __str__(self):
         return self.nome
 
+
 class Parametro(Base):
     descricao = models.CharField('Descrição', max_length=50)
     valor = models.CharField('Valor', max_length=50)
@@ -37,6 +38,7 @@ class Parametro(Base):
     def __str__(self):
         return self.descricao
 
+
 class Local(Base):
     descricao = models.CharField('Descrição', max_length=50)
 
@@ -46,6 +48,7 @@ class Local(Base):
 
     def __str__(self):
         return self.descricao
+
 
 class Linguagem(Base):
     descricao = models.CharField('Descrição', max_length=50)
@@ -57,6 +60,7 @@ class Linguagem(Base):
     def __str__(self):
         return self.descricao
 
+
 class Projeto(Base):
     descricao = models.CharField('Descrição', max_length=50)
 
@@ -66,6 +70,7 @@ class Projeto(Base):
 
     def __str__(self):
         return self.descricao
+
 
 class TipoLocacao(Base):
     descricao = models.CharField('Descrição', max_length=50)
@@ -77,6 +82,7 @@ class TipoLocacao(Base):
     def __str__(self):
         return self.descricao
 
+
 class Tipo_Status(Base):
     descricao = models.CharField('Descrição', max_length=50)
 
@@ -87,8 +93,9 @@ class Tipo_Status(Base):
     def __str__(self):
         return self.descricao
 
+
 class Status(Base):
-    tipo_status = models.ForeignKey('Tipo_Status',verbose_name='tipo de Status',on_delete=models.CASCADE)
+    tipo_status = models.ForeignKey('Tipo_Status', verbose_name='tipo de Status', on_delete=models.CASCADE)
     descricao = models.CharField('Descrição', max_length=50)
 
     class Meta:
@@ -110,6 +117,7 @@ class Memorial(Base):
     def __str__(self):
         return self.descricao
 
+
 class Periodo(Base):
     etapa = models.CharField('Etapa', max_length=50)
     data_inicio = models.DateField('Data de Início')
@@ -121,16 +129,17 @@ class Periodo(Base):
         verbose_name_plural = 'Períodos'
 
     def __str__(self):
-        return self.descricao
+        return self.etapa
+
 
 class Acao(Base):
     nome = models.CharField('Nome', max_length=50)
     descricao = models.CharField('Descrição', max_length=100)
     observacoes = models.CharField('Observações', max_length=100)
     data_base = models.DateField('Data Base')
-    projeto = models.ForeignKey('Projeto', verbose_name='projeto',on_delete=models.CASCADE)
-    linguagem = models.ForeignKey('Linguagem', verbose_name='linguagem',on_delete=models.CASCADE)
-    local = models.ForeignKey('Local', verbose_name='local',on_delete=models.CASCADE)
+    projeto = models.ForeignKey('Projeto', verbose_name='projeto', on_delete=models.CASCADE)
+    linguagem = models.ForeignKey('Linguagem', verbose_name='linguagem', on_delete=models.CASCADE)
+    local = models.ForeignKey('Local', verbose_name='local', on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = 'Ação'
@@ -139,11 +148,12 @@ class Acao(Base):
     def __str__(self):
         return self.nome
 
+
 class Locacao_Acao(Base):
-    tipo_locacao = models.ForeignKey('TipoLocacao',verbose_name='tipo de Locaçao',on_delete=models.CASCADE)
-    acao = models.ForeignKey('Acao',verbose_name='açao',on_delete=models.CASCADE)
-    memorial = models.ForeignKey('Memorial',verbose_name='memorial',on_delete=models.CASCADE)
-    status = models.ForeignKey('Status',verbose_name='status',on_delete=models.CASCADE)
+    tipo_locacao = models.ForeignKey('TipoLocacao', verbose_name='tipo de Locaçao', on_delete=models.CASCADE)
+    acao = models.ForeignKey('Acao', verbose_name='açao', on_delete=models.CASCADE)
+    memorial = models.ForeignKey('Memorial', verbose_name='memorial', on_delete=models.CASCADE)
+    status = models.ForeignKey('Status', verbose_name='status', on_delete=models.CASCADE)
     descricao = models.CharField('Descriçao', max_length=50, default='')
 
     class Meta:
@@ -152,6 +162,7 @@ class Locacao_Acao(Base):
 
     def __str__(self):
         return self.descricao
+
 
 class TRP(Base):
     numeroTRP = models.IntegerField('Número da TRP')
@@ -167,10 +178,11 @@ class TRP(Base):
     def __str__(self):
         return f'{self.id} {self.descricao}'
 
+
 class CatFornecedor(Base):
     descricao = models.CharField('Descrição', max_length=50)
     cnpj = models.CharField('CNPJ', max_length=50)
-    fornecedor = models.ForeignKey(Fornecedor,on_delete=models.CASCADE)
+    fornecedor = models.ForeignKey(Fornecedor, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = 'Categoria de Fornecedor'
@@ -178,6 +190,7 @@ class CatFornecedor(Base):
 
     def __str__(self):
         return f'{self.id} {self.descricao} {self.cnpj}'
+
 
 class EndFornecedor(Base):
     logradouro = models.CharField('Logradouro', max_length=60)
@@ -188,7 +201,7 @@ class EndFornecedor(Base):
     cidade = models.CharField('Cidade', max_length=60)
     estado = models.CharField('Estado', max_length=60)
     pais = models.CharField('Pais', max_length=60)
-    fornecedor = models.ForeignKey(Fornecedor,on_delete=models.CASCADE)
+    fornecedor = models.ForeignKey(Fornecedor, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = 'Endereço de Fornecedor'
@@ -197,12 +210,13 @@ class EndFornecedor(Base):
     def __str__(self):
         return f'{self.id} {self.logradouro} {self.numero}'
 
+
 class ContFornecedor(Base):
     nome = models.CharField('Nome', max_length=60)
     telefone = models.CharField('Telefone', max_length=10)
     email = models.CharField('E-mail', max_length=60)
     observacoes = models.CharField('Observações', max_length=10)
-    fornecedor = models.ForeignKey(Fornecedor,on_delete=models.CASCADE)
+    fornecedor = models.ForeignKey(Fornecedor, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = 'Contato de Fornecedor'
@@ -211,27 +225,30 @@ class ContFornecedor(Base):
     def __str__(self):
         return f'{self.id} {self.nome} {self.telefone} {self.email}'
 
+
 class Compras_Locacao(Base):
     descricao = models.CharField('Descrição', max_length=60)
     numero = models.IntegerField('Número')
     data = models.DateField('Data')
-    observacoes = models.CharField('Observaçoes',max_length=100)
-    locacao = models.ForeignKey(Locacao_Acao,verbose_name='ação',on_delete=models.CASCADE)
-    trp = models.ForeignKey(TRP, verbose_name='tRP',on_delete=models.CASCADE)
-    status = models.ForeignKey(Status,verbose_name='status',on_delete=models.CASCADE)
+    observacoes = models.CharField('Observaçoes', max_length=100)
+    locacao = models.ForeignKey(Locacao_Acao, verbose_name='ação', on_delete=models.CASCADE)
+    trp = models.ForeignKey(TRP, verbose_name='tRP', on_delete=models.CASCADE)
+    status = models.ForeignKey(Status, verbose_name='status', on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = 'Compras - Locaçao'
         verbose_name_plural = 'Compras - Locaçao'
 
     def __str__(self):
-        return f'{self.id} {self.descricao} {self.numero} {observacoes} {status}'
+        return f'{self.id} {self.descricao} {self.numero} {self.observacoes} {self.status}'
+
 
 class Orcamento(Base):
-    compras_loc = models.ForeignKey(Compras_Locacao,on_delete=models.CASCADE)
-    fornecedor = models.ForeignKey(Fornecedor,on_delete=models.CASCADE)
-    valor = models.DecimalField('Valor',max_digits=10,decimal_places=2)
-    observacoes = models.CharField('Observaçoes',max_length=100)
+    compras_loc = models.ForeignKey(Compras_Locacao, on_delete=models.CASCADE)
+    fornecedor = models.ForeignKey(Fornecedor, on_delete=models.CASCADE)
+    valor = models.DecimalField('Valor', max_digits=10, decimal_places=2)
+    observacoes = models.CharField('Observaçoes', max_length=100)
+
     class Meta:
         verbose_name = 'Orçamento'
         verbose_name_plural = 'Orçamentos'
@@ -239,27 +256,30 @@ class Orcamento(Base):
     def __str__(self):
         return f'{self.id} {self.valor}'
 
+
 class Licitacao(Base):
     dataabertura = models.DateField('Data de Abertura')
     datapregao = models.DateField('Data do Pregão')
     dataassinatura = models.DateField('Data da Assinatura')
     datahomologacao = models.DateField('Data de Homologação')
     vencedor = models.CharField('Vencedor', max_length=50)
-    valor = models.DecimalField(max_digits=10,decimal_places=2)
+    valor = models.DecimalField(max_digits=10, decimal_places=2)
 
     class Meta:
         verbose_name = 'Licitação'
         verbose_name_plural = 'Licitações'
 
     def __str__(self):
-        return f'{self.id} {self.dataabertura} {self.datapregao} {self.dataassinatura} {self.datahomologacao} {self.vencedor} {self.valor} '
+        return f'{self.id} {self.dataabertura} {self.datapregao} {self.dataassinatura}' \
+               f' {self.datahomologacao} {self.vencedor} {self.valor} '
+
 
 class DCA(Base):
     numero = models.CharField('Vencedor', max_length=50)
     dataminuta = models.DateField('Data Minuta')
     datadca = models.DateField('Data DCA')
     anotacoes = models.CharField('Anotaçoes', max_length=100)
-    licitacao = models.ForeignKey(Licitacao,verbose_name='Licitação',on_delete=models.CASCADE)
+    licitacao = models.ForeignKey(Licitacao, verbose_name='Licitação', on_delete=models.CASCADE)
     locacao_acao = models.ForeignKey(Locacao_Acao, verbose_name='Solicitação', on_delete=models.CASCADE)
     status = models.ForeignKey(Status, verbose_name='Status', on_delete=models.CASCADE)
 
@@ -270,10 +290,11 @@ class DCA(Base):
     def __str__(self):
         return f'{self.id} {self.dataminuta} {self.datadca} {self.licitacao} {self.locacao_acao} {self.status}'
 
+
 class Aprovacao(Base):
     setor = models.CharField('Observaçoes', max_length=50)
     data = models.DateField('Data')
-    dca = models.ForeignKey(DCA,verbose_name='DCA',on_delete=models.CASCADE)
+    dca = models.ForeignKey(DCA, verbose_name='DCA', on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = 'Aprovaçao'
@@ -281,6 +302,7 @@ class Aprovacao(Base):
 
     def __str__(self):
         return f'{self.id} {self.setor} {self.dca}'
+
 
 class Cronograma(Base):
     locacao_acao = models.ForeignKey(Locacao_Acao, verbose_name='Solicitação', on_delete=models.CASCADE)
@@ -297,6 +319,7 @@ class Cronograma(Base):
     def __str__(self):
         return f'{self.id} {self.locacao_acao} {self.datainicio} {self.datafim} {self.anotacoes} {self.status}'
 
+
 class TipoPagto(Base):
     descricao = models.CharField('Descrição', max_length=50)
 
@@ -307,10 +330,11 @@ class TipoPagto(Base):
     def __str__(self):
         return f'{self.id} {self.descricao}'
 
+
 class Pagamento(Base):
     tipo_pagto = models.ForeignKey(TipoPagto, verbose_name='Tipo de Pagamento', on_delete=models.CASCADE)
     atividade = models.CharField('Atividade', max_length=100)
-    parcela = models.DecimalField('Parcela',max_digits=10,decimal_places=2)
+    parcela = models.DecimalField('Parcela', max_digits=10, decimal_places=2)
     qtde_parcelas = models.IntegerField('Quantidade de Parcelas')
     valor = models.DecimalField('Valor', max_digits=10, decimal_places=2)
     dataprevnota = models.DateField('Data Prev Nota')
@@ -328,12 +352,13 @@ class Pagamento(Base):
     def __str__(self):
         return f'{self.id} {self.tipo_pagto} {self.valor} {self.anotacoes}'
 
+
 class Contrato_Locacao(Base):
     processo = models.CharField('Processo', max_length=50)
     dataprocesso = models.DateField('Data do Processo')
     instrcontratual = models.CharField('Instrumento Contratual', max_length=50)
     datacontrato = models.DateField('Data do Contrato')
-    valorservico= models.DecimalField('Valor do Serviço', max_digits=10, decimal_places=2)
+    valorservico = models.DecimalField('Valor do Serviço', max_digits=10, decimal_places=2)
     valorlocacao = models.DecimalField('Valor da Locação', max_digits=10, decimal_places=2)
     pagto = models.ForeignKey(Pagamento, verbose_name='Pagamento', on_delete=models.CASCADE)
     locacao_acao = models.ForeignKey(Locacao_Acao, verbose_name='Solicitação', on_delete=models.CASCADE)

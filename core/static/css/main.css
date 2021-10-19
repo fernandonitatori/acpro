@@ -1437,6 +1437,13 @@ textarea {
     font-family: 'Oswald',sans-serif;
 }
 
+.titulo_modal{
+    padding: 5px 15px 0px;
+    font-size: 20px;
+    font-family: 'Oswald',sans-serif;
+    font-weight: bold;
+}
+
 .filtro_processo {
         padding: 0px 0px 0px 0px;
 }
