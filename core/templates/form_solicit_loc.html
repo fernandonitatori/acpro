@@ -36,7 +36,12 @@
                                         </tr>
                                         <tr>
                                             <td align="right"><div class="form-horizontal"><b>Memorial:</b></div></td>
-                                            <td align="left">{{form.memorial}}<a href="../add_memorial"><img src="/static/admin/img/icon-addlink.svg"></a></td>
+                                            <td align="left">{{form.memorial}}<button type="button" class="btn btn-sm" data-toggle="modal" data-target="#ModalMemorial" class="tooltip-test" title="Adiciona Memorial"><img src="/static/img/plus.svg"></button></td>
+                                            <td> {% if messages %}
+                                                    {% for message in messages %}
+                                                        {{ message }}
+                                                    {% endfor %}
+                                                {% endif %} </td>
                                         </tr>
                                         <tr>
                                             <td align="right"><div class="form-horizontal"><b>Status:</b></div></td>
@@ -91,6 +96,47 @@
                             </div>
                         </form>
                   </div>
+                </div>
+              </div>
+            </div>
+
+        <!-- Modal Memorial -->
+            <div id="ModalMemorial" class="modal fade" role="dialog">
+              <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                      <div class="modal-header">
+                           <div class="titulo_modal">Adicionar Memorial</div>
+                      </div>
+                      <div class="modal-body">
+                            <form method="POST" autocomplete="off" action="{% url 'salvamemorial' %}" >
+                                {% csrf_token %}
+                                <table style="border-collapse:separate; border-spacing:20px 20px">
+                                    <tbody>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Descrição:</b></div></td>
+                                                <td  align="left"><input type="text" name="descricao" id="descricao" maxlength="50" required></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Data do Memorial:</b></div></td>
+                                                <td  align="left"><input type="text" name="data_memorial" id="data_memorial" maxlength="10" required ></td>
+                                                <td></td>
+                                            </tr>
+                                     </tbody>
+                                </table>
+                                <div class="grupo_botoes_form">
+                                        {% buttons %}
+                                            <button type="submit" class="btn btn-primary">Salvar</button>
+                                            <button type="button" class="btn btn-warning">
+                                                <a href="{% url 'sistema' %}">Cancelar</a>
+                                            </button>
+                                        {% endbuttons %}
+                                </div>
+
+                            </form>
+                      </div>
                 </div>
               </div>
             </div>

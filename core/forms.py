@@ -1,5 +1,5 @@
 from django import forms
-from core.models import Acao, Locacao_Acao, TipoLocacao
+from core.models import Acao, Locacao_Acao, TipoLocacao, Memorial
 
 
 class Locacao_AcaoModelForm(forms.ModelForm):
@@ -21,3 +21,10 @@ class TipoLocacaoModelForm(forms.ModelForm):
     class Meta:
         model = TipoLocacao
         fields = ['descricao']
+
+
+class MemorialModelForm(forms.ModelForm):
+
+    class Meta:
+        model = Memorial
+        fields = ['descricao', 'data_memorial']
