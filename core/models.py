@@ -227,7 +227,7 @@ class ContFornecedor(Base):
 
 class Compras_Locacao(Base):
     descricao = models.CharField('Descrição', max_length=60)
-    numero = models.IntegerField('Número')
+    numero = models.CharField('Número', max_length=50)
     data = models.DateField('Data')
     observacoes = models.CharField('Observaçoes', max_length=100)
     locacao = models.ForeignKey(Locacao_Acao, verbose_name='ação', on_delete=models.CASCADE)

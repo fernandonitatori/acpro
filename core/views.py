@@ -1,4 +1,4 @@
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.views.generic import TemplateView, ListView
 from django.views.generic.edit import CreateView, UpdateView
 from django.urls import reverse_lazy
@@ -17,6 +17,12 @@ class ListLocacaoAcaoView(ListView):
     queryset = Locacao_Acao.objects.all()
     context_object_name = 'locacoes'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tiposlocacao'] = TipoLocacao.objects.all()
+        context['acoes'] = Acao.objects.all()
+        context['memoriais'] = Memorial.objects.all()
+        return context
 
 class IndexView(TemplateView):
     template_name = 'index.html'
@@ -47,7 +53,10 @@ class ConsultaLocacaoAcaoView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['status_chave'] = 'Solicitado'
+        context['status_chave_sol'] = 'Solicitado'
+        context['status_compras_emaprov'] = 'Compras - Em Aprovação'
+        context['status_compras_emorc'] = 'Compras - Aguardando orçamento'
+        context['status_compras_orc'] = 'Compras - Orçado'
         return context
 
 
@@ -225,6 +234,7 @@ def salvatipoloc(request):
             form.save()
             return redirect('../add/')
 
+
 def salvamemorial(request):
     descricao = request.POST.get('descricao')
     if Memorial.objects.filter(descricao=descricao).exists():
@@ -235,3 +245,47 @@ def salvamemorial(request):
         if form.is_valid():
             form.save()
             return redirect('../add/')
+
+
+def consultalocacao(request):
+    tipoloc = request.POST.get("tipo_locacao")
+    acao = request.POST.get("acao")
+    memorial = request.POST.get("memorial")
+
+    criterio1 = False
+    criterio2 = False
+    criterio3 = False
+
+    if tipoloc != '':
+        criterio1 = True
+    if acao != '':
+        criterio2 = True
+    if memorial != '':
+        criterio3 = True
+
+    if criterio1 == True and criterio2 == False and criterio3 == False:
+        locacoes = Locacao_Acao.objects.filter(tipo_locacao=tipoloc)
+    if criterio1 == False and criterio2 == True and criterio3 == False:
+        locacoes = Locacao_Acao.objects.filter(acao=acao)
+    if criterio1 == False and criterio2 == False and criterio3 == True:
+        locacoes = Locacao_Acao.objects.filter(memorial=memorial)
+    if criterio1 == True and criterio2 == True and criterio3 == False:
+        locacoes = Locacao_Acao.objects.filter(tipo_locacao=tipoloc,acao=acao)
+    if criterio1 == True and criterio2 == False and criterio3 == True:
+        locacoes = Locacao_Acao.objects.filter(tipo_locacao=tipoloc, memorial=memorial)
+    if criterio1 == False and criterio2 == True and criterio3 == True:
+        locacoes = Locacao_Acao.objects.filter(acao=acao, memorial=memorial)
+    if criterio1 == True and criterio2 == True and criterio3 == True:
+        locacoes = Locacao_Acao.objects.filter(tipo_locacao=tipoloc, acao=acao, memorial=memorial)
+
+    if criterio1 == False and criterio2 == False and criterio3 == False:
+        locacoes = Locacao_Acao.objects.all()
+    tiposlocacao = TipoLocacao.objects.all()
+    acoes = Acao.objects.all()
+    memoriais  = Memorial.objects.all()
+    context = {'locacoes': locacoes,
+               'tiposlocacao': tiposlocacao,
+               'acoes': acoes,
+               'memoriais': memoriais
+               }
+    return render(request, 'locacao_acao_listview.html', context)

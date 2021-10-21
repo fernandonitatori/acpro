@@ -7,13 +7,13 @@ from .views import ListUpdLocacaoAcaoView, CreateAcaoView, CreateTipoLocView, Cr
                    CreateTRPView, CreateOrcView, CreatePagtoView, CreateAprovView, CreateFornecView,\
                    CreateCatFornecView, CreateEndFornecView, CreateContFornecView, CreateStatusView,\
                    CreateTipoStatusView, CreateLocalView, CreateProjetoView, CreateLinguagemView, CreateTipoPagtoView
-from core.views import salvatipoloc
+from .views import salvatipoloc, consultalocacao
 
 urlpatterns = [
     path('', IndexView.as_view(), name='index'),
     path('sistema/', SistemaView.as_view(), name='sistema'),
     path('add/', core.views.CreateSolicitView.as_view(), name='add_loc'),
-    path('listlocacoes/', ListLocacaoAcaoView.as_view(), name='list_loc'),
+    path('listlocacoes/', core.views.ListLocacaoAcaoView.as_view(), name='list_loc'),
     path('<int:pk>/consultalocacao/', ConsultaLocacaoAcaoView.as_view(), name='cons_loc'),
     path('listupdlocacoes/', ListUpdLocacaoAcaoView.as_view(), name='list_upd_loc'),
     path('add_acao/', CreateAcaoView.as_view(), name='add_acao'),
@@ -38,6 +38,7 @@ urlpatterns = [
     path('add_linguagem/', CreateLinguagemView.as_view(), name='add_linguagem'),
     path('add_projeto/', CreateProjetoView.as_view(), name='add_projeto'),
     path('add_tipopagto/', CreateTipoPagtoView.as_view(), name='add_tipopagto'),
-    path('salvatipoloc', core.views.salvamemorial, name='salvamemorial'),
+    path('salvamemorial', core.views.salvamemorial, name='salvamemorial'),
+    path('consultalocacao', core.views.consultalocacao, name='consultalocacao'),
     path('salvatipoloc', core.views.salvatipoloc, name='salvatipoloc')
 ]

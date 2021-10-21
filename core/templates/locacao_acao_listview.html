@@ -8,31 +8,40 @@
                 </div>
                     <div class="text-center"><hr style="height:4px;border-width:0;color:gray;background-color:gray"></div>
                     <div class="filtro_processo" align="center">
+                        <form method="post" action = "../consultalocacao">
+                            {% csrf_token %}
                             <table style="border-collapse:separate; border-spacing:18px 10px ">
                                     <tbody>
                                             <tr>
-                                                <td  align="right"><div class="form-horizontal"><b>Tipo de Locação:</b></div></td>
-                                                <td  align="left"><select name="tipo_locacao" required id="id_tipo_locacao">
-                                                                      <option value="" selected>---------</option>
-                                                                      <option value="1">Sonorização</option>
-                                                                      <option value="2">Iluminação</option>
-                                                </select></td>
+
+                                                    <td  align="right"><div class="form-horizontal"><b>Tipo de Locação:</b></div></td>
+                                                    <td  align="left"><select name="tipo_locacao" id="id_tipo_locacao">
+                                                    {% for tipolocacao in tiposlocacao %}
+                                                              <option value="{{ tipolocacao.id}}"> {{tipolocacao.descricao}}</option>
+                                                    {% endfor %}
+                                                              <option value="" selected>---------</option>
+                                                    </select></td>
 
                                             </tr>
                                             <tr>
                                                 <td align="right"><div class="form-horizontal"><b>Ação:</b></div></td>
-                                                <td align="left"><select name="acao" required id="id_acao">
+                                                <td align="left">
+                                                                <select name="acao" id="id_acao">
+                                                                    {% for acao in acoes %}
+                                                                        <option value="{{acao.id}}">{{ acao.descricao }}</option>
+                                                                    {% endfor %}
                                                                     <option value="" selected>---------</option>
-                                                                    <option value="1">Show do Zé Alface</option>
                                                                 </select></td>
 
                                             </tr>
                                             <tr>
                                                 <td align="right"><div class="form-horizontal"><b>Memorial:</b></div></td>
-                                                <td align="left"><select name="memorial" required id="id_memorial">
+                                                <td align="left"><select name="memorial"  id="id_memorial">
+                                                                 {% for memorial in memoriais %}
+                                                                     <option value="{{memorial.id}}">{{memorial.descricao}}</option>
+                                                                 {% endfor %}
                                                                      <option value="" selected>---------</option>
-                                                                     <option value="1">Teste de memorial</option>
-                                                                </select></td>
+                                                                 </select></td>
                                             </tr>
                                             <tr>
                                                 <td align="right"><div class="form-horizontal"><b>Data de Solicitação:</b></div></td>
@@ -42,8 +51,11 @@
                                             </tr>
                                      </tbody>
                             </table>
-                            <button type="button" class="btn btn-primary">Filtrar</button>
+                            <button type="submit"  class="btn btn-primary">Filtrar</button>
+                            </form>
                     </div>
+
+
                     <div class="text-center"><hr style="height:4px;border-width:0;color:gray;background-color:gray"></div>
                             <table class="table table-bordered table-sm">
                                 <thead class="thead-dark">
