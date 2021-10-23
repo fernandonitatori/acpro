@@ -2,7 +2,7 @@ from django.urls import path
 
 import core.views
 from .views import IndexView, SistemaView, CreateSolicitView, ListLocacaoAcaoView, ConsultaLocacaoAcaoView, \
-                   CreateDCAView, CreateLicView, CreateContrView, CreateCronoView
+                   CreateSedeView, CreateLicView, CreateContrView, CreateCronoView
 from .views import ListUpdLocacaoAcaoView, CreateAcaoView, CreateTipoLocView, CreateMemorialView, CreateComprasLocView,\
                    CreateTRPView, CreateOrcView, CreatePagtoView, CreateAprovView, CreateFornecView,\
                    CreateCatFornecView, CreateEndFornecView, CreateContFornecView, CreateStatusView,\
@@ -19,10 +19,10 @@ urlpatterns = [
     path('add_acao/', CreateAcaoView.as_view(), name='add_acao'),
     path('add_tipoloc/', CreateTipoLocView.as_view(), name='add_tipoloc'),
     path('add_memorial/', CreateMemorialView.as_view(), name='add_memorial'),
-    path('add_comprasloc/', CreateComprasLocView.as_view(), name='add_comprasloc'),
+    path('add_comprasloc/', core.views.CreateComprasLocView.as_view(), name='add_comprasloc'),
     path('add_trp/', CreateTRPView.as_view(), name='add_trp'),
     path('add_orc/', CreateOrcView.as_view(), name='add_orc'),
-    path('add_dca/', CreateDCAView.as_view(), name='add_dca'),
+    path('add_sede/', CreateSedeView.as_view(), name='add_sede'),
     path('add_lic/', CreateLicView.as_view(), name='add_lic'),
     path('add_contr/', CreateContrView.as_view(), name='add_contr'),
     path('add_pagto/', CreatePagtoView.as_view(), name='add_pagto'),
@@ -40,5 +40,6 @@ urlpatterns = [
     path('add_tipopagto/', CreateTipoPagtoView.as_view(), name='add_tipopagto'),
     path('salvamemorial', core.views.salvamemorial, name='salvamemorial'),
     path('consultalocacao', core.views.consultalocacao, name='consultalocacao'),
-    path('salvatipoloc', core.views.salvatipoloc, name='salvatipoloc')
+    path('salvatipoloc', core.views.salvatipoloc, name='salvatipoloc'),
+    path('consultaumalocacao/<int:pk>/', core.views.consultaumalocacao, name='consultaumalocacao')
 ]

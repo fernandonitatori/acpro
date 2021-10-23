@@ -44,10 +44,13 @@
                                                                  </select></td>
                                             </tr>
                                             <tr>
-                                                <td align="right"><div class="form-horizontal"><b>Data de Solicitação:</b></div></td>
-                                                <td align="left"><div>
-                                                                        <input type="text" class="form-horizontal caixa_input" id="datainicio"> a <input type="text" class="form-horizontal caixa_input" id="datafim">
-                                                                </div></td>
+                                                <td align="right"><div class="form-horizontal"><b>Status Geral:</b></div></td>
+                                                <td align="left"><select name="status_geral"  id="id_status_geral">
+                                                                 {% for status in statuses %}
+                                                                     <option value="{{status_geral.id}}">{{status.descricao}}</option>
+                                                                 {% endfor %}
+                                                                     <option value="" selected>---------</option>
+                                                                 </select></td>
                                             </tr>
                                      </tbody>
                             </table>
@@ -65,7 +68,7 @@
                                         <th scope="col">Ação</th>
                                         <th scope="col">Memorial</th>
                                         <th scope="col">Data e Hora da Solicitação</th>
-                                        <th scope="col">Status</th>
+                                        <th scope="col">Status Geral</th>
                                         <th scope="col"></th>
                                     </tr>
                                 </thead>
@@ -74,11 +77,11 @@
                                         <tr>
                                             <td>{{ locacao.id }}</td>
                                             <td>{{ locacao.tipo_locacao }}</td>
-                                            <td> <a href="../{{locacao.pk}}/consultalocacao">{{ locacao.acao }}</a></td>
+                                            <td> <a href="../consultaumalocacao/{{locacao.pk}}">{{ locacao.acao }}</a></td>
                                             <td> {{ locacao.memorial }}</td>
-                                            <td> {{ locacao.criado }} </td>
-                                            <td>{{ locacao.status }}</td>
-                                            <td> <a href="../{{locacao.pk}}/consultalocacao"><img src="/static/img/visualizar.png"></a></td>
+                                            <td> {{ locacao.criado}} </td>
+                                            <td>{{ locacao.status_geral }}</td>
+                                            <td> <a href="../consultaumalocacao/{{locacao.pk}}"><img src="/static/img/visualizar.png"></a></td>
                                         </tr>
                                     {% endfor %}
                                 </tbody>

@@ -1496,6 +1496,18 @@ textarea {
     background-color: #AED6F1;
 }
 
+.quadrado_verde {
+    border-top: 2px solid black;
+    border-left: 2px solid black;
+    border-bottom: 2px solid black;
+    border-right: 2px solid black;
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    font-weight: bold;
+    background-color: #D5F5E3 ;
+}
+
 .login-header {
     width: 100%;
     height: 100px;

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Fornecedor, Parametro, Local, Linguagem, Projeto, TipoLocacao, Tipo_Status, Status, Memorial, Periodo, Acao, Locacao_Acao, TRP, CatFornecedor, EndFornecedor, ContFornecedor, Compras_Locacao, Orcamento, Licitacao, Aprovacao, DCA, Cronograma, TipoPagto, Pagamento, Contrato_Locacao
+from .models import Fornecedor, Parametro, Local, Linguagem, Projeto, TipoLocacao, Tipo_Status, Status, Memorial, Periodo, Acao, Locacao_Acao, TRP, CatFornecedor, EndFornecedor, ContFornecedor, Compras_Locacao, Orcamento, Licitacao, Aprovacao, Sede, Cronograma, TipoPagto, Pagamento, Contrato_Locacao
 
 @admin.register(Fornecedor)
 class FornecedorAdmin(admin.ModelAdmin):
@@ -48,7 +48,7 @@ class AcaoAdmin(admin.ModelAdmin):
 
 @admin.register(Locacao_Acao)
 class Locacao_AcaoAdmin(admin.ModelAdmin):
-    list_display = ['tipo_locacao','acao','memorial','status',]
+    list_display = ['tipo_locacao','acao','memorial','status_geral',]
 
 @admin.register(TRP)
 class TRPAdmin(admin.ModelAdmin):
@@ -78,13 +78,13 @@ class OrcamentoAdmin(admin.ModelAdmin):
 class LicitacaoAdmin(admin.ModelAdmin):
     list_display = ['id','dataabertura','datapregao','dataassinatura','datahomologacao','vencedor','valor',]
 
-@admin.register(DCA)
-class DCAAdmin(admin.ModelAdmin):
+@admin.register(Sede)
+class SedeAdmin(admin.ModelAdmin):
     list_display = ['id','dataminuta','datadca','licitacao','locacao_acao','status',]
 
 @admin.register(Aprovacao)
 class AprovacaoAdmin(admin.ModelAdmin):
-    list_display = ['id','setor','dca',]
+    list_display = ['id','setor','sede',]
 
 @admin.register(Cronograma)
 class CronogramaAdmin(admin.ModelAdmin):

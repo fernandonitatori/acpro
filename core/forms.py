@@ -6,7 +6,7 @@ class Locacao_AcaoModelForm(forms.ModelForm):
 
     class Meta:
         model = Locacao_Acao
-        fields = ['tipo_locacao', 'acao', 'memorial', 'status']
+        fields = ['tipo_locacao', 'acao', 'memorial', 'status_geral']
 
 
 class AcaoModelForm(forms.ModelForm):

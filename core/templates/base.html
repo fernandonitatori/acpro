@@ -61,18 +61,17 @@
                   Equipe
                 </a>
               </li>
-              <!--
+
               <li class="nav-item">
-                <a class="nav-link" href="#pricing">
-                  Pricing
-                </a>
+                {% if user.is_anonymous %}
+
+                {% else %}
+                   <a class="nav-link" href="{% url 'sistema' %}">
+                    Sistema</a>
+                {% endif %}
+
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#testimonial">
-                  Testimonial
-                </a>
-              </li>
-              -->
+
               <li class="nav-item">
                 {% if user.is_anonymous %}
                 <a class="nav-link" href="{% url 'login' %}">

@@ -1,10 +1,11 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.views.generic import TemplateView, ListView
 from django.views.generic.edit import CreateView, UpdateView
 from django.urls import reverse_lazy
 from django.contrib import messages
 
-from .models import Locacao_Acao, Acao, TipoLocacao, Memorial, Compras_Locacao, TRP, Orcamento, DCA, Licitacao, \
+
+from .models import Locacao_Acao, Acao, TipoLocacao, Memorial, Compras_Locacao, TRP, Orcamento, Sede, Licitacao, \
                     Contrato_Locacao, Pagamento, Cronograma, Aprovacao, Fornecedor, CatFornecedor, EndFornecedor, \
                     ContFornecedor, Tipo_Status, Status, Local, Linguagem, Projeto, TipoPagto
 
@@ -22,6 +23,7 @@ class ListLocacaoAcaoView(ListView):
         context['tiposlocacao'] = TipoLocacao.objects.all()
         context['acoes'] = Acao.objects.all()
         context['memoriais'] = Memorial.objects.all()
+        context['statuses'] = Status.objects.all()
         return context
 
 class IndexView(TemplateView):
@@ -34,20 +36,29 @@ class SistemaView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['numsolicit'] = Locacao_Acao.objects.count()
+        context['numcompras'] = Compras_Locacao.objects.count()
         return context
 
 
 class CreateSolicitView(CreateView):
     model = Locacao_Acao
     template_name = 'form_solicit_loc.html'
-    fields = ['tipo_locacao', 'acao', 'memorial', 'status']
+    fields = ['tipo_locacao', 'acao', 'memorial', 'status_geral', 'descricao']
     success_url = reverse_lazy('sistema')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tiposlocacao'] = TipoLocacao.objects.all()
+        context['acoes'] = Acao.objects.all()
+        context['memoriais'] = Memorial.objects.all()
+        context['statuses'] = Status.objects.all()
+        return context
 
 
 class ConsultaLocacaoAcaoView(UpdateView):
     model = Locacao_Acao
     template_name = 'locacao_acao_consulta.html'
-    fields = ['tipo_locacao', 'acao', 'memorial', 'status']
+    fields = ['tipo_locacao', 'acao', 'memorial', 'status_geral']
     context_object_name = 'consulta'
     success_url = reverse_lazy('sistema')
 
@@ -94,6 +105,12 @@ class CreateComprasLocView(CreateView):
     fields = ['descricao', 'numero', 'data', 'observacoes', 'locacao', 'trp', 'status']
     success_url = reverse_lazy('sistema')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['trps'] = TRP.objects.all()
+        context['statuses'] = Status.objects.all()
+        return context
+
 
 class CreateTRPView(CreateView):
     model = TRP
@@ -109,9 +126,9 @@ class CreateOrcView(CreateView):
     success_url = reverse_lazy('sistema')
 
 
-class CreateDCAView(CreateView):
-    model = DCA
-    template_name = 'form_create_dca.html'
+class CreateSedeView(CreateView):
+    model = Sede
+    template_name = 'form_create_sede.html'
     fields = ['numero', 'dataminuta', 'datadca', 'anotacoes', 'licitacao', 'locacao_acao', 'status']
     success_url = reverse_lazy('sistema')
 
@@ -251,10 +268,12 @@ def consultalocacao(request):
     tipoloc = request.POST.get("tipo_locacao")
     acao = request.POST.get("acao")
     memorial = request.POST.get("memorial")
+    statusgeral = request.POST.get("status_geral")
 
     criterio1 = False
     criterio2 = False
     criterio3 = False
+    criterio4 = False
 
     if tipoloc != '':
         criterio1 = True
@@ -262,6 +281,8 @@ def consultalocacao(request):
         criterio2 = True
     if memorial != '':
         criterio3 = True
+    if statusgeral != '':
+        criterio4 = True
 
     if criterio1 == True and criterio2 == False and criterio3 == False:
         locacoes = Locacao_Acao.objects.filter(tipo_locacao=tipoloc)
@@ -277,15 +298,50 @@ def consultalocacao(request):
         locacoes = Locacao_Acao.objects.filter(acao=acao, memorial=memorial)
     if criterio1 == True and criterio2 == True and criterio3 == True:
         locacoes = Locacao_Acao.objects.filter(tipo_locacao=tipoloc, acao=acao, memorial=memorial)
-
-    if criterio1 == False and criterio2 == False and criterio3 == False:
+    if criterio4 == True:
+        locacoes = Locacao_Acao.objects.filter(status_geral=statusgeral)
+    if criterio1 == False and criterio2 == False and criterio3 == False and criterio4 == False:
         locacoes = Locacao_Acao.objects.all()
+
     tiposlocacao = TipoLocacao.objects.all()
     acoes = Acao.objects.all()
-    memoriais  = Memorial.objects.all()
+    memoriais = Memorial.objects.all()
+    statuses = Status.objects.all()
     context = {'locacoes': locacoes,
                'tiposlocacao': tiposlocacao,
                'acoes': acoes,
-               'memoriais': memoriais
+               'memoriais': memoriais,
+               'statuses': statuses
                }
     return render(request, 'locacao_acao_listview.html', context)
+
+def consultaumalocacao(request,pk):
+
+    idpassado = pk
+    print(idpassado)
+    consulta = get_object_or_404(Locacao_Acao,id=pk)
+    consultacompras = ''
+    if Compras_Locacao.objects.filter(locacao=idpassado).exists():
+        consultacompras = Compras_Locacao.objects.get(locacao=idpassado)
+    statuses = Status.objects.all()
+    trps = TRP.objects.all()
+    context = {
+            'consulta': consulta,
+            'consultacompras': consultacompras,
+            'status_chave_sol': 'Solicitado',
+            'status_chave_compras': 'Compras - Aprovado',
+            'statuses': statuses,
+            'trps': trps
+    }
+    return render(request, 'locacao_acao_consulta.html', context)
+
+
+def defcomprasupdumalocacao(request,pk):
+    idpassado = pk
+    consultacompras = Compras_Locacao.objects.get(locacao=idpassado)
+    context = {
+        'consultacompras': consultacompras,
+    }
+    return render(request, 'form_upd_compras.html', context)
+
+

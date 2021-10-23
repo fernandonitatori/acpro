@@ -5,7 +5,7 @@
 
            <div class="container">
                <div class="row">
-                  <div class="col-12 titulo_cadastro">
+                  <div class="col-12 titulo_listview">
                        <div ><b>Solicitação de Locação</b></div>
                   </div>
                </div>
@@ -16,48 +16,86 @@
                </div>
                <div class="conteudo_form row" align="center">
                    <div class="col-12">
-                        <form method="post" autocomplete="off" >
-                            {% csrf_token %}
-                            <table style="border-collapse:separate; border-spacing:20px 20px">
-                                <tbody>
-                                        <tr>
-                                            <td  align="right"><div class="form-horizontal"><b>Tipo de Locação:</b></div></td>
-                                            <td  align="left"> {{form.tipo_locacao}} <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#ModalTipoLoc" class="tooltip-test" title="Adiciona Tipo de Locação"><img src="/static/img/plus.svg"></button></td>
-                                            <td align="left">{% if messages %}
-                                                    {% for message in messages %}
-                                                        {{ message }}
-                                                    {% endfor %}
-                                                {% endif %}</td>
-                                        </tr>
-                                        <tr>
-                                            <td align="right"><div class="form-horizontal"><b>Ação:</b></div></td>
-                                            <td align="left">{{form.acao}} <a href="../add_acao"><img src="/static/admin/img/icon-addlink.svg"></a></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td align="right"><div class="form-horizontal"><b>Memorial:</b></div></td>
-                                            <td align="left">{{form.memorial}}<button type="button" class="btn btn-sm" data-toggle="modal" data-target="#ModalMemorial" class="tooltip-test" title="Adiciona Memorial"><img src="/static/img/plus.svg"></button></td>
-                                            <td> {% if messages %}
-                                                    {% for message in messages %}
-                                                        {{ message }}
-                                                    {% endfor %}
-                                                {% endif %} </td>
-                                        </tr>
-                                        <tr>
-                                            <td align="right"><div class="form-horizontal"><b>Status:</b></div></td>
-                                            <td align="left">{{form.status}}<a href="#"><img src="/static/admin/img/icon-addlink.svg"></a></td>
-                                        </tr>
-                                 </tbody>
-                            </table>
-                            <div class="grupo_botoes_form">
-                                {% buttons %}
-                                    <button type="submit" class="btn btn-primary">Salvar</button>
-                                    <button type="button" class="btn btn-warning">
-                                        <a href="{% url 'sistema' %}">Cancelar</a>
-                                    </button>
-                                {% endbuttons %}
-                            </div>
-                       </form>
+                        <form method="POST" autocomplete="off"  >
+                                {% csrf_token %}
+                                <table style="border-collapse:separate; border-spacing:20px 20px">
+                                    <tbody>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Tipo de Locação:</b></div></td>
+                                                <td  align="left"><select name="tipo_locacao"  id="tipo_locacao">
+                                                                      {% for tipoloc in tiposlocacao %}
+                                                                            <option value="{{tipoloc.id}}">{{tipoloc.descricao}}</option>
+                                                                      {% endfor %}
+                                                                      <option value="" selected >---------</option>
+                                                                 </select>
+                                                                 </td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Ação:</b></div></td>
+                                                <td  align="left"><select name="acao"  id="id_acao">
+                                                                 {% for acao in acoes %}
+                                                                        <option value="{{acao.id}}">{{acao.descricao}}</option>
+                                                                 {% endfor %}
+                                                                     <option value="" selected >---------</option>
+                                                                 </select>
+                                                     </td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Memorial:</b></div></td>
+                                                <td  align="left"><select name="memorial"  id="id_memorial">
+                                                                 {% for memorial in memoriais %}
+                                                                        <option value="{{memorial.id}}">{{memorial.descricao}}</option>
+                                                                 {% endfor %}
+                                                                     <option value="" selected >---------</option>
+                                                                 </select>
+                                                     </td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Status:</b></div></td>
+                                                <td  align="left"><select name="status"  id="id_status">
+                                                                 {% for status in statuses %}
+                                                                     {% if status.tipo_status|stringformat:'s' == 'Solicitação' %}
+                                                                        <option value="{{status.id}}">{{status.descricao}}</option>
+                                                                     {% endif %}
+                                                                 {% endfor %}
+                                                                     <option value="" selected >---------</option>
+                                                                 </select>
+                                                     </td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Status Geral:</b></div></td>
+                                                <td  align="left"><select name="status_geral"  id="id_status_geral">
+                                                                 {% for status in statuses %}
+                                                                        <option value="{{status.id}}">{{status.descricao}}</option>
+                                                                 {% endfor %}
+                                                                     <option value="" selected >---------</option>
+                                                                 </select>
+                                                     </td>
+                                                <td></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Descrição:</b></div></td>
+                                                <td  align="left"><input type="text" name="descricao" id="descricao" size="50" maxlength="50" value="{{consultacompras.descricao}}" required></td>
+                                                <td></td>
+                                            </tr>
+
+                                     </tbody>
+                                </table>
+                                <div class="grupo_botoes_form" align="center">
+
+                                            <button type="submit" class="btn btn-primary">Salvar</button>
+                                            <button type="button" class="btn btn-warning">
+                                                <a href="../sistema">Cancelar</a>
+                                            </button>
+
+                                </div>
+
+                        </form>
                    </div>
                </div>
            </div>

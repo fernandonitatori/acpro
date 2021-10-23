@@ -81,7 +81,7 @@ class Tipo_Status(Base):
 
 
 class Status(Base):
-    tipo_status = models.ForeignKey('Tipo_Status', verbose_name='tipo de Status', on_delete=models.CASCADE)
+    tipo_status = models.ForeignKey('Tipo_Status', verbose_name='tipo de Status', null=True, on_delete=models.SET_NULL)
     descricao = models.CharField('Descrição', max_length=50)
 
     class Meta:
@@ -108,7 +108,7 @@ class Periodo(Base):
     etapa = models.CharField('Etapa', max_length=50)
     data_inicio = models.DateField('Data de Início')
     data_termino = models.DateField('Data de Término')
-    locacao_acao = models.ForeignKey('Locacao_Acao', on_delete=models.CASCADE)
+    locacao_acao = models.ForeignKey('Locacao_Acao', null=True, on_delete=models.SET_NULL)
 
     class Meta:
         verbose_name = 'Período'
@@ -123,9 +123,9 @@ class Acao(Base):
     descricao = models.CharField('Descrição', max_length=100)
     observacoes = models.CharField('Observações', max_length=100)
     data_base = models.DateField('Data Base')
-    projeto = models.ForeignKey('Projeto', verbose_name='projeto', on_delete=models.CASCADE)
-    linguagem = models.ForeignKey('Linguagem', verbose_name='linguagem', on_delete=models.CASCADE)
-    local = models.ForeignKey('Local', verbose_name='local', on_delete=models.CASCADE)
+    projeto = models.ForeignKey('Projeto', verbose_name='projeto', null=True, on_delete=models.SET_NULL)
+    linguagem = models.ForeignKey('Linguagem', verbose_name='linguagem', null=True, on_delete=models.SET_NULL)
+    local = models.ForeignKey('Local', verbose_name='local', null=True, on_delete=models.SET_NULL)
 
     class Meta:
         verbose_name = 'Ação'
@@ -136,10 +136,10 @@ class Acao(Base):
 
 
 class Locacao_Acao(Base):
-    tipo_locacao = models.ForeignKey('TipoLocacao', verbose_name='tipo de Locaçao', on_delete=models.CASCADE)
-    acao = models.ForeignKey('Acao', verbose_name='açao', on_delete=models.CASCADE)
-    memorial = models.ForeignKey('Memorial', verbose_name='memorial', on_delete=models.CASCADE)
-    status = models.ForeignKey('Status', verbose_name='status', on_delete=models.CASCADE)
+    tipo_locacao = models.ForeignKey('TipoLocacao', verbose_name='tipo de Locaçao', null=True, on_delete=models.SET_NULL)
+    acao = models.ForeignKey('Acao', verbose_name='açao', null=True, on_delete=models.SET_NULL)
+    memorial = models.ForeignKey('Memorial', verbose_name='memorial', null=True, on_delete=models.SET_NULL)
+    status_geral =  models.ForeignKey('Status', verbose_name='status geral', null=True, on_delete=models.SET_NULL)
     descricao = models.CharField('Descriçao', max_length=50, default='')
 
     class Meta:
@@ -181,7 +181,7 @@ class Fornecedor(Base):
 
 class CatFornecedor(Base):
     descricao = models.CharField('Descrição', max_length=50)
-    fornecedor = models.ForeignKey(Fornecedor, on_delete=models.CASCADE)
+    fornecedor = models.ForeignKey(Fornecedor, null=True, on_delete=models.SET_NULL)
 
     class Meta:
         verbose_name = 'Categoria de Fornecedor'
@@ -200,7 +200,7 @@ class EndFornecedor(Base):
     cidade = models.CharField('Cidade', max_length=60)
     estado = models.CharField('Estado', max_length=60)
     pais = models.CharField('Pais', max_length=60)
-    fornecedor = models.ForeignKey(Fornecedor, on_delete=models.CASCADE)
+    fornecedor = models.ForeignKey(Fornecedor,null=True, on_delete=models.SET_NULL)
 
     class Meta:
         verbose_name = 'Endereço de Fornecedor'
@@ -215,7 +215,7 @@ class ContFornecedor(Base):
     telefone = models.CharField('Telefone', max_length=10)
     email = models.CharField('E-mail', max_length=60)
     observacoes = models.CharField('Observações', max_length=10)
-    fornecedor = models.ForeignKey(Fornecedor, on_delete=models.CASCADE)
+    fornecedor = models.ForeignKey(Fornecedor, null=True, on_delete=models.SET_NULL)
 
     class Meta:
         verbose_name = 'Contato de Fornecedor'
@@ -230,9 +230,9 @@ class Compras_Locacao(Base):
     numero = models.CharField('Número', max_length=50)
     data = models.DateField('Data')
     observacoes = models.CharField('Observaçoes', max_length=100)
-    locacao = models.ForeignKey(Locacao_Acao, verbose_name='ação', on_delete=models.CASCADE)
-    trp = models.ForeignKey(TRP, verbose_name='tRP', on_delete=models.CASCADE)
-    status = models.ForeignKey(Status, verbose_name='status', on_delete=models.CASCADE)
+    locacao = models.ForeignKey(Locacao_Acao, verbose_name='ação', null=True, on_delete=models.SET_NULL)
+    trp = models.ForeignKey(TRP, verbose_name='tRP', null=True, on_delete=models.SET_NULL)
+    status = models.ForeignKey(Status, verbose_name='status', null=True, on_delete=models.SET_NULL)
 
     class Meta:
         verbose_name = 'Compras - Locaçao'
@@ -243,8 +243,8 @@ class Compras_Locacao(Base):
 
 
 class Orcamento(Base):
-    compras_loc = models.ForeignKey(Compras_Locacao, on_delete=models.CASCADE)
-    fornecedor = models.ForeignKey(Fornecedor, on_delete=models.CASCADE)
+    compras_loc = models.ForeignKey(Compras_Locacao, null=True, on_delete=models.SET_NULL)
+    fornecedor = models.ForeignKey(Fornecedor, null=True, on_delete=models.SET_NULL)
     valor = models.DecimalField('Valor', max_digits=10, decimal_places=2)
     observacoes = models.CharField('Observaçoes', max_length=100)
 
@@ -273,18 +273,18 @@ class Licitacao(Base):
                f' {self.datahomologacao} {self.vencedor} {self.valor} '
 
 
-class DCA(Base):
+class Sede(Base):
     numero = models.CharField('Vencedor', max_length=50)
     dataminuta = models.DateField('Data Minuta')
     datadca = models.DateField('Data DCA')
     anotacoes = models.CharField('Anotaçoes', max_length=100)
-    licitacao = models.ForeignKey(Licitacao, verbose_name='Licitação', on_delete=models.CASCADE)
-    locacao_acao = models.ForeignKey(Locacao_Acao, verbose_name='Solicitação', on_delete=models.CASCADE)
-    status = models.ForeignKey(Status, verbose_name='Status', on_delete=models.CASCADE)
+    licitacao = models.ForeignKey(Licitacao, verbose_name='Licitação', null=True, on_delete=models.SET_NULL)
+    locacao_acao = models.ForeignKey(Locacao_Acao, verbose_name='Solicitação', null=True, on_delete=models.SET_NULL)
+    status = models.ForeignKey(Status, verbose_name='Status', null=True, on_delete=models.SET_NULL)
 
     class Meta:
-        verbose_name = 'DCA'
-        verbose_name_plural = 'DCAs'
+        verbose_name = 'Sede'
+        verbose_name_plural = 'Sedes'
 
     def __str__(self):
         return f'{self.id} {self.dataminuta} {self.datadca} {self.licitacao} {self.locacao_acao} {self.status}'
@@ -293,23 +293,23 @@ class DCA(Base):
 class Aprovacao(Base):
     setor = models.CharField('Observaçoes', max_length=50)
     data = models.DateField('Data')
-    dca = models.ForeignKey(DCA, verbose_name='DCA', on_delete=models.CASCADE)
+    sede = models.ForeignKey(Sede, verbose_name='Sede', null=True, on_delete=models.SET_NULL)
 
     class Meta:
         verbose_name = 'Aprovaçao'
         verbose_name_plural = 'Aprovaçoes'
 
     def __str__(self):
-        return f'{self.id} {self.setor} {self.dca}'
+        return f'{self.id} {self.setor} {self.sede}'
 
 
 class Cronograma(Base):
-    locacao_acao = models.ForeignKey(Locacao_Acao, verbose_name='Solicitação', on_delete=models.CASCADE)
+    locacao_acao = models.ForeignKey(Locacao_Acao, verbose_name='Solicitação', null=True, on_delete=models.SET_NULL)
     atividade = models.CharField('Atividade', max_length=100)
     datainicio = models.DateField('Data Inicial')
     datafim = models.DateField('Data Final')
     anotacoes = models.CharField('Anotaçoes', max_length=100)
-    status = models.ForeignKey(Status, verbose_name='Status', on_delete=models.CASCADE)
+    status = models.ForeignKey(Status, verbose_name='Status', null=True, on_delete=models.SET_NULL)
 
     class Meta:
         verbose_name = 'Cronogramas'
@@ -331,7 +331,7 @@ class TipoPagto(Base):
 
 
 class Pagamento(Base):
-    tipo_pagto = models.ForeignKey(TipoPagto, verbose_name='Tipo de Pagamento', on_delete=models.CASCADE)
+    tipo_pagto = models.ForeignKey(TipoPagto, verbose_name='Tipo de Pagamento', null=True, on_delete=models.SET_NULL)
     atividade = models.CharField('Atividade', max_length=100)
     parcela = models.DecimalField('Parcela', max_digits=10, decimal_places=2)
     qtde_parcelas = models.IntegerField('Quantidade de Parcelas')
@@ -360,8 +360,8 @@ class Contrato_Locacao(Base):
     valorservico = models.DecimalField('Valor do Serviço', max_digits=10, decimal_places=2)
     valorlocacao = models.DecimalField('Valor da Locação', max_digits=10, decimal_places=2)
     pagto = models.ForeignKey(Pagamento, verbose_name='Pagamento', on_delete=models.CASCADE)
-    locacao_acao = models.ForeignKey(Locacao_Acao, verbose_name='Solicitação', on_delete=models.CASCADE)
-    status = models.ForeignKey(Status, verbose_name='Status', on_delete=models.CASCADE)
+    locacao_acao = models.ForeignKey(Locacao_Acao, verbose_name='Solicitação', null=True, on_delete=models.SET_NULL)
+    status = models.ForeignKey(Status, verbose_name='Status', null=True, on_delete=models.SET_NULL)
 
     class Meta:
         verbose_name = 'Contrato Locação'
