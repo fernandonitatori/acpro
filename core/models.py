@@ -1,4 +1,5 @@
 from django.db import models
+
 from django.db.models import signals
 from django.template.defaultfilters import slugify
 
@@ -139,7 +140,8 @@ class Locacao_Acao(Base):
     tipo_locacao = models.ForeignKey('TipoLocacao', verbose_name='tipo de Locaçao', null=True, on_delete=models.SET_NULL)
     acao = models.ForeignKey('Acao', verbose_name='açao', null=True, on_delete=models.SET_NULL)
     memorial = models.ForeignKey('Memorial', verbose_name='memorial', null=True, on_delete=models.SET_NULL)
-    status_geral =  models.ForeignKey('Status', verbose_name='status geral', null=True, on_delete=models.SET_NULL)
+    status = models.ForeignKey('Status', verbose_name='status', related_name='Status', null=True, on_delete=models.SET_NULL)
+    status_geral = models.ForeignKey('Status', verbose_name='status geral', null=True, on_delete=models.SET_NULL)
     descricao = models.CharField('Descriçao', max_length=50, default='')
 
     class Meta:

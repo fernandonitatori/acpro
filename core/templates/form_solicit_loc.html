@@ -28,6 +28,7 @@
                                                                       {% endfor %}
                                                                       <option value="" selected >---------</option>
                                                                  </select>
+                                                                 <a href="#ModalTipoLoc" data-toggle="modal" class="tooltip-test" title="Adiciona Tipo de Locação"><img src="/static/admin/img/icon-addlink.svg"></a>
                                                                  </td>
                                                 <td></td>
                                             </tr>
@@ -50,6 +51,7 @@
                                                                  {% endfor %}
                                                                      <option value="" selected >---------</option>
                                                                  </select>
+                                                                 <a href="#ModalMemorial" data-toggle="modal" class="tooltip-test" title="Adiciona Memorial"><img src="/static/admin/img/icon-addlink.svg"></a>
                                                      </td>
                                                 <td></td>
                                             </tr>
@@ -102,7 +104,7 @@
 
 
 
-    <!-- Modal -->
+    <!-- Modal Tipo Locacao -->
             <div id="ModalTipoLoc" class="modal fade" role="dialog">
               <div class="modal-dialog">
 
@@ -167,7 +169,7 @@
                                 <div class="grupo_botoes_form">
                                         {% buttons %}
                                             <button type="submit" class="btn btn-primary">Salvar</button>
-                                            <button type="button" class="btn btn-warning">
+                                            <button type="button" class="btn btn-warning" data-dismiss="modal">
                                                 <a href="{% url 'sistema' %}">Cancelar</a>
                                             </button>
                                         {% endbuttons %}

@@ -9,7 +9,7 @@ from .models import Locacao_Acao, Acao, TipoLocacao, Memorial, Compras_Locacao, 
                     Contrato_Locacao, Pagamento, Cronograma, Aprovacao, Fornecedor, CatFornecedor, EndFornecedor, \
                     ContFornecedor, Tipo_Status, Status, Local, Linguagem, Projeto, TipoPagto
 
-from .forms import TipoLocacaoModelForm, MemorialModelForm
+from .forms import TipoLocacaoModelForm, MemorialModelForm, ComprasLocacaoModelForm
 
 
 class ListLocacaoAcaoView(ListView):
@@ -43,7 +43,7 @@ class SistemaView(TemplateView):
 class CreateSolicitView(CreateView):
     model = Locacao_Acao
     template_name = 'form_solicit_loc.html'
-    fields = ['tipo_locacao', 'acao', 'memorial', 'status_geral', 'descricao']
+    fields = ['tipo_locacao', 'acao', 'memorial', 'status', 'status_geral', 'descricao']
     success_url = reverse_lazy('sistema')
 
     def get_context_data(self, **kwargs):
@@ -58,16 +58,17 @@ class CreateSolicitView(CreateView):
 class ConsultaLocacaoAcaoView(UpdateView):
     model = Locacao_Acao
     template_name = 'locacao_acao_consulta.html'
-    fields = ['tipo_locacao', 'acao', 'memorial', 'status_geral']
-    context_object_name = 'consulta'
+    fields = ['tipo_locacao', 'acao', 'memorial', 'status', 'status_geral']
+    context_object_name = 'consultasolicit'
     success_url = reverse_lazy('sistema')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['status_chave_sol'] = 'Solicitado'
-        context['status_compras_emaprov'] = 'Compras - Em Aprovação'
-        context['status_compras_emorc'] = 'Compras - Aguardando orçamento'
-        context['status_compras_orc'] = 'Compras - Orçado'
+        context['tiposlocacao'] = TipoLocacao.objects.all()
+        context['acoes'] = Acao.objects.all()
+        context['memoriais'] = Memorial.objects.all()
+        context['statuses'] = Status.objects.all()
         return context
 
 
@@ -101,7 +102,7 @@ class CreateMemorialView(CreateView):
 
 class CreateComprasLocView(CreateView):
     model = Compras_Locacao
-    template_name = 'form_create_compras.html'
+    template_name = 'locacao_acao_consulta.html'
     fields = ['descricao', 'numero', 'data', 'observacoes', 'locacao', 'trp', 'status']
     success_url = reverse_lazy('sistema')
 
@@ -318,12 +319,14 @@ def consultalocacao(request):
 def consultaumalocacao(request,pk):
 
     idpassado = pk
-    print(idpassado)
     consulta = get_object_or_404(Locacao_Acao,id=pk)
     consultacompras = ''
     if Compras_Locacao.objects.filter(locacao=idpassado).exists():
         consultacompras = Compras_Locacao.objects.get(locacao=idpassado)
     statuses = Status.objects.all()
+    tiposlocacao = TipoLocacao.objects.all()
+    acoes = Acao.objects.all()
+    memoriais = Memorial.objects.all()
     trps = TRP.objects.all()
     context = {
             'consulta': consulta,
@@ -331,7 +334,10 @@ def consultaumalocacao(request,pk):
             'status_chave_sol': 'Solicitado',
             'status_chave_compras': 'Compras - Aprovado',
             'statuses': statuses,
-            'trps': trps
+            'trps': trps,
+            'tiposlocacao': tiposlocacao,
+            'acoes': acoes,
+            'memoriais': memoriais
     }
     return render(request, 'locacao_acao_consulta.html', context)
 
@@ -343,5 +349,34 @@ def defcomprasupdumalocacao(request,pk):
         'consultacompras': consultacompras,
     }
     return render(request, 'form_upd_compras.html', context)
+
+
+def salvacompras(request):
+    descricao = request.POST.get('descricao')
+    print(descricao)
+    form = ComprasLocacaoModelForm(request.POST)
+    if form.is_valid():
+        compra = form.save(commit=False)
+        print(f'Id: {compra.id}')
+        print(f'Descricao: {compra.descricao}')
+        print('Registro salvo com sucesso!')
+    else:
+        print('Erro ao salvar registro.')
+    return render(request,'locacao_acao_consulta.html',{})
+
+class UpdComprasLocacaoView(UpdateView):
+    model = Compras_Locacao
+    template_name = 'locacao_acao_consulta.html'
+    fields = ['descricao', 'numero', 'data', 'observacoes', 'locacao', 'trp', 'status']
+    context_object_name = 'consultacompras'
+    success_url = reverse_lazy('sistema')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['status_chave_sol'] = 'Solicitado'
+        context['status_compras_emaprov'] = 'Compras - Em Aprovação'
+        context['status_compras_emorc'] = 'Compras - Aguardando orçamento'
+        context['status_compras_orc'] = 'Compras - Orçado'
+        return context
 
 

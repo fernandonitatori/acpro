@@ -48,7 +48,7 @@ class AcaoAdmin(admin.ModelAdmin):
 
 @admin.register(Locacao_Acao)
 class Locacao_AcaoAdmin(admin.ModelAdmin):
-    list_display = ['tipo_locacao','acao','memorial','status_geral',]
+    list_display = ['tipo_locacao', 'acao', 'memorial', 'status', 'status_geral']
 
 @admin.register(TRP)
 class TRPAdmin(admin.ModelAdmin):

@@ -2,11 +2,13 @@ from django.urls import path
 
 import core.views
 from .views import IndexView, SistemaView, CreateSolicitView, ListLocacaoAcaoView, ConsultaLocacaoAcaoView, \
-                   CreateSedeView, CreateLicView, CreateContrView, CreateCronoView
-from .views import ListUpdLocacaoAcaoView, CreateAcaoView, CreateTipoLocView, CreateMemorialView, CreateComprasLocView,\
-                   CreateTRPView, CreateOrcView, CreatePagtoView, CreateAprovView, CreateFornecView,\
-                   CreateCatFornecView, CreateEndFornecView, CreateContFornecView, CreateStatusView,\
-                   CreateTipoStatusView, CreateLocalView, CreateProjetoView, CreateLinguagemView, CreateTipoPagtoView
+                   CreateSedeView, CreateLicView, CreateContrView, CreateCronoView, CreateAcaoView, CreateTipoLocView,\
+                   CreateMemorialView, CreateComprasLocView, CreateTRPView, CreateOrcView, CreatePagtoView,\
+                   CreateAprovView, CreateFornecView, CreateCatFornecView, CreateEndFornecView, CreateContFornecView,\
+                   CreateStatusView, CreateTipoStatusView, CreateLocalView, CreateProjetoView, CreateLinguagemView,\
+                   CreateTipoPagtoView
+
+
 from .views import salvatipoloc, consultalocacao
 
 urlpatterns = [
@@ -15,7 +17,6 @@ urlpatterns = [
     path('add/', core.views.CreateSolicitView.as_view(), name='add_loc'),
     path('listlocacoes/', core.views.ListLocacaoAcaoView.as_view(), name='list_loc'),
     path('<int:pk>/consultalocacao/', ConsultaLocacaoAcaoView.as_view(), name='cons_loc'),
-    path('listupdlocacoes/', ListUpdLocacaoAcaoView.as_view(), name='list_upd_loc'),
     path('add_acao/', CreateAcaoView.as_view(), name='add_acao'),
     path('add_tipoloc/', CreateTipoLocView.as_view(), name='add_tipoloc'),
     path('add_memorial/', CreateMemorialView.as_view(), name='add_memorial'),
@@ -41,5 +42,6 @@ urlpatterns = [
     path('salvamemorial', core.views.salvamemorial, name='salvamemorial'),
     path('consultalocacao', core.views.consultalocacao, name='consultalocacao'),
     path('salvatipoloc', core.views.salvatipoloc, name='salvatipoloc'),
+    path('updatecompras/<int:pk>/', core.views.UpdComprasLocacaoView.as_view(), name='updatecompras'),
     path('consultaumalocacao/<int:pk>/', core.views.consultaumalocacao, name='consultaumalocacao')
 ]
