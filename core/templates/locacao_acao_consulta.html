@@ -12,6 +12,18 @@
                             <table style="border-collapse:separate; border-spacing:10px 2px ">
                                     <tbody>
                                             <tr>
+                                                {% if messages %}
+                                                    {% for message in messages %}
+                                                        {%if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                                                            <div class="alert alert-danger" role-alert>{{message}}</div>
+                                                        {% endif %}
+                                                        {%if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                                                            <div class="alert alert-success" role-alert>{{message}}</div>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% endif %}
+                                            </tr>
+                                            <tr>
                                                 <td  align="right"><div class="form-horizontal"><b>Tipo de Locação:</b></div></td>
                                                 <td  align="left">{{ consulta.tipo_locacao }}</td>
 
@@ -165,21 +177,25 @@
                                             </tr>
                                             <tr>
                                                 <td  align="right"><div class="form-horizontal"><b>Observações:</b></div></td>
-                                                <td  align="left"><input type="text" name="observacoes" id="id_observacoes" size="50" maxlength="50" required></td>
+                                                <td  align="left"><input type="text" name="observacoes" id="id_observacoes" size="50" maxlength="50"></td>
                                                 <td></td>
                                             </tr>
                                             <tr>
                                                 <td  align="right"><div class="form-horizontal"><b>Solicitação de Locacao:</b></div></td>
-                                                <td  align="left"><input type="text" name="locacao" id="id_locacao" size="5" maxlength="5" value="{{consulta.id}}" readonly></td>
+                                                <td  align="left"><input type="text" name="locacao" id="id_locacao" size="5" maxlength="5" value="{{consulta.id}}" readonly> {{ consulta.acao }}</td>
                                                 <td></td>
                                             </tr>
                                             <tr>
                                                 <td  align="right"><div class="form-horizontal"><b>TRP:</b></div></td>
                                                 <td  align="left"><select name="trp"  id="id_trp">
                                                                      {% for trp in trps %}
-                                                                          <option value="{{trp.id}}">{{trp.descricao}}</option>
+                                                                        {% if trp.descricao|stringformat:'s' == 'Sem TRP' %}
+                                                                            <option value="{{trp.id}}" selected>{{trp.descricao}}</option>
+                                                                        {% else %}
+                                                                            <option value="{{trp.id}}">{{trp.descricao}}</option>
+                                                                        {% endif %}
                                                                      {% endfor %}
-                                                                     <option value="">---------</option>
+
                                                                  </select>
                                                 </td>
                                                 <td></td>
@@ -256,14 +272,15 @@
                                                 <td  align="right"><div class="form-horizontal"><b>TRP:</b></div></td>
                                                 <td  align="left"><select name="trp"  id="id_trp">
                                                                       {% for trp in trps %}
-                                                                          {%if consultacompras.trp|stringformat:'s' == trp.descricao%}
-                                                                             <option value="{{trp.id}}" selected>{{trp.numeroTRP}} - {{trp.descricao}}</option>
+                                                                          {%if consultacompras.trp|stringformat:'s' == trp.descricao %}
+                                                                             <option value="{{ trp.id }}" selected>{{trp.descricao}}</option>
                                                                           {% else %}
-                                                                             <option value="{{trp.id}}">{{trp.numeroTRP}} - {{trp.descricao}}</option>
+                                                                             <option value="{{ trp.id }}">{{trp.descricao}}</option>
                                                                           {% endif %}
                                                                      {% endfor %}
-                                                                     <option value="">---------</option>
+
                                                                  </select>
+                                                                        {{ consultacompras.trp }}
                                                                  </td>
                                                 <td></td>
                                             </tr>

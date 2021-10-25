@@ -133,7 +133,7 @@ class Acao(Base):
         verbose_name_plural = 'Ações'
 
     def __str__(self):
-        return self.nome
+        return self.descricao
 
 
 class Locacao_Acao(Base):
@@ -164,7 +164,7 @@ class TRP(Base):
         verbose_name_plural = 'TRPs'
 
     def __str__(self):
-        return f'{self.id} {self.descricao}'
+        return self.descricao
 
 
 class Fornecedor(Base):
@@ -190,7 +190,7 @@ class CatFornecedor(Base):
         verbose_name_plural = 'Categorias de Fornecedores'
 
     def __str__(self):
-        return f'{self.id} {self.descricao} {self.cnpj}'
+        return self.descricao
 
 
 class EndFornecedor(Base):
@@ -224,14 +224,14 @@ class ContFornecedor(Base):
         verbose_name_plural = 'Contatos de Fornecedores'
 
     def __str__(self):
-        return f'{self.id} {self.nome} {self.telefone} {self.email}'
+        return self.nome
 
 
 class Compras_Locacao(Base):
     descricao = models.CharField('Descrição', max_length=60)
     numero = models.CharField('Número', max_length=50)
     data = models.DateField('Data')
-    observacoes = models.CharField('Observaçoes', max_length=100)
+    observacoes = models.CharField('Observaçoes',null=True, max_length=100)
     locacao = models.ForeignKey(Locacao_Acao, verbose_name='ação', null=True, on_delete=models.SET_NULL)
     trp = models.ForeignKey(TRP, verbose_name='tRP', null=True, on_delete=models.SET_NULL)
     status = models.ForeignKey(Status, verbose_name='status', null=True, on_delete=models.SET_NULL)
@@ -241,7 +241,7 @@ class Compras_Locacao(Base):
         verbose_name_plural = 'Compras - Locaçao'
 
     def __str__(self):
-        return f'{self.id} {self.descricao} {self.numero} {self.observacoes} {self.status}'
+        return f'{self.id} {self.descricao} {self.numero} {self.observacoes} {self.trp} {self.status}'
 
 
 class Orcamento(Base):

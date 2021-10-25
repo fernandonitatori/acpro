@@ -1,25 +1,37 @@
 {% extends 'base_sistema.html' %}
-{% load bootstrap4 %}
+{% load static %}
 {% block content %}
-    <div class="col-10 ">
-
-           <div class="container">
-               <div class="row">
-                  <div class="col-12 titulo_listview">
+        <div class="col-10 container conteudo_tabela">
+               <div class="col-12 titulo_listview">
                        <div ><b>Solicitação de Locação</b></div>
-                  </div>
                </div>
+
                <div class="row">
                   <div class="col-12">
                        <hr style="height:5px;border-width:0;color:gray;background-color:gray">
                   </div>
                </div>
-               <div class="conteudo_form row" align="center">
-                   <div class="col-12">
+               <div class="filtro-processo row" align="center">
+                   <div class="col-12 filtro-processo" align="center">
                         <form method="POST" autocomplete="off"  >
                                 {% csrf_token %}
                                 <table style="border-collapse:separate; border-spacing:20px 20px">
                                     <tbody>
+                                            <tr>
+                                                <td></td>
+                                                <td>{% if messages %}
+                                                    {% for message in messages %}
+                                                        {%if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                                                            <div class="alert alert-danger" role-alert>{{message}}</div>
+                                                        {% endif %}
+                                                        {%if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                                                            <div class="alert alert-success" role-alert>{{message}}</div>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% endif %}
+                                                </td>
+                                                <td></td>
+                                            </tr>
                                             <tr>
                                                 <td  align="right"><div class="form-horizontal"><b>Tipo de Locação:</b></div></td>
                                                 <td  align="left"><select name="tipo_locacao"  id="tipo_locacao">
@@ -28,7 +40,7 @@
                                                                       {% endfor %}
                                                                       <option value="" selected >---------</option>
                                                                  </select>
-                                                                 <a href="#ModalTipoLoc" data-toggle="modal" class="tooltip-test" title="Adiciona Tipo de Locação"><img src="/static/admin/img/icon-addlink.svg"></a>
+
                                                                  </td>
                                                 <td></td>
                                             </tr>
@@ -40,6 +52,7 @@
                                                                  {% endfor %}
                                                                      <option value="" selected >---------</option>
                                                                  </select>
+                                                                 <a href="#ModalAcao" data-toggle="modal" class="tooltip-test" title="Adiciona Memorial"><img src="/static/admin/img/icon-addlink.svg"></a>
                                                      </td>
                                                 <td></td>
                                             </tr>
@@ -60,10 +73,11 @@
                                                 <td  align="left"><select name="status"  id="id_status">
                                                                  {% for status in statuses %}
                                                                      {% if status.tipo_status|stringformat:'s' == 'Solicitação' %}
-                                                                        <option value="{{status.id}}">{{status.descricao}}</option>
+                                                                        {% if status.descricao|stringformat:'s' == 'Solicitação - Aguardando cadastro de Compras' %}
+                                                                            <option value="{{status.id}}">{{status.descricao}}</option>
+                                                                        {% endif %}
                                                                      {% endif %}
                                                                  {% endfor %}
-                                                                     <option value="" selected >---------</option>
                                                                  </select>
                                                      </td>
                                                 <td></td>
@@ -72,9 +86,10 @@
                                                 <td  align="right"><div class="form-horizontal"><b>Status Geral:</b></div></td>
                                                 <td  align="left"><select name="status_geral"  id="id_status_geral">
                                                                  {% for status in statuses %}
-                                                                        <option value="{{status.id}}">{{status.descricao}}</option>
+                                                                        {% if status.descricao|stringformat:'s' == 'Solicitação - Aguardando cadastro de Compras' %}
+                                                                            <option value="{{status.id}}">{{status.descricao}}</option>
+                                                                        {% endif %}
                                                                  {% endfor %}
-                                                                     <option value="" selected >---------</option>
                                                                  </select>
                                                      </td>
                                                 <td></td>
@@ -100,52 +115,93 @@
                         </form>
                    </div>
                </div>
-           </div>
 
-
-
-    <!-- Modal Tipo Locacao -->
-            <div id="ModalTipoLoc" class="modal fade" role="dialog">
+    <!-- Modal Ação -->
+           <div id="ModalAcao" class="modal fade" role="dialog">
               <div class="modal-dialog">
 
                 <!-- Modal content-->
                 <div class="modal-content">
                   <div class="modal-header">
-                       <div class="titulo_modal">Adicionar Tipo de Locação</div>
+                       <div class="titulo_modal">Adicionar Ação</div>
                   </div>
                   <div class="modal-body">
-                        <form method="POST" autocomplete="off" action="{% url 'salvatipoloc' %}" >
+                        <form method="post" autocomplete="off" action="{% url 'add_acao' %}">
                             {% csrf_token %}
                             <table style="border-collapse:separate; border-spacing:20px 20px">
                                 <tbody>
                                         <tr>
-                                            <td  align="right"><div class="form-horizontal"><b>Descrição:</b></div></td>
-                                            <td  align="left"><input type="text" name="descricao" id="descricao" maxlength="50" required ></td>
+                                            <td  align="right"><div class="form-horizontal"><b>Nome:</b></td>
+                                            <td  align="left"><input type="text" name="nome" id="id_nome" size="50" maxlength="50"></td>
                                             <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right"><div class="form-horizontal"><b>Descrição:</b></div></td>
+                                            <td  align="left"><input type="text" name="descricao" id="id_descricao" size="50" maxlength="50"></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right"><div class="form-horizontal"><b>Observações:</b></div></td>
+                                            <td  align="left"><input type="text" name="observacoes" id="id_observacoes" size="50" maxlength="50"></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right"><div class="form-horizontal"><b>Data Base:</b></div></td>
+                                            <td  align="left"><input type="date" name="data_base" id="data_base" size="10" maxlength="10"></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right"><div class="form-horizontal"><b>Projeto:</b></div></td>
+                                            <td  align="left"><select name="projeto"  id="id_projeto">
+                                                                      {% for projeto in projetos %}
+                                                                             <option value="{{projeto.id}}">{{projeto.descricao}}</option>
+                                                                      {% endfor %}
+                                                                     <option value="" selected>---------</option>
+                                                                 </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right"><div class="form-horizontal"><b>Linguagem:</b></div></td>
+                                            <td  align="left"><select name="linguagem"  id="id_linguagem">
+                                                                      {% for linguagem in linguagens %}
+                                                                             <option value="{{linguagem.id}}">{{linguagem.descricao}}</option>
+                                                                      {% endfor %}
+                                                                     <option value="" selected>---------</option>
+                                                                 </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right"><div class="form-horizontal"><b>Local:</b></div></td>
+                                            <td  align="left"><select name="local"  id="id_local">
+                                                                      {% for local in locais %}
+                                                                             <option value="{{local.id}}">{{local.descricao}}</option>
+                                                                      {% endfor %}
+                                                                     <option value="" selected>---------</option>
+                                                                 </select>
+                                            </td>
                                         </tr>
                                  </tbody>
                             </table>
 
-                            <div class="grupo_botoes_form">
-                                    {% buttons %}
-                                        <button type="submit" class="btn btn-primary">Salvar</button>
-                                        <button type="button" class="btn btn-warning" data-dismiss="modal">
-                                            <a href="{% url 'sistema' %}">Cancelar</a>
-                                        </button>
-                                    {% endbuttons %}
+                            <div class="grupo_botoes_form" align="center">
+
+                                    <button type="submit" class="btn btn-primary">Salvar</button>
+                                    <button type="button" class="btn btn-warning" data-dismiss="modal">
+                                        <a href="{% url 'sistema' %}">Cancelar</a>
+                                    </button>
+
                             </div>
                         </form>
                   </div>
                 </div>
               </div>
-            </div>
+           </div>
 
-        <!-- Modal Memorial -->
-            <div id="ModalMemorial" class="modal fade" role="dialog">
+           <!-- Modal Memorial -->
+           <div id="ModalMemorial" class="modal fade" role="dialog">
               <div class="modal-dialog">
 
                 <!-- Modal content-->
-                <div class="modal-content">
+                  <div class="modal-content">
                       <div class="modal-header">
                            <div class="titulo_modal">Adicionar Memorial</div>
                       </div>
@@ -161,24 +217,24 @@
                                             </tr>
                                             <tr>
                                                 <td  align="right"><div class="form-horizontal"><b>Data do Memorial:</b></div></td>
-                                                <td  align="left"><input type="text" name="data_memorial" id="data_memorial" maxlength="10" required ></td>
+                                                <td  align="left"><input type="date" name="data_memorial" id="data_memorial" maxlength="10" required ></td>
                                                 <td></td>
                                             </tr>
                                      </tbody>
                                 </table>
                                 <div class="grupo_botoes_form">
-                                        {% buttons %}
+
                                             <button type="submit" class="btn btn-primary">Salvar</button>
                                             <button type="button" class="btn btn-warning" data-dismiss="modal">
                                                 <a href="{% url 'sistema' %}">Cancelar</a>
                                             </button>
-                                        {% endbuttons %}
+
                                 </div>
 
                             </form>
                       </div>
-                </div>
+                  </div>
               </div>
-            </div>
-    </div>
+           </div>
+        </div>
 {% endblock %}

@@ -1,15 +1,16 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from django.views.generic import TemplateView, ListView
 from django.views.generic.edit import CreateView, UpdateView
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.contrib import messages
-
+from django.contrib.messages.views import SuccessMessageMixin
+from django.http import HttpResponseRedirect
 
 from .models import Locacao_Acao, Acao, TipoLocacao, Memorial, Compras_Locacao, TRP, Orcamento, Sede, Licitacao, \
                     Contrato_Locacao, Pagamento, Cronograma, Aprovacao, Fornecedor, CatFornecedor, EndFornecedor, \
                     ContFornecedor, Tipo_Status, Status, Local, Linguagem, Projeto, TipoPagto
 
-from .forms import TipoLocacaoModelForm, MemorialModelForm, ComprasLocacaoModelForm
+from .forms import TipoLocacaoModelForm, MemorialModelForm, ComprasLocacaoModelForm, LocacaoAcaoModelForm
 
 
 class ListLocacaoAcaoView(ListView):
@@ -31,6 +32,7 @@ class IndexView(TemplateView):
 
 
 class SistemaView(TemplateView):
+
     template_name = 'sistema.html'
 
     def get_context_data(self, **kwargs):
@@ -40,11 +42,11 @@ class SistemaView(TemplateView):
         return context
 
 
-class CreateSolicitView(CreateView):
+class CreateSolicitView(SuccessMessageMixin, CreateView):
     model = Locacao_Acao
     template_name = 'form_solicit_loc.html'
     fields = ['tipo_locacao', 'acao', 'memorial', 'status', 'status_geral', 'descricao']
-    success_url = reverse_lazy('sistema')
+    success_url = reverse_lazy('add_loc')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -52,7 +54,14 @@ class CreateSolicitView(CreateView):
         context['acoes'] = Acao.objects.all()
         context['memoriais'] = Memorial.objects.all()
         context['statuses'] = Status.objects.all()
+        context['projetos'] = Projeto.objects.all()
+        context['linguagens'] = Linguagem.objects.all()
+        context['locais'] = Local.objects.all()
         return context
+
+    def get_success_message(self, cleaned_data):
+        print(cleaned_data)
+        return "Solicitação cadastrada com sucesso!"
 
 
 class ConsultaLocacaoAcaoView(UpdateView):
@@ -79,12 +88,22 @@ class ListUpdLocacaoAcaoView(ListView):
     context_object_name = 'updlocacoes'
 
 
-class CreateAcaoView(CreateView):
+class CreateAcaoView(SuccessMessageMixin, CreateView):
     model = Acao
-    template_name = 'form_create_acao.html'
+    template_name = 'form_solicit_loc.html'
     fields = ['nome', 'descricao', 'observacoes', 'data_base', 'projeto', 'linguagem', 'local']
-    success_url = reverse_lazy('sistema')
+    success_url = reverse_lazy('add_loc')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['projetos'] = Projeto.objects.all()
+        context['linguagens'] = Linguagem.objects.all()
+        context['locais'] = Local.objects.all()
+        return context
+
+    def get_success_message(self, cleaned_data):
+        print(cleaned_data)
+        return "Ação cadastrada com sucesso!"
 
 class CreateTipoLocView(CreateView):
     model = TipoLocacao
@@ -100,17 +119,23 @@ class CreateMemorialView(CreateView):
     success_url = reverse_lazy('sistema')
 
 
-class CreateComprasLocView(CreateView):
+class CreateComprasLocView(SuccessMessageMixin, CreateView):
     model = Compras_Locacao
     template_name = 'locacao_acao_consulta.html'
     fields = ['descricao', 'numero', 'data', 'observacoes', 'locacao', 'trp', 'status']
-    success_url = reverse_lazy('sistema')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['trps'] = TRP.objects.all()
         context['statuses'] = Status.objects.all()
         return context
+
+    def get_success_message(self, cleaned_data):
+        print(cleaned_data)
+        return "Processo em Compras cadastrado com sucesso!"
+
+    def get_success_url(self):
+        return self.request.path_info
 
 
 class CreateTRPView(CreateView):
@@ -244,12 +269,13 @@ class CreateTipoPagtoView(CreateView):
 def salvatipoloc(request):
     descricao = request.POST.get('descricao')
     if TipoLocacao.objects.filter(descricao=descricao).exists():
-        messages.error(request, "Tipo de locação já cadastrado!")
+        messages.error(request, 'Tipo de locação já cadastrada', extra_tags='tipoloc')
         return redirect('../add/')
     else:
         form = TipoLocacaoModelForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Tipo de locação incluída com sucesso', extra_tags='tipoloc')
             return redirect('../add/')
 
 
@@ -262,6 +288,7 @@ def salvamemorial(request):
         form = MemorialModelForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Memorial Cadastrado com sucesso')
             return redirect('../add/')
 
 
@@ -269,7 +296,8 @@ def consultalocacao(request):
     tipoloc = request.POST.get("tipo_locacao")
     acao = request.POST.get("acao")
     memorial = request.POST.get("memorial")
-    statusgeral = request.POST.get("status_geral")
+    status_geral = request.POST.get("status_geral")
+    print(request.POST)
 
     criterio1 = False
     criterio2 = False
@@ -282,7 +310,7 @@ def consultalocacao(request):
         criterio2 = True
     if memorial != '':
         criterio3 = True
-    if statusgeral != '':
+    if status_geral != '':
         criterio4 = True
 
     if criterio1 == True and criterio2 == False and criterio3 == False:
@@ -300,7 +328,7 @@ def consultalocacao(request):
     if criterio1 == True and criterio2 == True and criterio3 == True:
         locacoes = Locacao_Acao.objects.filter(tipo_locacao=tipoloc, acao=acao, memorial=memorial)
     if criterio4 == True:
-        locacoes = Locacao_Acao.objects.filter(status_geral=statusgeral)
+        locacoes = Locacao_Acao.objects.filter(status_geral=status_geral)
     if criterio1 == False and criterio2 == False and criterio3 == False and criterio4 == False:
         locacoes = Locacao_Acao.objects.all()
 
@@ -378,5 +406,4 @@ class UpdComprasLocacaoView(UpdateView):
         context['status_compras_emorc'] = 'Compras - Aguardando orçamento'
         context['status_compras_orc'] = 'Compras - Orçado'
         return context
-
 
