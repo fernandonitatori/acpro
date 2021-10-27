@@ -121,10 +121,10 @@ class Periodo(Base):
 
 class Acao(Base):
     nome = models.CharField('Nome', max_length=50)
-    descricao = models.CharField('Descrição', max_length=100)
-    observacoes = models.CharField('Observações', max_length=100)
+    descricao = models.CharField('Descrição', max_length=100, default='', blank=True)
+    observacoes = models.CharField('Observações', max_length=100, default='', blank=True)
     data_base = models.DateField('Data Base')
-    projeto = models.ForeignKey('Projeto', verbose_name='projeto', null=True, on_delete=models.SET_NULL)
+    projeto = models.ForeignKey('Projeto', verbose_name='projeto', null=True, on_delete=models.SET_NULL, default='', blank=True)
     linguagem = models.ForeignKey('Linguagem', verbose_name='linguagem', null=True, on_delete=models.SET_NULL)
     local = models.ForeignKey('Local', verbose_name='local', null=True, on_delete=models.SET_NULL)
 
@@ -133,7 +133,7 @@ class Acao(Base):
         verbose_name_plural = 'Ações'
 
     def __str__(self):
-        return self.descricao
+        return self.nome
 
 
 class Locacao_Acao(Base):
@@ -142,14 +142,14 @@ class Locacao_Acao(Base):
     memorial = models.ForeignKey('Memorial', verbose_name='memorial', null=True, on_delete=models.SET_NULL)
     status = models.ForeignKey('Status', verbose_name='status', related_name='Status', null=True, on_delete=models.SET_NULL)
     status_geral = models.ForeignKey('Status', verbose_name='status geral', null=True, on_delete=models.SET_NULL)
-    descricao = models.CharField('Descriçao', max_length=50, default='')
+    descricao = models.CharField('Descriçao', max_length=50, null=True, default='', blank=True)
 
     class Meta:
         verbose_name = 'Solicitação de Locação'
         verbose_name_plural = 'Solicitações de Locação'
 
     def __str__(self):
-        return self.descricao
+        return str(self.descricao)
 
 
 class TRP(Base):
@@ -231,17 +231,18 @@ class Compras_Locacao(Base):
     descricao = models.CharField('Descrição', max_length=60)
     numero = models.CharField('Número', max_length=50)
     data = models.DateField('Data')
-    observacoes = models.CharField('Observaçoes',null=True, max_length=100)
+    observacoes = models.CharField('Observaçoes', null=True, max_length=100, default='',blank=False)
     locacao = models.ForeignKey(Locacao_Acao, verbose_name='ação', null=True, on_delete=models.SET_NULL)
-    trp = models.ForeignKey(TRP, verbose_name='tRP', null=True, on_delete=models.SET_NULL)
+    trp = models.ForeignKey(TRP, verbose_name='tRP', null=True, on_delete=models.SET_NULL, blank=False)
     status = models.ForeignKey(Status, verbose_name='status', null=True, on_delete=models.SET_NULL)
+    sede = models.BooleanField('Sede')
 
     class Meta:
         verbose_name = 'Compras - Locaçao'
         verbose_name_plural = 'Compras - Locaçao'
 
     def __str__(self):
-        return f'{self.id} {self.descricao} {self.numero} {self.observacoes} {self.trp} {self.status}'
+        return self.descricao
 
 
 class Orcamento(Base):
@@ -259,6 +260,7 @@ class Orcamento(Base):
 
 
 class Licitacao(Base):
+    descricao = models.CharField('Descrição', max_length=50, null=True, blank=True)
     dataabertura = models.DateField('Data de Abertura')
     datapregao = models.DateField('Data do Pregão')
     dataassinatura = models.DateField('Data da Assinatura')
@@ -271,8 +273,7 @@ class Licitacao(Base):
         verbose_name_plural = 'Licitações'
 
     def __str__(self):
-        return f'{self.id} {self.dataabertura} {self.datapregao} {self.dataassinatura}' \
-               f' {self.datahomologacao} {self.vencedor} {self.valor} '
+        return self.descricao
 
 
 class Sede(Base):
@@ -281,7 +282,7 @@ class Sede(Base):
     datadca = models.DateField('Data DCA')
     anotacoes = models.CharField('Anotaçoes', max_length=100)
     licitacao = models.ForeignKey(Licitacao, verbose_name='Licitação', null=True, on_delete=models.SET_NULL)
-    locacao_acao = models.ForeignKey(Locacao_Acao, verbose_name='Solicitação', null=True, on_delete=models.SET_NULL)
+    locacao = models.ForeignKey(Locacao_Acao, verbose_name='Solicitação', null=True, on_delete=models.SET_NULL)
     status = models.ForeignKey(Status, verbose_name='Status', null=True, on_delete=models.SET_NULL)
 
     class Meta:
@@ -289,7 +290,7 @@ class Sede(Base):
         verbose_name_plural = 'Sedes'
 
     def __str__(self):
-        return f'{self.id} {self.dataminuta} {self.datadca} {self.licitacao} {self.locacao_acao} {self.status}'
+        return f'{self.id} {self.dataminuta} {self.datadca} {self.licitacao} {self.locacao} {self.status}'
 
 
 class Aprovacao(Base):

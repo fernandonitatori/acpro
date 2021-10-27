@@ -64,11 +64,12 @@ class CreateSolicitView(SuccessMessageMixin, CreateView):
         return "Solicitação cadastrada com sucesso!"
 
 
+
 class ConsultaLocacaoAcaoView(UpdateView):
     model = Locacao_Acao
     template_name = 'locacao_acao_consulta.html'
     fields = ['tipo_locacao', 'acao', 'memorial', 'status', 'status_geral']
-    context_object_name = 'consultasolicit'
+    context_object_name = 'consulta'
     success_url = reverse_lazy('sistema')
 
     def get_context_data(self, **kwargs):
@@ -122,7 +123,8 @@ class CreateMemorialView(CreateView):
 class CreateComprasLocView(SuccessMessageMixin, CreateView):
     model = Compras_Locacao
     template_name = 'locacao_acao_consulta.html'
-    fields = ['descricao', 'numero', 'data', 'observacoes', 'locacao', 'trp', 'status']
+    fields = ['descricao', 'numero', 'data', 'observacoes', 'locacao', 'trp', 'status', 'sede']
+    success_url = reverse_lazy('list_loc')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -134,8 +136,19 @@ class CreateComprasLocView(SuccessMessageMixin, CreateView):
         print(cleaned_data)
         return "Processo em Compras cadastrado com sucesso!"
 
-    def get_success_url(self):
-        return self.request.path_info
+    def post(self, request, *args, **kwargs):
+        form = ComprasLocacaoModelForm(request.POST)
+        if form.is_valid():
+            compra = form.save()
+            print(compra.locacao)
+            locacao = Locacao_Acao.objects.get(descricao = compra.locacao)
+            locacao.status_geral = compra.status
+            print(locacao)
+            print(compra.status)
+            locacao.save()
+            compra.save()
+            return HttpResponseRedirect(reverse_lazy('consultaumalocacao', args=[locacao.id]))
+        return render(request, 'resultado.html', {'form': form})
 
 
 class CreateTRPView(CreateView):
@@ -152,11 +165,21 @@ class CreateOrcView(CreateView):
     success_url = reverse_lazy('sistema')
 
 
-class CreateSedeView(CreateView):
+class CreateSedeView( SuccessMessageMixin, CreateView):
     model = Sede
-    template_name = 'form_create_sede.html'
-    fields = ['numero', 'dataminuta', 'datadca', 'anotacoes', 'licitacao', 'locacao_acao', 'status']
-    success_url = reverse_lazy('sistema')
+    template_name = 'locacao_acao_consulta.html'
+    fields = ['descricao', 'numero', 'dataminuta', 'datadca', 'anotacoes', 'licitacao', 'locacao_acao', 'status']
+    success_url = reverse_lazy('list_loc')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['licitacoes'] = Licitacao.objects.all()
+        context['statuses'] = Status.objects.all()
+        return context
+
+    def get_success_message(self, cleaned_data):
+        print(cleaned_data)
+        return "Processo em Sede cadastrado com sucesso!"
 
 
 class CreateLicView(CreateView):
@@ -351,6 +374,12 @@ def consultaumalocacao(request,pk):
     consultacompras = ''
     if Compras_Locacao.objects.filter(locacao=idpassado).exists():
         consultacompras = Compras_Locacao.objects.get(locacao=idpassado)
+    consultasede = ''
+    if Sede.objects.filter(locacao=idpassado).exists():
+        consultasede = Sede.objects.get(locacao=idpassado)
+    consultacontrat = ''
+    if Contrato_Locacao.objects.filter(locacao_acao=idpassado).exists():
+        consultacontrat = Contrato_Locacao.objects.get(locacao_acao=idpassado)
     statuses = Status.objects.all()
     tiposlocacao = TipoLocacao.objects.all()
     acoes = Acao.objects.all()
@@ -359,8 +388,11 @@ def consultaumalocacao(request,pk):
     context = {
             'consulta': consulta,
             'consultacompras': consultacompras,
+            'consultasede': consultasede,
+            'consultacontrat': consultacontrat,
             'status_chave_sol': 'Solicitado',
             'status_chave_compras': 'Compras - Aprovado',
+            'status_chave_sede': 'Sede - Aprovado',
             'statuses': statuses,
             'trps': trps,
             'tiposlocacao': tiposlocacao,
@@ -379,25 +411,13 @@ def defcomprasupdumalocacao(request,pk):
     return render(request, 'form_upd_compras.html', context)
 
 
-def salvacompras(request):
-    descricao = request.POST.get('descricao')
-    print(descricao)
-    form = ComprasLocacaoModelForm(request.POST)
-    if form.is_valid():
-        compra = form.save(commit=False)
-        print(f'Id: {compra.id}')
-        print(f'Descricao: {compra.descricao}')
-        print('Registro salvo com sucesso!')
-    else:
-        print('Erro ao salvar registro.')
-    return render(request,'locacao_acao_consulta.html',{})
-
 class UpdComprasLocacaoView(UpdateView):
     model = Compras_Locacao
     template_name = 'locacao_acao_consulta.html'
-    fields = ['descricao', 'numero', 'data', 'observacoes', 'locacao', 'trp', 'status']
+    fields = ['descricao', 'numero', 'data', 'observacoes', 'locacao', 'trp', 'status', 'sede']
     context_object_name = 'consultacompras'
-    success_url = reverse_lazy('sistema')
+
+    success_url =  reverse_lazy('list_loc')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -407,3 +427,23 @@ class UpdComprasLocacaoView(UpdateView):
         context['status_compras_orc'] = 'Compras - Orçado'
         return context
 
+    def post(self, request, *args, **kwargs):
+        form = ComprasLocacaoModelForm(request.POST)
+        if form.is_valid():
+            loc = form.cleaned_data['locacao']
+            print(loc)
+            locacao = Locacao_Acao.objects.get(descricao = loc)
+            locacao.status_geral = form.cleaned_data['status']
+            locacao.save()
+            super(UpdComprasLocacaoView, self).post(request, **kwargs)
+            return HttpResponseRedirect(reverse_lazy('consultaumalocacao', args=[locacao.id]))
+        return render(request, 'resultado.html', {'form': form})
+
+
+
+def resultloc(request, id):
+    idpassado = id
+    context = {
+        'id': idpassado,
+    }
+    return render(request, 'resultado.html', context)

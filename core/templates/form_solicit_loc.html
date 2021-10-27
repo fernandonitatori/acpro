@@ -20,15 +20,30 @@
                                             <tr>
                                                 <td></td>
                                                 <td>{% if messages %}
-                                                    {% for message in messages %}
-                                                        {%if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-                                                            <div class="alert alert-danger" role-alert>{{message}}</div>
-                                                        {% endif %}
-                                                        {%if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-                                                            <div class="alert alert-success" role-alert>{{message}}</div>
-                                                        {% endif %}
-                                                    {% endfor %}
-                                                {% endif %}
+                                                        {% for message in messages %}
+                                                            {%if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                                                                <div class="alert alert-danger" role-alert>{{message}}</div>
+                                                            {% endif %}
+                                                            {%if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                                                                <div class="alert alert-success" role-alert>{{message}}</div>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                    {% if form.errors %}
+                                                        {% for field in form %}
+                                                            {% if field.errors %}
+                                                                {% for erro in field.errors %}
+                                                                    <div class="alert alert-warning" role="alert">
+                                                                        {%if erro|stringformat:'s' == 'This field is required.' %}
+                                                                           {{ field.label_tag }} é obrigatório para o registro.
+                                                                        {% endif %}
+                                                                    </div>
+                                                                {% endfor %}
+                                                            {% endif %}
+                                                        {% endfor %}
+
+                                                    {% endif %}
+
                                                 </td>
                                                 <td></td>
                                             </tr>
@@ -48,11 +63,11 @@
                                                 <td  align="right"><div class="form-horizontal"><b>Ação:</b></div></td>
                                                 <td  align="left"><select name="acao"  id="id_acao">
                                                                  {% for acao in acoes %}
-                                                                        <option value="{{acao.id}}">{{acao.descricao}}</option>
+                                                                        <option value="{{acao.id}}">{{acao.nome}}</option>
                                                                  {% endfor %}
                                                                      <option value="" selected >---------</option>
                                                                  </select>
-                                                                 <a href="#ModalAcao" data-toggle="modal" class="tooltip-test" title="Adiciona Memorial"><img src="/static/admin/img/icon-addlink.svg"></a>
+                                                                 <a href="#ModalAcao" data-toggle="modal" class="tooltip-test" title="Adiciona Ação"><img src="/static/admin/img/icon-addlink.svg"></a>
                                                      </td>
                                                 <td></td>
                                             </tr>
@@ -97,7 +112,7 @@
 
                                             <tr>
                                                 <td  align="right"><div class="form-horizontal"><b>Descrição:</b></div></td>
-                                                <td  align="left"><input type="text" name="descricao" id="descricao" size="50" maxlength="50" value="{{consultacompras.descricao}}" required></td>
+                                                <td  align="left"><input type="text" name="descricao" id="descricao" size="50" maxlength="50" value="{{consultacompras.descricao}}" placeholder="Descrição da Locação" ></td>
                                                 <td></td>
                                             </tr>
 
@@ -132,22 +147,22 @@
                                 <tbody>
                                         <tr>
                                             <td  align="right"><div class="form-horizontal"><b>Nome:</b></td>
-                                            <td  align="left"><input type="text" name="nome" id="id_nome" size="50" maxlength="50"></td>
+                                            <td  align="left"><input type="text" name="nome" id="id_nome" size="50" maxlength="50" placeholder="Nome da Ação"></td>
                                             <td></td>
                                         </tr>
                                         <tr>
                                             <td align="right"><div class="form-horizontal"><b>Descrição:</b></div></td>
-                                            <td  align="left"><input type="text" name="descricao" id="id_descricao" size="50" maxlength="50"></td>
+                                            <td  align="left"><input type="text" name="descricao" id="id_descricao" size="50" maxlength="50" placeholder="Descrição da Ação"></td>
                                             <td></td>
                                         </tr>
                                         <tr>
                                             <td align="right"><div class="form-horizontal"><b>Observações:</b></div></td>
-                                            <td  align="left"><input type="text" name="observacoes" id="id_observacoes" size="50" maxlength="50"></td>
+                                            <td  align="left"><input type="text" name="observacoes" id="id_observacoes" size="50" maxlength="50" placeholder="Observações"></td>
                                             <td></td>
                                         </tr>
                                         <tr>
                                             <td align="right"><div class="form-horizontal"><b>Data Base:</b></div></td>
-                                            <td  align="left"><input type="date" name="data_base" id="data_base" size="10" maxlength="10"></td>
+                                            <td  align="left"><input type="date" name="data_base" id="data_base" size="10" maxlength="10" placeholder="dd/mm/aaaa"></td>
                                         </tr>
                                         <tr>
                                             <td align="right"><div class="form-horizontal"><b>Projeto:</b></div></td>
@@ -212,7 +227,7 @@
                                     <tbody>
                                             <tr>
                                                 <td  align="right"><div class="form-horizontal"><b>Descrição:</b></div></td>
-                                                <td  align="left"><input type="text" name="descricao" id="descricao" maxlength="50" required></td>
+                                                <td  align="left"><input type="text" name="descricao" id="descricao" size="50" maxlength="50" placeholder="Descrição do Memorial"></td>
                                                 <td></td>
                                             </tr>
                                             <tr>
@@ -222,7 +237,7 @@
                                             </tr>
                                      </tbody>
                                 </table>
-                                <div class="grupo_botoes_form">
+                                <div class="grupo_botoes_form" align="center">
 
                                             <button type="submit" class="btn btn-primary">Salvar</button>
                                             <button type="button" class="btn btn-warning" data-dismiss="modal">

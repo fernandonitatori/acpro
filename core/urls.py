@@ -42,6 +42,7 @@ urlpatterns = [
     path('salvamemorial', core.views.salvamemorial, name='salvamemorial'),
     path('consultalocacao', core.views.consultalocacao, name='consultalocacao'),
     path('salvatipoloc', core.views.salvatipoloc, name='salvatipoloc'),
+    path('resultloc/<int:id>', core.views.resultloc, name='resultloc'),
     path('updatecompras/<int:pk>/', core.views.UpdComprasLocacaoView.as_view(), name='updatecompras'),
     path('consultaumalocacao/<int:pk>/', core.views.consultaumalocacao, name='consultaumalocacao')
 ]

@@ -146,3 +146,4 @@ LOGOUT_REDIRECT_URL = 'index'
 
 DATE_FORMAT = ('d/m/Y')
 DATE_INPUT_FORMATS = ('%d/%m/%Y', '%Y-%m-%d')
+DATETIME_FORMAT = ('d/m/Y H:i')

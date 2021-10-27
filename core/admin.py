@@ -68,7 +68,7 @@ class ContFornecedorAdmin(admin.ModelAdmin):
 
 @admin.register(Compras_Locacao)
 class Compras_LocacaoAdmin(admin.ModelAdmin):
-    list_display = ['id','descricao','numero','observacoes','status',]
+    list_display = ['id', 'descricao', 'status',]
 
 @admin.register(Orcamento)
 class OrcamentoAdmin(admin.ModelAdmin):
@@ -76,11 +76,11 @@ class OrcamentoAdmin(admin.ModelAdmin):
 
 @admin.register(Licitacao)
 class LicitacaoAdmin(admin.ModelAdmin):
-    list_display = ['id','dataabertura','datapregao','dataassinatura','datahomologacao','vencedor','valor',]
+    list_display = ['id', 'descricao', 'dataabertura','datapregao','dataassinatura','datahomologacao','vencedor','valor',]
 
 @admin.register(Sede)
 class SedeAdmin(admin.ModelAdmin):
-    list_display = ['id','dataminuta','datadca','licitacao','locacao_acao','status',]
+    list_display = ['id','dataminuta','datadca','licitacao','locacao','status',]
 
 @admin.register(Aprovacao)
 class AprovacaoAdmin(admin.ModelAdmin):

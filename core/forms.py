@@ -33,5 +33,6 @@ class MemorialModelForm(forms.ModelForm):
 class ComprasLocacaoModelForm(forms.ModelForm):
 
     class Meta:
-        model = Compras_Locacao
-        fields = ['descricao', 'numero', 'data', 'observacoes', 'locacao', 'trp', 'status']
+         model = Compras_Locacao
+         fields = ['descricao', 'numero', 'data', 'observacoes', 'locacao', 'trp', 'status', 'sede']
+

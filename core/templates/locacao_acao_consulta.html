@@ -88,25 +88,32 @@
                             </td>
                         </tr>
                         <tr>
-
+                            <!-- Bloco Solicitação -->
+                            <!-- Se o status da locacao for igual ao status chave de solicitação (trava o bloco
+                             Solicitação e passa para o bloco Compras)-->
                             {%if consulta.status|stringformat:'s' == status_chave_sol %}
                             <td class="quadrado_azul">
                                 {{ consulta.status }}
                             </td>
                             {%else%}
                             <td class="quadrado">
+                                <!-- A solicitação de locação é aberta pra edição -->
                                 <a href="#ModalUpdSolicit" data-toggle="modal"> {{ consulta.status }}</a>
-
                             </td>
                             {% endif %}
                             <td><img src="/static/img/seta_proximo.gif"></td>
+                            <!-- Bloco Compras -->
+                            <!-- Se existe o processo de compra pra locação e o status é o status chave do processo de
+                             compras (trava o bloco Compras e passa para o bloco Sede ou Contratação)-->
                             {%if consultacompras.status|stringformat:'s' == status_chave_compras %}
                             <td class="quadrado_azul">
                                 {{ consultacompras.status }}
                             </td>
                             {%else%}
-
+                                <!-- Se o processo de compras não existir ainda abre o cadastro -->
                                 {% if consultacompras == '' %}
+                                    <!-- se o status geral da locacao for igual ao status chave da solicitacão trava o
+                                     bloco Solicitação e abre o bloco Compras para cadastrar -->
                                     {%if consulta.status_geral|stringformat:'s' == status_chave_sol %}
                                         <td class="quadrado">
                                             <a href="#ModalCreateCompras" data-toggle="modal">Cadastrar</a>
@@ -120,16 +127,99 @@
                                         <a href="#ModalUpdCompras" data-toggle="modal"> {{ consultacompras.status }}</a>
                                     </td>
                                 {% endif %}
+                            {% endif %}
                             </td>
+
+                            <td><img src="/static/img/seta_proximo.gif"></td>
+                            <!-- Bloco Sede -->
+                            <!-- Se existe o processo da sede pra locação e o status é o status chave do processo de
+                             sede (trava o bloco Sede e passa para o bloco Contratação)-->
+                            {% if consultacompras.sede == True %}
+                                 {% if consultasede.status|stringformat:'s' == status_chave_sede %}
+                                    <td class="quadrado_azul">
+                                         {{ consultasede.status }}
+                                    </td>
+                                 {% else %}
+                                    <!-- Se o processo da sede não existir abre o cadastro -->
+                                    {% if consultasede == '' %}
+                                            <!-- se o status geral da locacao for igual ao status chave de compras trava o
+                                             bloco Compras e abre o bloco Sede para cadastrar -->
+                                            {%if consulta.status_geral|stringformat:'s' == status_chave_compras %}
+                                                <td class="quadrado">
+                                                    <a href="#ModalCreateSede" data-toggle="modal">Cadastrar</a>
+                                                </td>
+                                            {% else %}
+                                                <td class="quadrado">
+                                                </td>
+                                            {% endif %}
+                                    {% else %}
+                                            <td class="quadrado_verde">
+                                                <a href="#ModalUpdSede" data-toggle="modal"> {{ consultasede.status }}</a>
+                                            </td>
+                                    {% endif %}
+                                 {% endif %}
+                            {% else %}
+                                {%if consulta.status_geral|stringformat:'s' == status_chave_compras %}
+                                    <td class="quadrado_verde">
+                                        Não tramitou pela Sede.
+                                    </td>
+                                {% else %}
+                                    <td class="quadrado"></td>
+                                {% endif %}
                             {% endif %}
                             <td><img src="/static/img/seta_proximo.gif"></td>
-                            <td class="quadrado">
-
-                            </td>
-                            <td><img src="/static/img/seta_proximo.gif"></td>
-                            <td class="quadrado">
-
-                            </td>
+                            <!-- Bloco Contratação -->
+                            <!-- Se existe o processo de Contratacao pra locação e o status é o status chave do processo de
+                             Contratação (trava o bloco Contratação e passa para o bloco Recebimento)-->
+                            {% if consultacompras.sede == True %}
+                                {% if consultascontrat.status|stringformat:'s' == status_chave_contrat %}
+                                        <td class="quadrado_azul">
+                                             {{ consultacontrat.status }}
+                                        </td>
+                                {% else %}
+                                    <!-- Se o processo da Contratação não existir abre o cadastro -->
+                                    {% if consultacontrat == '' %}
+                                                <!-- se o status geral da locacao for igual ao status chave da sede trava o
+                                                 bloco Sede e abre o bloco Contratação para cadastrar -->
+                                                {%if consulta.status_geral|stringformat:'s' == status_chave_sede %}
+                                                    <td class="quadrado">
+                                                        <a href="#ModalCreateSede" data-toggle="modal">Cadastrar</a>
+                                                    </td>
+                                                {% else %}
+                                                    <td class="quadrado">
+                                                    </td>
+                                                {% endif %}
+                                    {% else %}
+                                                <td class="quadrado_verde">
+                                                    <a href="#ModalUpdContrat" data-toggle="modal"> {{ consultacontrat.status }}</a>
+                                                </td>
+                                    {% endif %}
+                                {% endif %}
+                            {% else %}
+                                {% if consultascontrat.status|stringformat:'s' == status_chave_contrat %}
+                                        <td class="quadrado_azul">
+                                             {{ consultacontrat.status }}
+                                        </td>
+                                {% else %}
+                                    <!-- Se o processo da Contratação não existir abre o cadastro -->
+                                    {% if consultacontrat == '' %}
+                                                <!-- se o status geral da locacao for igual ao status chave da sede trava o
+                                                 bloco Sede e abre o bloco Contratação para cadastrar -->
+                                                {%if consulta.status_geral|stringformat:'s' == status_chave_compras %}
+                                                    <td class="quadrado">
+                                                        <a href="#ModalCreateSede" data-toggle="modal">Cadastrar</a>
+                                                    </td>
+                                                {% else %}
+                                                    <td class="quadrado">
+                                                    </td>
+                                                {% endif %}
+                                    {% else %}
+                                                <td class="quadrado_verde">
+                                                    <a href="#ModalUpdContrat" data-toggle="modal"> {{ consultacontrat.status }}</a>
+                                                </td>
+                                    {% endif %}
+                                {% endif %}
+                            {% endif %}
                             <td><img src="/static/img/seta_proximo.gif"></td>
                             <td class="quadrado">
 
@@ -209,6 +299,15 @@
                                                                          {% endif %}
                                                                      {% endfor %}
                                                                      <option value="">---------</option>
+                                                                 </select>
+                                                </td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Sede:</b></div></td>
+                                                <td  align="left"><select name="sede"  id="id_sede">
+                                                                      <option value="True">Sim</option>
+                                                                      <option value="False" selected>Não</option>
                                                                  </select>
                                                 </td>
                                                 <td></td>
@@ -301,6 +400,20 @@
                                                      </td>
                                                 <td></td>
                                             </tr>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Sede:</b></div></td>
+                                                <td  align="left"><select name="sede"  id="id_sede">
+                                                                       {%if consultacompras.sede == True %}
+                                                                             <option value="True" selected> Sim</option>
+                                                                             <option value="False"> Não</option>
+                                                                       {% else %}
+                                                                             <option value="True"> Sim</option>
+                                                                             <option value="False"  selected> Não</option>
+                                                                       {% endif %}
+                                                                </select>
+                                                     </td>
+                                                <td></td>
+                                            </tr>
                                      </tbody>
                                 </table>
                                 <div class="grupo_botoes_form" align="center">
@@ -356,14 +469,15 @@
                                                 <td  align="right"><div class="form-horizontal"><b>Ação:</b></div></td>
                                                 <td  align="left"><select name="acao" id="id_acao">
                                                                       {% for acao in acoes %}
-                                                                          {% if consulta.acao|stringformat:'s' == acao.descricao %}
-                                                                              <option value="{{acao.id}}" selected>{{acao.descricao}}</option>
+                                                                          {% if consulta.acao|stringformat:'s' == acao.nome %}
+                                                                              <option value="{{acao.id}}" selected>{{acao.nome}}</option>
                                                                           {% else %}
-                                                                              <option value="{{acao.id}}">{{acao.descricao}}</option>
+                                                                              <option value="{{acao.id}}">{{acao.nome}}</option>
                                                                           {% endif %}
                                                                       {% endfor %}
                                                                       <option value="" >---------</option>
                                                                  </select>
+
                                                 </td>
                                                 <td></td>
                                             </tr>
@@ -436,4 +550,172 @@
                 </div>
               </div>
             </div>
+
+            <!--     Modal Criar sede -->
+            <div id="ModalCreateSede" class="modal fade" role="dialog">
+              <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                      <div class="modal-header">
+                           <div class="titulo_modal">Adicionar Sede</div>
+                      </div>
+                      <div class="modal-body">
+                            <form method="POST" autocomplete="off" action="{% url 'add_sede'%}">
+                                {% csrf_token %}
+                                <table style="border-collapse:separate; border-spacing:20px 20px">
+                                    <tbody>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Numero:</b></div></td>
+                                                <td  align="left"><input type="text" name="numero" size="50" id="id_numero" maxlength="50" required></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Data Minuta:</b></div></td>
+                                                <td  align="left"><input type="date" name="dataminuta" id="id_dataminuta" size="50" maxlength="50" required></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Data DCA:</b></div></td>
+                                                <td  align="left"><input type="date" name="datadca" id="id_datadca" size="10" maxlength="10" required></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Anotações:</b></div></td>
+                                                <td  align="left"><input type="text" name="anotacoes" id="id_anotacoes" size="50" maxlength="50"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Licitação:</b></div></td>
+                                                <td  align="left"><select name="licitacao"  id="id_licitacao">
+                                                                     {% for licitacao in licitacoes %}
+                                                                            <option value="{{licitacao.id}}" selected>{{licitacao.descricao}}</option>
+                                                                     {% endfor %}
+
+                                                                 </select>
+                                                </td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Solicitação de Locacao:</b></div></td>
+                                                <td  align="left"><input type="text" name="locacao" id="id_locacao" size="5" maxlength="5" value="{{consulta.id}}" readonly> {{ consulta.acao }}</td>
+                                                <td></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Status:</b></div></td>
+                                                <td  align="left"><select name="status"  id="id_status">
+                                                                     {% for status in statuses %}
+                                                                         {%if status.tipo_status|stringformat:'s' == 'Sede' %}
+                                                                                 <option value="{{status.id}}">{{status.descricao}}</option>
+                                                                         {% endif %}
+                                                                     {% endfor %}
+                                                                     <option value="">---------</option>
+                                                                 </select>
+                                                </td>
+                                                <td></td>
+                                            </tr>
+                                     </tbody>
+                                </table>
+                                <div class="grupo_botoes_form" align="center">
+
+                                            <button type="submit" class="btn btn-primary">Salvar</button>
+                                            <button type="button" class="btn btn-warning">
+                                                <a href="../../consultaumalocacao/{{consulta.id}}">Cancelar</a>
+                                            </button>
+
+                                </div>
+
+                            </form>
+                      </div>
+                </div>
+              </div>
+            </div>
+            <!--     Modal Update Compras -->
+            <div id="ModalUpdSede" class="modal fade" role="dialog">
+              <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                      <div class="modal-header">
+                           <div class="titulo_modal">Alterar Compras</div>
+                      </div>
+                      <div class="modal-body">
+                            <form method="POST" autocomplete="off" action="../../updatecompras/{{consultacompras.id}}/">
+                                {% csrf_token %}
+                                <table style="border-collapse:separate; border-spacing:20px 20px">
+                                    <tbody>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Numero:</b></div></td>
+                                                <td  align="left"><input type="text" name="numero" id="id_numero" size="50" maxlength="50" value="{{ consultasede.numero}}" required></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Data Minuta:</b></div></td>
+                                                <td  align="left"><input type="text" placeholder="dd/mm/yyyy" name="dataminuta" id="id_dataminuta" maxlength="10" size="10" value="{{ consultasede.dataminuta }}" required></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Data DCA:</b></div></td>
+                                                <td  align="left"><input type="text" placeholder="dd/mm/yyyy" name="datadca" id="id_datadca" maxlength="10" size="10" value="{{ consultasede.datadca }}" required></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Anotações:</b></div></td>
+                                                <td  align="left"><input type="text" name="anotacoes" id="id_anotacoes" size="50" maxlength="50" value="{{ consultasede.anotacoes}}" required></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Licitação:</b></div></td>
+                                                <td  align="left"><select name="licitacao"  id="id_licitacao">
+                                                                     {% for licitacao in licitacoes %}
+                                                                        {% if consultasede.licitacao|stringformat:'s' == licitacao.descricao %}
+                                                                            <option value="{{licitacao.id}}" selected>{{licitacao.descricao}}</option>
+                                                                        {% else %}
+                                                                            <option value="{{licitacao.id}}">{{licitacao.descricao}}</option>
+                                                                        {% endif %}
+                                                                     {% endfor %}
+                                                                     <option value="">---------</option>
+                                                                 </select>
+                                                </td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Solicitação de Locacao:</b></div></td>
+                                                <td  align="left"><input type="text" name="locacao" id="id_locacao" size="5" maxlength="5" value="{{consulta.id}}" readonly> {{ consulta.acao }}</td>
+                                                <td></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Status:</b></div></td>
+                                                <td  align="left"><select name="status"  id="id_status">
+                                                                     {% for status in statuses %}
+                                                                         {%if consultasede.status|stringformat:'s' == status.descricao %}
+                                                                                 <option value="{{status.id}}" selected>{{status.descricao}}</option>
+                                                                         {% else %}
+                                                                                 <option value="{{status.id}}">{{status.descricao}}</option>
+                                                                         {% endif %}
+                                                                     {% endfor %}
+                                                                     <option value="">---------</option>
+                                                                 </select>
+                                                </td>
+                                                <td></td>
+                                            </tr>
+                                     </tbody>
+                                </table>
+                                <div class="grupo_botoes_form" align="center">
+
+                                            <button type="submit" class="btn btn-primary">Salvar</button>
+                                            <button type="button" class="btn btn-warning">
+                                                <a href="../../consultaumalocacao/{{consulta.id}}">Cancelar</a>
+                                            </button>
+
+                                </div>
+
+                            </form>
+                      </div>
+                </div>
+              </div>
+            </div>
+
 {% endblock %}
