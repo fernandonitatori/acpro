@@ -10,7 +10,7 @@ from .models import Locacao_Acao, Acao, TipoLocacao, Memorial, Compras_Locacao, 
                     Contrato_Locacao, Pagamento, Cronograma, Aprovacao, Fornecedor, CatFornecedor, EndFornecedor, \
                     ContFornecedor, Tipo_Status, Status, Local, Linguagem, Projeto, TipoPagto
 
-from .forms import TipoLocacaoModelForm, MemorialModelForm, ComprasLocacaoModelForm, LocacaoAcaoModelForm
+from .forms import TipoLocacaoModelForm, MemorialModelForm, ComprasLocacaoModelForm, LocacaoAcaoModelForm, SedeModelForm
 
 
 class ListLocacaoAcaoView(ListView):
@@ -81,6 +81,16 @@ class ConsultaLocacaoAcaoView(UpdateView):
         context['statuses'] = Status.objects.all()
         return context
 
+    def post(self, request, *args, **kwargs):
+        form = LocacaoAcaoModelForm(request.POST)
+        if form.is_valid():
+            loc = self.kwargs.get("pk")
+            print(loc)
+            super(ConsultaLocacaoAcaoView, self).post(request, **kwargs)
+            messages.success(request, 'Processo em Solicitação atualizado com sucesso')
+            return HttpResponseRedirect(reverse_lazy('consultaumalocacao', args=[loc]))
+        return render(request, 'resultado.html', {'form': form})
+
 
 class ListUpdLocacaoAcaoView(ListView):
     model = Locacao_Acao
@@ -147,6 +157,7 @@ class CreateComprasLocView(SuccessMessageMixin, CreateView):
             print(compra.status)
             locacao.save()
             compra.save()
+            messages.success(request, 'Processo em compras cadastrado com sucesso')
             return HttpResponseRedirect(reverse_lazy('consultaumalocacao', args=[locacao.id]))
         return render(request, 'resultado.html', {'form': form})
 
@@ -165,21 +176,34 @@ class CreateOrcView(CreateView):
     success_url = reverse_lazy('sistema')
 
 
-class CreateSedeView( SuccessMessageMixin, CreateView):
+class CreateSedeView(SuccessMessageMixin, CreateView):
     model = Sede
     template_name = 'locacao_acao_consulta.html'
-    fields = ['descricao', 'numero', 'dataminuta', 'datadca', 'anotacoes', 'licitacao', 'locacao_acao', 'status']
+    fields = ['descricao', 'numero', 'dataminuta', 'datadca', 'anotacoes', 'licitacao', 'locacao', 'status']
     success_url = reverse_lazy('list_loc')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['licitacoes'] = Licitacao.objects.all()
-        context['statuses'] = Status.objects.all()
         return context
 
     def get_success_message(self, cleaned_data):
         print(cleaned_data)
         return "Processo em Sede cadastrado com sucesso!"
+
+    def post(self, request, *args, **kwargs):
+        form = SedeModelForm(request.POST)
+        if form.is_valid():
+            sede = form.save()
+            print(sede.locacao)
+            locacao = Locacao_Acao.objects.get(descricao = sede.locacao)
+            locacao.status_geral = sede.status
+            print(locacao)
+            print(sede.status)
+            locacao.save()
+            sede.save()
+            messages.success(request, 'Processo em Sede cadastrado com sucesso')
+            return HttpResponseRedirect(reverse_lazy('consultaumalocacao', args=[locacao.id]))
+        return render(request, 'resultado.html', {'form': form})
 
 
 class CreateLicView(CreateView):
@@ -189,20 +213,66 @@ class CreateLicView(CreateView):
     success_url = reverse_lazy('sistema')
 
 
-class CreateContrView(CreateView):
+class CreateContrView(CreateView, SuccessMessageMixin):
     model = Contrato_Locacao
-    template_name = 'form_create_contrat.html'
-    fields = ['processo', 'dataprocesso', 'instrcontratual', 'datacontrato', 'valorservico', 'valorlocacao', 'pagto',
-              'locacao_acao', 'status']
+    template_name = 'locacao_acao_consulta.html'
+    fields = ['descricao', 'processo', 'dataprocesso', 'instrcontratual', 'datacontrato', 'valorservico',
+              'valorlocacao', 'pagto', 'locacao', 'status']
     success_url = reverse_lazy('sistema')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+    def get_success_message(self, cleaned_data):
+        print(cleaned_data)
+        return "Processo em Contratação cadastrado com sucesso!"
+
+    def post(self, request, *args, **kwargs):
+        form = ContratoLocacaoModelForm(request.POST)
+        if form.is_valid():
+            contrato = form.save()
+            print(contrato.locacao)
+            locacao = Locacao_Acao.objects.get(descricao = contrato.locacao)
+            locacao.status_geral = sede.status
+            print(locacao)
+            print(contrato.status)
+            locacao.save()
+            contrato.save()
+            messages.success(request, 'Processo em Contratação cadastrado com sucesso')
+            return HttpResponseRedirect(reverse_lazy('consultaumalocacao', args=[locacao.id]))
+        return render(request, 'resultado.html', {'form': form})
 
 
 class CreatePagtoView(CreateView):
     model = Pagamento
-    template_name = 'form_create_pagto.html'
-    fields = ['tipo_pagto', 'atividade', 'parcela', 'qtde_parcelas', 'valor', 'dataprevnota', 'tiponota', 'numnota',
-              'dataemissnota', 'serienota', 'xml', 'anotacoes']
-    success_url = reverse_lazy('sistema')
+    template_name = 'locacao_acao_consulta.html'
+    fields = ['descricao', 'tipo_pagto', 'atividade', 'parcela', 'qtde_parcelas', 'valor', 'dataprevnota',
+              'tiponota', 'numnota', 'dataemissnota', 'serienota', 'xml', 'anotacoes']
+    success_url = reverse_lazy('list_loc')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+    def get_success_message(self, cleaned_data):
+        print(cleaned_data)
+        return "Processo em Pagamento cadastrado com sucesso!"
+
+    def post(self, request, *args, **kwargs):
+        form = PagamentoModelForm(request.POST)
+        if form.is_valid():
+            pagto = form.save()
+            print(pagto.locacao)
+            locacao = Locacao_Acao.objects.get(descricao = pagto.locacao)
+            locacao.status_geral = pagto.status
+            print(locacao)
+            print(contrato.status)
+            locacao.save()
+            pagto.save()
+            messages.success(request, 'Processo em Contratação cadastrado com sucesso')
+            return HttpResponseRedirect(reverse_lazy('consultaumalocacao', args=[locacao.id]))
+        return render(request, 'resultado.html', {'form': form})
 
 
 class CreateCronoView(CreateView):
@@ -378,13 +448,15 @@ def consultaumalocacao(request,pk):
     if Sede.objects.filter(locacao=idpassado).exists():
         consultasede = Sede.objects.get(locacao=idpassado)
     consultacontrat = ''
-    if Contrato_Locacao.objects.filter(locacao_acao=idpassado).exists():
-        consultacontrat = Contrato_Locacao.objects.get(locacao_acao=idpassado)
+    if Contrato_Locacao.objects.filter(locacao=idpassado).exists():
+        consultacontrat = Contrato_Locacao.objects.get(locacao=idpassado)
     statuses = Status.objects.all()
     tiposlocacao = TipoLocacao.objects.all()
     acoes = Acao.objects.all()
     memoriais = Memorial.objects.all()
     trps = TRP.objects.all()
+    licitacoes = Licitacao.objects.all()
+    pagamentos = Pagamento.objects.all()
     context = {
             'consulta': consulta,
             'consultacompras': consultacompras,
@@ -397,6 +469,8 @@ def consultaumalocacao(request,pk):
             'trps': trps,
             'tiposlocacao': tiposlocacao,
             'acoes': acoes,
+            'licitacoes': licitacoes,
+            'pagamentos': pagamentos,
             'memoriais': memoriais
     }
     return render(request, 'locacao_acao_consulta.html', context)
@@ -416,7 +490,6 @@ class UpdComprasLocacaoView(UpdateView):
     template_name = 'locacao_acao_consulta.html'
     fields = ['descricao', 'numero', 'data', 'observacoes', 'locacao', 'trp', 'status', 'sede']
     context_object_name = 'consultacompras'
-
     success_url =  reverse_lazy('list_loc')
 
     def get_context_data(self, **kwargs):
@@ -436,9 +509,98 @@ class UpdComprasLocacaoView(UpdateView):
             locacao.status_geral = form.cleaned_data['status']
             locacao.save()
             super(UpdComprasLocacaoView, self).post(request, **kwargs)
+            messages.success(request, 'Processo em compras atualizado com sucesso')
             return HttpResponseRedirect(reverse_lazy('consultaumalocacao', args=[locacao.id]))
         return render(request, 'resultado.html', {'form': form})
 
+
+class UpdSedeView(UpdateView):
+    model = Sede
+    template_name = 'locacao_acao_consulta.html'
+    fields = ['descricao', 'numero', 'dataminuta', 'datadca', 'anotacoes', 'licitacao', 'locacao', 'status']
+    success_url = reverse_lazy('list_loc')
+    context_object_name = 'consultasede'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+    def get_success_message(self, cleaned_data):
+        print(cleaned_data)
+        return "Processo em Sede cadastrado com sucesso!"
+
+    def post(self, request, *args, **kwargs):
+        form = SedeModelForm(request.POST)
+        if form.is_valid():
+            loc = form.cleaned_data['locacao']
+            print(loc)
+            locacao = Locacao_Acao.objects.get(descricao = loc)
+            locacao.status_geral = form.cleaned_data['status']
+            locacao.save()
+            super(UpdSedeView, self).post(request, **kwargs)
+            messages.success(request, 'Processo em Sede atualizado com sucesso')
+            return HttpResponseRedirect(reverse_lazy('consultaumalocacao', args=[locacao.id]))
+        return render(request, 'resultado.html', {'form': form})
+
+
+class UpdContratView(UpdateView):
+    model = Contrato_Locacao
+    template_name = 'locacao_acao_consulta.html'
+    fields = ['descricao', 'processo', 'dataprocesso', 'instrcontratual', 'datacontrato', 'valorservico',
+                   'valorlocacao', 'pagto', 'locacao', 'status']
+    success_url = reverse_lazy('list_loc')
+    context_object_name = 'consultacontrat'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+    def get_success_message(self, cleaned_data):
+        print(cleaned_data)
+        return "Processo em Contratação cadastrado com sucesso!"
+
+    def post(self, request, *args, **kwargs):
+        form = ContratoLocacaoModelForm(request.POST)
+        if form.is_valid():
+            loc = form.cleaned_data['locacao']
+            print(loc)
+            locacao = Locacao_Acao.objects.get(descricao = loc)
+            locacao.status_geral = form.cleaned_data['status']
+            locacao.save()
+            super(UpdContratView, self).post(request, **kwargs)
+            messages.success(request, 'Processo em Sede atualizado com sucesso')
+            return HttpResponseRedirect(reverse_lazy('consultaumalocacao', args=[locacao.id]))
+        return render(request, 'resultado.html', {'form': form})
+
+
+class UpdPagtoView(UpdateView):
+    model = Pagamento
+    template_name = 'locacao_acao_consulta.html'
+    fields = ['descricao', 'tipo_pagto', 'atividade', 'parcela', 'qtde_parcelas', 'valor', 'dataprevnota',
+              'tiponota', 'numnota', 'dataemissnota', 'serienota', 'xml', 'anotacoes']
+    success_url = reverse_lazy('list_loc')
+    context_object_name = 'consultapagto'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+    def get_success_message(self, cleaned_data):
+        print(cleaned_data)
+        return "Processo em Pagamento cadastrado com sucesso!"
+
+    def post(self, request, *args, **kwargs):
+        form = PagamentoModelForm(request.POST)
+        if form.is_valid():
+            loc = form.cleaned_data['locacao']
+            print(loc)
+            locacao = Locacao_Acao.objects.get(descricao = loc)
+            locacao.status_geral = form.cleaned_data['status']
+            locacao.save()
+            super(UpdPagtotView, self).post(request, **kwargs)
+            messages.success(request, 'Processo em Pagamento atualizado com sucesso')
+            return HttpResponseRedirect(reverse_lazy('consultaumalocacao', args=[locacao.id]))
+        return render(request, 'resultado.html', {'form': form})
 
 
 def resultloc(request, id):

@@ -6,7 +6,7 @@ from .views import IndexView, SistemaView, CreateSolicitView, ListLocacaoAcaoVie
                    CreateMemorialView, CreateComprasLocView, CreateTRPView, CreateOrcView, CreatePagtoView,\
                    CreateAprovView, CreateFornecView, CreateCatFornecView, CreateEndFornecView, CreateContFornecView,\
                    CreateStatusView, CreateTipoStatusView, CreateLocalView, CreateProjetoView, CreateLinguagemView,\
-                   CreateTipoPagtoView
+                   CreateTipoPagtoView, UpdPagtoView
 
 
 from .views import salvatipoloc, consultalocacao
@@ -44,5 +44,8 @@ urlpatterns = [
     path('salvatipoloc', core.views.salvatipoloc, name='salvatipoloc'),
     path('resultloc/<int:id>', core.views.resultloc, name='resultloc'),
     path('updatecompras/<int:pk>/', core.views.UpdComprasLocacaoView.as_view(), name='updatecompras'),
+    path('updatesede/<int:pk>/', core.views.UpdSedeView.as_view(), name='updatesede'),
+    path('updatecontrat/<int:pk>/', core.views.UpdContratView.as_view(), name='updatecontrat'),
+    path('updatepagto/<int:pk>/', core.views.UpdPagtoView.as_view(), name='updatepagto'),
     path('consultaumalocacao/<int:pk>/', core.views.consultaumalocacao, name='consultaumalocacao')
 ]

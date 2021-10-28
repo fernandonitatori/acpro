@@ -142,7 +142,7 @@ class Locacao_Acao(Base):
     memorial = models.ForeignKey('Memorial', verbose_name='memorial', null=True, on_delete=models.SET_NULL)
     status = models.ForeignKey('Status', verbose_name='status', related_name='Status', null=True, on_delete=models.SET_NULL)
     status_geral = models.ForeignKey('Status', verbose_name='status geral', null=True, on_delete=models.SET_NULL)
-    descricao = models.CharField('Descriçao', max_length=50, null=True, default='', blank=True)
+    descricao = models.CharField('Descriçao', max_length=50)
 
     class Meta:
         verbose_name = 'Solicitação de Locação'
@@ -260,7 +260,7 @@ class Orcamento(Base):
 
 
 class Licitacao(Base):
-    descricao = models.CharField('Descrição', max_length=50, null=True, blank=True)
+    descricao = models.CharField('Descrição', max_length=50)
     dataabertura = models.DateField('Data de Abertura')
     datapregao = models.DateField('Data do Pregão')
     dataassinatura = models.DateField('Data da Assinatura')
@@ -277,7 +277,8 @@ class Licitacao(Base):
 
 
 class Sede(Base):
-    numero = models.CharField('Vencedor', max_length=50)
+    descricao = models.CharField('Descrição', max_length=50)
+    numero = models.CharField('Número', max_length=50)
     dataminuta = models.DateField('Data Minuta')
     datadca = models.DateField('Data DCA')
     anotacoes = models.CharField('Anotaçoes', max_length=100)
@@ -290,7 +291,7 @@ class Sede(Base):
         verbose_name_plural = 'Sedes'
 
     def __str__(self):
-        return f'{self.id} {self.dataminuta} {self.datadca} {self.licitacao} {self.locacao} {self.status}'
+        return self.descricao
 
 
 class Aprovacao(Base):
@@ -334,6 +335,7 @@ class TipoPagto(Base):
 
 
 class Pagamento(Base):
+    descricao = models.CharField('Descrição', max_length=50)
     tipo_pagto = models.ForeignKey(TipoPagto, verbose_name='Tipo de Pagamento', null=True, on_delete=models.SET_NULL)
     atividade = models.CharField('Atividade', max_length=100)
     parcela = models.DecimalField('Parcela', max_digits=10, decimal_places=2)
@@ -352,10 +354,11 @@ class Pagamento(Base):
         verbose_name_plural = 'Pagamentos'
 
     def __str__(self):
-        return f'{self.id} {self.tipo_pagto} {self.valor} {self.anotacoes}'
+        return self.descricao
 
 
 class Contrato_Locacao(Base):
+    descricao = models.CharField('Descrição', max_length=50)
     processo = models.CharField('Processo', max_length=50)
     dataprocesso = models.DateField('Data do Processo')
     instrcontratual = models.CharField('Instrumento Contratual', max_length=50)
@@ -363,7 +366,7 @@ class Contrato_Locacao(Base):
     valorservico = models.DecimalField('Valor do Serviço', max_digits=10, decimal_places=2)
     valorlocacao = models.DecimalField('Valor da Locação', max_digits=10, decimal_places=2)
     pagto = models.ForeignKey(Pagamento, verbose_name='Pagamento', on_delete=models.CASCADE)
-    locacao_acao = models.ForeignKey(Locacao_Acao, verbose_name='Solicitação', null=True, on_delete=models.SET_NULL)
+    locacao = models.ForeignKey(Locacao_Acao, verbose_name='Solicitação', null=True, on_delete=models.SET_NULL)
     status = models.ForeignKey(Status, verbose_name='Status', null=True, on_delete=models.SET_NULL)
 
     class Meta:
@@ -371,4 +374,4 @@ class Contrato_Locacao(Base):
         verbose_name_plural = 'Contratos Locação'
 
     def __str__(self):
-        return f'{self.id} {self.processo} {self.dataprocesso} {self.datacontrato} {self.valorlocacao} {self.status}'
+        return self.descricao
