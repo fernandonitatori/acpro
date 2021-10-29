@@ -11,7 +11,7 @@ from .models import Locacao_Acao, Acao, TipoLocacao, Memorial, Compras_Locacao, 
                     ContFornecedor, Tipo_Status, Status, Local, Linguagem, Projeto, TipoPagto
 
 from .forms import TipoLocacaoModelForm, MemorialModelForm, ComprasLocacaoModelForm, LocacaoAcaoModelForm, \
-                   SedeModelForm,  ContratoLocacaoModelForm, PagamentoModelForm
+                   SedeModelForm,  ContratoLocacaoModelForm, PagamentoModelForm, CronogramaModelForm
 
 
 class ListLocacaoAcaoView(ListView):
@@ -36,10 +36,58 @@ class SistemaView(TemplateView):
 
     template_name = 'sistema.html'
 
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['numsolicit'] = Locacao_Acao.objects.count()
-        context['numcompras'] = Compras_Locacao.objects.count()
+        compras = Compras_Locacao.objects.all()
+        countcompras = 0
+        for compra in compras:
+            if not str(compra.status) == 'Compras - Aprovado':
+                countcompras += 1
+                print(countcompras)
+
+        sedes = Sede.objects.all()
+        countsede = 0
+        for sede in sedes:
+            if not str(sede.status) == 'Sede - Aprovado':
+                countsede += 1
+                print(countsede)
+
+        contratos = Contrato_Locacao.objects.all()
+        countcontr = 0
+        for contrato in contratos:
+            if not str(contrato.status) == 'Contratação - Aprovado':
+                countcontr += 1
+                print(countcontr)
+
+        pagtos = Pagamento.objects.all()
+        countpagto = 0
+        for pagto in pagtos:
+            if not str(pagto.status) == 'Pagamento - Aprovado':
+                countpagto += 1
+                print(countpagto)
+
+        cronos = Cronograma.objects.all()
+        countcrono = 0
+        for crono in cronos:
+            if not str(crono.status) == 'Recebimento - Aprovado':
+                countcrono += 1
+                print(countcrono)
+
+        countfin = 0
+        locs = Locacao_Acao.objects.all()
+        for loc in locs:
+            if str(loc.status_geral) == 'Finalizado':
+                countfin += 1
+
+        context['numcompras'] = countcompras
+        context['numsede'] = countsede
+        context['numcontr'] = countcontr
+        context['numpagto'] = countpagto
+        context['numrec'] = countcrono
+        context['numfin'] = countfin
+
         return context
 
 
@@ -278,9 +326,32 @@ class CreatePagtoView(CreateView, SuccessMessageMixin):
 
 class CreateCronoView(CreateView):
     model = Cronograma
-    template_name = 'form_create_crono.html'
-    fields = ['locacao_acao', 'atividade', 'datainicio', 'datafim', 'anotacoes', 'status']
-    success_url = reverse_lazy('sistema')
+    template_name = 'locacao_acao_consulta.html'
+    fields = ['locacao', 'atividade', 'datainicio', 'datafim', 'anotacoes', 'status']
+    success_url = reverse_lazy('list_loc')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+    def get_success_message(self, cleaned_data):
+        print(cleaned_data)
+        return "Processo em Recebimento cadastrado com sucesso!"
+
+    def post(self, request, *args, **kwargs):
+        form = CronogramaModelForm(request.POST)
+        if form.is_valid():
+            crono = form.save()
+            print(crono.locacao)
+            locacao = Locacao_Acao.objects.get(descricao = crono.locacao)
+            locacao.status_geral = crono.status
+            print(locacao)
+            print(crono.status)
+            locacao.save()
+            crono.save()
+            messages.success(request, 'Processo em Recebimento cadastrado com sucesso')
+            return HttpResponseRedirect(reverse_lazy('consultaumalocacao', args=[locacao.id]))
+        return render(request, 'resultado.html', {'form': form})
 
 
 class CreateAprovView(CreateView):
@@ -490,6 +561,16 @@ def consultaumalocacao(request,pk):
     return render(request, 'locacao_acao_consulta.html', context)
 
 
+def finalizarlocacao(request,pk):
+    idpassado = pk
+    consulta = Locacao_Acao.objects.get(id=idpassado)
+    statusfinal = Status.objects.get(descricao='Finalizado')
+    print(statusfinal)
+    consulta.status_geral = statusfinal
+    consulta.save()
+    messages.success(request, 'Processo  de locação finalizado com sucesso!')
+    return render(request, 'locacao_acao_consulta.html')
+
 def defcomprasupdumalocacao(request,pk):
     idpassado = pk
     consultacompras = Compras_Locacao.objects.get(locacao=idpassado)
@@ -591,7 +672,7 @@ class UpdPagtoView(UpdateView):
     model = Pagamento
     template_name = 'locacao_acao_consulta.html'
     fields = ['descricao', 'tipo_pagto', 'atividade', 'parcela', 'qtde_parcelas', 'valor', 'dataprevnota',
-              'tiponota', 'numnota', 'dataemissnota', 'serienota', 'xml', 'anotacoes', 'status']
+              'tiponota', 'numnota', 'dataemissnota', 'serienota', 'xml', 'anotacoes', 'locacao', 'status']
     success_url = reverse_lazy('list_loc')
     context_object_name = 'consultapagto'
 
@@ -601,7 +682,7 @@ class UpdPagtoView(UpdateView):
 
     def get_success_message(self, cleaned_data):
         print(cleaned_data)
-        return "Processo em Pagamento cadastrado com sucesso!"
+        return "Processo em Pagamento atualizado com sucesso!"
 
     def post(self, request, *args, **kwargs):
         form = PagamentoModelForm(request.POST)
@@ -611,8 +692,37 @@ class UpdPagtoView(UpdateView):
             locacao = Locacao_Acao.objects.get(descricao = loc)
             locacao.status_geral = form.cleaned_data['status']
             locacao.save()
-            super(UpdPagtotView, self).post(request, **kwargs)
+            super(UpdPagtoView, self).post(request, **kwargs)
             messages.success(request, 'Processo em Pagamento atualizado com sucesso')
+            return HttpResponseRedirect(reverse_lazy('consultaumalocacao', args=[locacao.id]))
+        return render(request, 'resultado.html', {'form': form})
+
+
+class UpdCronoView(UpdateView):
+    model = Cronograma
+    fields = ['locacao', 'atividade', 'datainicio', 'datafim', 'anotacoes', 'status']
+    template_name = 'locacao_acao_consulta.html'
+    success_url = reverse_lazy('list_loc')
+    context_object_name = 'consultareceb'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+    def get_success_message(self, cleaned_data):
+        print(cleaned_data)
+        return "Processo em Recebimento atualizado com sucesso!"
+
+    def post(self, request, *args, **kwargs):
+        form = CronogramaModelForm(request.POST)
+        if form.is_valid():
+            loc = form.cleaned_data['locacao']
+            print(loc)
+            locacao = Locacao_Acao.objects.get(descricao = loc)
+            locacao.status_geral = form.cleaned_data['status']
+            locacao.save()
+            super(UpdCronoView, self).post(request, **kwargs)
+            messages.success(request, 'Processo em Recebimento atualizado com sucesso')
             return HttpResponseRedirect(reverse_lazy('consultaumalocacao', args=[locacao.id]))
         return render(request, 'resultado.html', {'form': form})
 

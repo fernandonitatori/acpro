@@ -155,13 +155,9 @@
                                     {% endif %}
                                  {% endif %}
                             {% else %}
-                                {%if consulta.status_geral|stringformat:'s' == status_chave_compras %}
                                     <td class="quadrado_verde">
                                         Não tramitou pela Sede.
                                     </td>
-                                {% else %}
-                                    <td class="quadrado"></td>
-                                {% endif %}
                             {% endif %}
 
                             <td><img src="/static/img/seta_proximo.gif"></td>
@@ -221,7 +217,7 @@
                             <!-- Bloco Pagamento -->
                             <!-- Se existe o processo de contratação pra locação e o status é o status chave do processo de
                              pagamento (trava o bloco Pagamento e passa para o bloco Finalização)-->
-                            {%if consultapagto.status|stringformat:'s' == status_chave_pagamento %}
+                            {%if consultapagto.status|stringformat:'s' == status_chave_pagto %}
                             <td class="quadrado_azul">
                                 {{ consultapagto.status }}
                             </td>
@@ -245,9 +241,19 @@
                                 {% endif %}
                             {% endif %}
                             <td><img src="/static/img/seta_proximo.gif"></td>
-                            <td class="quadrado">
-
-                            </td>
+                            <!-- Bloco Finalização -->
+                            <!-- Se existe os processo de pagamento e recebimento estiverem concluídos passa para o bloco Finalização e encerra o processo-->
+                            {%if consultapagto.status|stringformat:'s' == status_chave_pagto and consultareceb.status|stringformat:'s' == status_chave_receb %}
+                                {% if consulta.status_geral|stringformat:'s' != 'Finalizado' %}
+                                    <td class="quadrado_azul">
+                                        <a href="#ModalFinalizar" data-toggle="modal"> Em finalização</a>
+                                    </td>
+                                {% else %}
+                                    <td class="quadrado_azul"> Finalizado </td>
+                                {% endif %}
+                            {% else %}
+                                <td class="quadrado"> </td>
+                            {% endif %}
 
                         </tr>
                         <tr>
@@ -375,8 +381,14 @@
                                             <a href="#ModalCreateReceb" data-toggle="modal">Cadastrar</a>
                                         </td>
                                     {% else %}
-                                        <td class="quadrado">
-                                        </td>
+                                         {% if consulta.status_geral|stringformat:'s' == status_chave_pagto %}
+                                            <td class="quadrado">
+                                                <a href="#ModalCreateReceb" data-toggle="modal">Cadastrar</a>
+                                            </td>
+                                         {% else %}
+                                            <td class="quadrado">
+                                            </td>
+                                         {% endif %}
                                     {% endif %}
                                 {% else %}
                                     <td class="quadrado_verde">
@@ -1116,7 +1128,7 @@
                                             </tr>
                                             <tr>
                                                 <td  align="right"><div class="form-horizontal"><b>Data Prévia da Nota:</b></div></td>
-                                                <td  align="left"><input type="date" name="dataprevnota" size="10" id="id_dataprevnota" maxlength="10" required></td>
+                                                <td  align="left"><input type="text" name="dataprevnota" size="10" id="id_dataprevnota" maxlength="10" required></td>
                                                 <td></td>
                                             </tr>
 
@@ -1132,7 +1144,7 @@
                                             </tr>
                                             <tr>
                                                 <td  align="right"><div class="form-horizontal"><b>Data de emissão:</b></div></td>
-                                                <td  align="left"><input type="date" name="dataemissnota" size="50" id="id_dataemissnota" maxlength="50" required></td>
+                                                <td  align="left"><input type="text" name="dataemissnota" size="50" id="id_dataemissnota" maxlength="50" required></td>
                                                 <td></td>
                                             </tr>
                                             <tr>
@@ -1194,61 +1206,99 @@
                            <div class="titulo_modal">Alterar Processo em Pagamento</div>
                       </div>
                       <div class="modal-body">
-                            <form method="POST" autocomplete="off" action="../../updatecontrat/{{consultacontrat.id}}/">
+                            <form method="POST" autocomplete="off" action="../../updatepagto/{{consultapagto.id}}/">
                                 {% csrf_token %}
                                 <table style="border-collapse:separate; border-spacing:20px 20px">
                                     <tbody>
                                             <tr>
                                                 <td  align="right"><div class="form-horizontal"><b>Descrição:</b></div></td>
-                                                <td  align="left"><input type="text" name="descricao" id="id_descricao" size="50" maxlength="50" value="{{ consultacontrat.descricao }}" required></td>
+                                                <td  align="left"><input type="text" name="descricao" size="50" id="id_descricao" maxlength="50" value=" {{ consultapagto.descricao }}" required></td>
                                                 <td></td>
                                             </tr>
                                             <tr>
-                                                <td  align="right"><div class="form-horizontal"><b>Processo:</b></div></td>
-                                                <td  align="left"><input type="text" name="processo" id="id_processo" size="50" maxlength="50" value="{{ consultacontrat.processo }}" required></td>
+                                                <td  align="right"><div class="form-horizontal"><b>Tipo de Pagamento:</b></div></td>
+                                                <td  align="left"><select name="tipo_pagto" id="id_tipo_pagto">
+                                                                     {% for tipopagto in tipospagto %}
+                                                                             {%if consultapagto.tipo_pagto|stringformat:'s' == tipopagto.descricao %}
+                                                                                <option value="{{tipopagto.id}}" selected >{{tipopagto.descricao}}</option>
+                                                                             {% else %}
+                                                                                <option value="{{tipopagto.id}}">{{tipopagto.descricao}}</option>
+                                                                             {% endif %}
+                                                                     {% endfor %}
+                                                                 </select>
+                                                </td>
+                                                <td></td>
+                                            </tr>
+                                             <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Atividade:</b></div></td>
+                                                <td  align="left"><input type="text" name="atividade" size="50" id="id_atividade" maxlength="50" value="{{ consultapagto.atividade }}" required> </td>
                                                 <td></td>
                                             </tr>
                                             <tr>
-                                                <td  align="right"><div class="form-horizontal"><b>Data do Processo:</b></div></td>
-                                                <td  align="left"><input type="date" placeholder="dd/mm/yyyy" name="dataprocesso" id="id_processo" maxlength="10" size="10" value="{{ consultacontrat.dataprocesso }}" required></td>
+                                                <td  align="right"><div class="form-horizontal"><b>Parcela:</b></div></td>
+                                                <td  align="left"><input type="text" name="parcela" size="10" id="id_parcela" maxlength="10" value="{{ consultapagto.parcela }}" required> </td>
                                                 <td></td>
                                             </tr>
                                             <tr>
-                                                <td  align="right"><div class="form-horizontal"><b>Instrumento Contratual:</b></div></td>
-                                                <td  align="left"><input type="text" name="instrcontratual" id="id_instrcontratual" maxlength="50" size="50" value="{{ consultacontrat.instrcontratual }}" required></td>
+                                                <td  align="right"><div class="form-horizontal"><b>Quantidade de Parcelas:</b></div></td>
+                                                <td  align="left"><input type="text" name="qtde_parcelas" size="10" id="id_qtde_parcelas" maxlength="10" value="{{ consultapagto.qtde_parcelas }}" required></td>
                                                 <td></td>
                                             </tr>
                                             <tr>
-                                                <td  align="right"><div class="form-horizontal"><b>Data do Contrato:</b></div></td>
-                                                <td  align="left"><input type="data" name="datacontrato" id="id_datacontrato" size="50" maxlength="50" value="{{ consultacontrat.datacontrato }}" required></td>
+                                                <td  align="right"><div class="form-horizontal"><b>Valor:</b></div></td>
+                                                <td  align="left"><input type="text" name="valor" size="10" id="id_valor" maxlength="10" value="{{ consultapagto.valor }}" required></td>
                                                 <td></td>
                                             </tr>
                                             <tr>
-                                                <td  align="right"><div class="form-horizontal"><b>Valor do Serviço:</b></div></td>
-                                                <td  align="left"><input type="data" name="valorservico" id="id_valorservico" size="20" maxlength="20" value="{{ consultacontrat.valorservico }}" required></td>
-                                                <td></td>
-                                            </tr>
-                                            <tr>
-                                                <td  align="right"><div class="form-horizontal"><b>Valor da Locação:</b></div></td>
-                                                <td  align="left"><input type="data" name="valorlocacao" id="id_valorlocacao" size="20" maxlength="20" value="{{ consultacontrat.valorlocacao }}" required></td>
+                                                <td  align="right"><div class="form-horizontal"><b>Data Prévia da Nota:</b></div></td>
+                                                <td  align="left"><input type="text" name="dataprevnota" size="10" id="id_dataprevnota" value="{{ consultapagto.dataprevnota }}" maxlength="10" required></td>
                                                 <td></td>
                                             </tr>
 
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Tipo de Nota:</b></div></td>
+                                                <td  align="left"><input type="text" name="tiponota" size="50" id="id_tiponota" maxlength="50" value="{{ consultapagto.tiponota }}" required></td>
+                                                <td></td>
+                                            </tr>
+                                             <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Número da nota:</b></div></td>
+                                                <td  align="left"><input type="text" name="numnota" size="50" id="id_numnota" maxlength="50" value="{{ consultapagto.numnota }}" required></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Data de emissão:</b></div></td>
+                                                <td  align="left"><input type="text" name="dataemissnota" size="10" id="id_dataemissnota" maxlength="10" value="{{ consultapagto.dataemissnota }}" required></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Série:</b></div></td>
+                                                <td  align="left"><input type="text" name="serienota" size="50" id="id_serienota" maxlength="50" value="{{ consultapagto.serienota }}" required></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>XML:</b></div></td>
+                                                <td  align="left"><input type="text" name="xml" size="50" id="id_xml" maxlength="50" value="{{ consultapagto.xml }}" required></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Anotações:</b></div></td>
+                                                <td  align="left"><input type="text" name="anotacoes" size="50" id="id_anotacoes" maxlength="50" value="{{ consultapagto.anotacoes }}" required></td>
+                                                <td></td>
+                                            </tr>
                                             <tr>
                                                 <td  align="right"><div class="form-horizontal"><b>Solicitação de Locacao:</b></div></td>
                                                 <td  align="left"><input type="text" name="locacao" id="id_locacao" size="5" maxlength="5" value="{{consulta.id}}" readonly> {{ consulta.acao }}</td>
                                                 <td></td>
                                             </tr>
-
                                             <tr>
                                                 <td  align="right"><div class="form-horizontal"><b>Status:</b></div></td>
                                                 <td  align="left"><select name="status"  id="id_status">
                                                                      {% for status in statuses %}
-                                                                         {%if status.tipo_status|stringformat:'s' == 'Contratação' %}
-                                                                             {%if consultacontrat.status|stringformat:'s' == status.descricao %}
-                                                                                     <option value="{{status.id}}" selected>{{status.descricao}}</option>
+                                                                         {%if status.tipo_status|stringformat:'s' == 'Pagamento' %}
+                                                                             {%if status.descricao|stringformat:'s' == consultapagto.descricao %}
+                                                                                 <option value="{{status.id}}" selected >{{ status.descricao }}</option>
                                                                              {% else %}
-                                                                                     <option value="{{status.id}}">{{status.descricao}}</option>
+                                                                                 <option value="{{status.id}}" >{{ status.descricao }}</option>
                                                                              {% endif %}
                                                                          {% endif %}
                                                                      {% endfor %}
@@ -1262,6 +1312,192 @@
                                 <div class="grupo_botoes_form" align="center">
 
                                             <button type="submit" class="btn btn-primary">Salvar</button>
+                                            <button type="button" class="btn btn-warning">
+                                                <a href="../../consultaumalocacao/{{consulta.id}}">Cancelar</a>
+                                            </button>
+
+                                </div>
+
+                            </form>
+                      </div>
+                </div>
+              </div>
+            </div>
+            <!--     Modal Criar Recebimento -->
+            <div id="ModalCreateReceb" class="modal fade" role="dialog">
+              <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                      <div class="modal-header">
+                           <div class="titulo_modal">Cadastrar Processo em Recebimento</div>
+                      </div>
+                      <div class="modal-body">
+                            <form method="POST" autocomplete="off" action="{% url 'add_crono' %}">
+                                {% csrf_token %}
+                                <table style="border-collapse:separate; border-spacing:20px 20px">
+                                    <tbody>
+                                             <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Solicitação de Locacao:</b></div></td>
+                                                <td  align="left"><input type="text" name="locacao" id="id_locacao" size="5" maxlength="5" value="{{consulta.id}}" readonly> {{ consulta.acao }}</td>
+                                                <td></td>
+                                             </tr>
+
+                                             <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Atividade:</b></div></td>
+                                                <td  align="left"><input type="text" name="atividade" size="50" id="id_atividade" maxlength="50" required></td>
+                                                <td></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Data de Início:</b></div></td>
+                                                <td  align="left"><input type="date" name="datainicio" size="10" id="id_datainicio" maxlength="10" required></td>
+                                                <td></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Data de Término:</b></div></td>
+                                                <td  align="left"><input type="date" name="datafim" size="50" id="id_datafim" maxlength="50" required></td>
+                                                <td></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Anotações:</b></div></td>
+                                                <td  align="left"><input type="text" name="anotacoes" size="50" id="id_anotacoes" maxlength="50" ></td>
+                                                <td></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Status:</b></div></td>
+                                                <td  align="left"><select name="status"  id="id_status">
+                                                                     {% for status in statuses %}
+                                                                         {%if status.tipo_status|stringformat:'s' == 'Recebimento' %}
+                                                                                 <option value="{{status.id}}">{{status.descricao}}</option>
+                                                                         {% endif %}
+                                                                     {% endfor %}
+                                                                     <option value="">---------</option>
+                                                                 </select>
+                                                </td>
+                                                <td></td>
+                                            </tr>
+                                     </tbody>
+                                </table>
+                                <div class="grupo_botoes_form" align="center">
+
+                                            <button type="submit" class="btn btn-primary">Salvar</button>
+                                            <button type="button" class="btn btn-warning">
+                                                <a href="../../consultaumalocacao/{{consulta.id}}">Cancelar</a>
+                                            </button>
+
+                                </div>
+
+                            </form>
+                      </div>
+                </div>
+              </div>
+            </div>
+            <!--     Modal Update Pagamento -->
+            <div id="ModalUpdReceb" class="modal fade" role="dialog">
+              <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                      <div class="modal-header">
+                           <div class="titulo_modal">Alterar Processo em Pagamento</div>
+                      </div>
+                      <div class="modal-body">
+                            <form method="POST" autocomplete="off" action="../../updatecrono/{{consultareceb.id}}/">
+                                {% csrf_token %}
+                                <table style="border-collapse:separate; border-spacing:20px 20px">
+                                    <tbody>
+                                             <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Solicitação de Locacao:</b></div></td>
+                                                <td  align="left"><input type="text" name="locacao" id="id_locacao" size="5" maxlength="5" value="{{consulta.id}}" readonly> {{ consulta.acao }}</td>
+                                                <td></td>
+                                             </tr>
+                                             <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Atividade:</b></div></td>
+                                                <td  align="left"><input type="text" name="atividade" size="50" id="id_atividade" maxlength="50" value="{{ consultapagto.atividade }}" required> </td>
+                                                <td></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Data de Início:</b></div></td>
+                                                <td  align="left"><input type="text" name="datainicio" size="10" id="id_datainicio" value="{{ consultapagto.dataprevnota }}" maxlength="10" required></td>
+                                                <td></td>
+                                            </tr>
+
+
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Data de Término:</b></div></td>
+                                                <td  align="left"><input type="text" name="datafim" size="10" id="id_datafim" maxlength="10" value="{{ consultapagto.dataemissnota }}" required></td>
+                                                <td></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Anotações:</b></div></td>
+                                                <td  align="left"><input type="text" name="anotacoes" size="50" id="id_anotacoes" maxlength="50" value="{{ consultapagto.anotacoes }}" required></td>
+                                                <td></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Status:</b></div></td>
+                                                <td  align="left"><select name="status"  id="id_status">
+                                                                     {% for status in statuses %}
+                                                                         {%if status.tipo_status|stringformat:'s' == 'Recebimento' %}
+                                                                             {%if status.descricao|stringformat:'s' == consultapagto.descricao %}
+                                                                                 <option value="{{status.id}}" selected >{{ status.descricao }}</option>
+                                                                             {% else %}
+                                                                                 <option value="{{status.id}}" >{{ status.descricao }}</option>
+                                                                             {% endif %}
+                                                                         {% endif %}
+                                                                     {% endfor %}
+                                                                     <option value="">---------</option>
+                                                                 </select>
+                                                </td>
+                                                <td></td>
+                                            </tr>
+                                     </tbody>
+                                </table>
+                                <div class="grupo_botoes_form" align="center">
+
+                                            <button type="submit" class="btn btn-primary">Salvar</button>
+                                            <button type="button" class="btn btn-warning">
+                                                <a href="../../consultaumalocacao/{{consulta.id}}">Cancelar</a>
+                                            </button>
+
+                                </div>
+
+                            </form>
+                      </div>
+                </div>
+              </div>
+            </div>
+            <!--     Modal Finalizar-->
+            <div id="ModalFinalizar" class="modal fade" role="dialog">
+              <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                      <div class="modal-header">
+                           <div class="titulo_modal">Finalizar Processo de Locação</div>
+                      </div>
+                      <div class="modal-body">
+                            <form method="POST" autocomplete="off" action="../../finalizarlocacao/{{consulta.id}}">
+                                {% csrf_token %}
+                                <table style="border-collapse:separate; border-spacing:20px 20px">
+                                    <tbody>
+                                             <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Confirmação:</b></div></td>
+                                                <td  align="left"> Deseja finalizar o processo de locação? </td>
+                                                <td></td>
+                                             </tr>
+
+                                     </tbody>
+                                </table>
+                                <div class="grupo_botoes_form" align="center">
+
+                                            <button type="submit" class="btn btn-primary">Sim</button>
                                             <button type="button" class="btn btn-warning">
                                                 <a href="../../consultaumalocacao/{{consulta.id}}">Cancelar</a>
                                             </button>

@@ -55,9 +55,23 @@ class ContratoLocacaoModelForm(forms.ModelForm):
 
 class PagamentoModelForm(forms.ModelForm):
     class Meta:
-         model = Pagamento
-         fields = ['descricao', 'tipo_pagto', 'atividade', 'parcela', 'qtde_parcelas', 'valor', 'dataprevnota',
+        model = Pagamento
+        fields = ['descricao', 'tipo_pagto', 'atividade', 'parcela', 'qtde_parcelas', 'valor', 'dataprevnota',
                    'tiponota', 'numnota', 'dataemissnota', 'serienota', 'xml', 'anotacoes', 'locacao', 'status']
+
+
+class CronogramaModelForm(forms.ModelForm):
+
+    class Meta:
+        model = Cronograma
+        fields = ['locacao', 'atividade', 'datainicio', 'datafim', 'anotacoes', 'status']
+
+
+
+
+
+
+
 
 
 

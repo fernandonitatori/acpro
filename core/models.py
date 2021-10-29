@@ -312,7 +312,7 @@ class Cronograma(Base):
     atividade = models.CharField('Atividade', max_length=100)
     datainicio = models.DateField('Data Inicial')
     datafim = models.DateField('Data Final')
-    anotacoes = models.CharField('Anotaçoes', max_length=100)
+    anotacoes = models.CharField('Anotaçoes', max_length=100, null=True, blank=True)
     status = models.ForeignKey(Status, verbose_name='Status', null=True, on_delete=models.SET_NULL)
 
     class Meta:
