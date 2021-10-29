@@ -50,14 +50,14 @@ class ContratoLocacaoModelForm(forms.ModelForm):
     class Meta:
          model = Contrato_Locacao
          fields = ['descricao', 'processo', 'dataprocesso', 'instrcontratual', 'datacontrato', 'valorservico',
-                   'valorlocacao', 'pagto', 'locacao', 'status']
+                   'valorlocacao', 'locacao', 'status']
 
 
 class PagamentoModelForm(forms.ModelForm):
     class Meta:
          model = Pagamento
          fields = ['descricao', 'tipo_pagto', 'atividade', 'parcela', 'qtde_parcelas', 'valor', 'dataprevnota',
-                   'tiponota', 'numnota', 'dataemissnota', 'serienota', 'xml', 'anotacoes']
+                   'tiponota', 'numnota', 'dataemissnota', 'serienota', 'xml', 'anotacoes', 'locacao', 'status']
 
 
 

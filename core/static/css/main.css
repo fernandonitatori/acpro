@@ -1473,6 +1473,14 @@ textarea {
     background-color: #ECF0F1 ;
 }
 
+.retangulo_vazio {
+    width: 100px;
+    height: 20px;
+    text-align: center;
+    font-weight: bold;
+    background-color: #ECF0F1 ;
+}
+
 .quadrado {
     border-top: 2px solid black;
     border-left: 2px solid black;

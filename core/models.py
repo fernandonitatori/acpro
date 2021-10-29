@@ -308,7 +308,7 @@ class Aprovacao(Base):
 
 
 class Cronograma(Base):
-    locacao_acao = models.ForeignKey(Locacao_Acao, verbose_name='Solicitação', null=True, on_delete=models.SET_NULL)
+    locacao = models.ForeignKey(Locacao_Acao, verbose_name='Solicitação', null=True, on_delete=models.SET_NULL)
     atividade = models.CharField('Atividade', max_length=100)
     datainicio = models.DateField('Data Inicial')
     datafim = models.DateField('Data Final')
@@ -320,7 +320,7 @@ class Cronograma(Base):
         verbose_name_plural = 'Cronogramas'
 
     def __str__(self):
-        return f'{self.id} {self.locacao_acao} {self.datainicio} {self.datafim} {self.anotacoes} {self.status}'
+        return self.atividade
 
 
 class TipoPagto(Base):
@@ -331,23 +331,25 @@ class TipoPagto(Base):
         verbose_name_plural = 'Tipos de Pagamento'
 
     def __str__(self):
-        return f'{self.id} {self.descricao}'
+        return self.descricao
 
 
 class Pagamento(Base):
     descricao = models.CharField('Descrição', max_length=50)
     tipo_pagto = models.ForeignKey(TipoPagto, verbose_name='Tipo de Pagamento', null=True, on_delete=models.SET_NULL)
     atividade = models.CharField('Atividade', max_length=100)
-    parcela = models.DecimalField('Parcela', max_digits=10, decimal_places=2)
+    parcela = models.DecimalField('Parcela', max_digits=10,decimal_places=2)
     qtde_parcelas = models.IntegerField('Quantidade de Parcelas')
     valor = models.DecimalField('Valor', max_digits=10, decimal_places=2)
     dataprevnota = models.DateField('Data Prev Nota')
-    tiponota = models.CharField('Tipo da nota', max_length=5)
+    tiponota = models.CharField('Tipo da nota', max_length=50)
     numnota = models.IntegerField('Numero da Nota')
     dataemissnota = models.DateField('Data de Emisso da Nota')
     serienota = models.CharField('Série da Nota', max_length=100)
     xml = models.CharField('XML', max_length=100)
     anotacoes = models.CharField('Anotaçoes', max_length=100)
+    locacao = models.ForeignKey(Locacao_Acao, verbose_name='Solicitação', null=True, on_delete=models.SET_NULL)
+    status = models.ForeignKey(Status, verbose_name='Status', null=True, on_delete=models.SET_NULL)
 
     class Meta:
         verbose_name = 'Pagamento'
@@ -365,7 +367,6 @@ class Contrato_Locacao(Base):
     datacontrato = models.DateField('Data do Contrato')
     valorservico = models.DecimalField('Valor do Serviço', max_digits=10, decimal_places=2)
     valorlocacao = models.DecimalField('Valor da Locação', max_digits=10, decimal_places=2)
-    pagto = models.ForeignKey(Pagamento, verbose_name='Pagamento', on_delete=models.CASCADE)
     locacao = models.ForeignKey(Locacao_Acao, verbose_name='Solicitação', null=True, on_delete=models.SET_NULL)
     status = models.ForeignKey(Status, verbose_name='Status', null=True, on_delete=models.SET_NULL)
 

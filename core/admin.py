@@ -88,7 +88,7 @@ class AprovacaoAdmin(admin.ModelAdmin):
 
 @admin.register(Cronograma)
 class CronogramaAdmin(admin.ModelAdmin):
-    list_display = ['id','locacao_acao','datainicio','datafim','anotacoes','status',]
+    list_display = ['id','locacao','datainicio','datafim','anotacoes','status',]
 
 @admin.register(TipoPagto)
 class TipoPagtoAdmin(admin.ModelAdmin):

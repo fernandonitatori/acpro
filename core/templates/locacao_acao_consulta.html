@@ -80,10 +80,6 @@
                             </td>
                             <td></td>
                             <td class="retangulo">
-                                    Recebimento
-                            </td>
-                            <td></td>
-                            <td class="retangulo">
                                     Finalização
                             </td>
                         </tr>
@@ -167,12 +163,13 @@
                                     <td class="quadrado"></td>
                                 {% endif %}
                             {% endif %}
+
                             <td><img src="/static/img/seta_proximo.gif"></td>
                             <!-- Bloco Contratação -->
                             <!-- Se existe o processo de Contratacao pra locação e o status é o status chave do processo de
                              Contratação (trava o bloco Contratação e passa para o bloco Recebimento)-->
                             {% if consultacompras.sede == True %}
-                                {% if consultascontrat.status|stringformat:'s' == status_chave_contrat %}
+                                {% if consultacontrat.status|stringformat:'s' == status_chave_contrat %}
                                         <td class="quadrado_azul">
                                              {{ consultacontrat.status }}
                                         </td>
@@ -196,7 +193,7 @@
                                     {% endif %}
                                 {% endif %}
                             {% else %}
-                                {% if consultascontrat.status|stringformat:'s' == status_chave_contrat %}
+                                {% if consultacontrat.status|stringformat:'s' == status_chave_contrat %}
                                         <td class="quadrado_azul">
                                              {{ consultacontrat.status }}
                                         </td>
@@ -221,15 +218,178 @@
                                 {% endif %}
                             {% endif %}
                             <td><img src="/static/img/seta_proximo.gif"></td>
-                            <td class="quadrado">
-
+                            <!-- Bloco Pagamento -->
+                            <!-- Se existe o processo de contratação pra locação e o status é o status chave do processo de
+                             pagamento (trava o bloco Pagamento e passa para o bloco Finalização)-->
+                            {%if consultapagto.status|stringformat:'s' == status_chave_pagamento %}
+                            <td class="quadrado_azul">
+                                {{ consultapagto.status }}
                             </td>
+                            {%else%}
+                                <!-- Se o processo de pagamento não existir abre o cadastro -->
+                                {% if consultapagto == '' %}
+                                    <!-- se o status geral da locacao for igual ao status chave da contratação trava o
+                                     bloco Pagamentos e abre o cadastro  -->
+                                    {%if consulta.status_geral|stringformat:'s' == status_chave_contrat %}
+                                        <td class="quadrado">
+                                            <a href="#ModalCreatePagto" data-toggle="modal">Cadastrar</a>
+                                        </td>
+                                    {% else %}
+                                        <td class="quadrado">
+                                        </td>
+                                    {% endif %}
+                                {% else %}
+                                    <td class="quadrado_verde">
+                                        <a href="#ModalUpdPagto" data-toggle="modal"> {{ consultapagto.status }}</a>
+                                    </td>
+                                {% endif %}
+                            {% endif %}
                             <td><img src="/static/img/seta_proximo.gif"></td>
                             <td class="quadrado">
 
                             </td>
+
+                        </tr>
+                        <tr>
+                            <td >
+
+                            </td>
+
+                            <td></td>
+                            <td >
+
+                            </td>
+                            <td></td>
+                            <td>
+
+                            </td>
+                            <td></td>
+                            <td>
+
+                            </td>
+                            <td></td>
+                            <td>
+
+                            </td>
+                            <td></td>
+                            <td>
+
+                            </td>
+                            <td></td>
+                            <td>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="retangulo_vazio">
+
+                            </td>
+                            </a>
+                            <td></td>
+                            <td >
+
+                            </td>
+                            <td></td>
+                            <td >
+
+                            </td>
+                            <td></td>
+                            <td >
+
+                            </td>
+                            <td></td>
+                            <td >
+
+                            </td>
+                            <td></td>
+                            <td >
+
+                            </td>
+                            <td></td>
+                            <td >
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td >
+
+                            </td>
+                            </a>
+                            <td></td>
+                            <td >
+
+                            </td>
+                            <td></td>
+                            <td >
+
+                            </td>
+                            <td></td>
+                            <td >
+
+                            </td>
+                            <td></td>
+                            <td class="retangulo">
+                                    Recebimento
+                            </td>
+                            <td></td>
+                            <td >
+
+                            </td>
+                            <td></td>
+                            <td>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td >
+
+                            </td>
+                            </a>
+                            <td></td>
+                            <td >
+
+                            </td>
+                            <td></td>
+                            <td >
+
+                            </td>
+                            <td></td>
+                            <td >
+
+                            </td>
                             <td><img src="/static/img/seta_proximo.gif"></td>
-                            <td class="quadrado">
+                            <!-- Bloco Recebimento -->
+                            <!-- Se existe o processo de recebimento pra locação e o status é o status chave do processo de
+                             recebimento (trava o bloco Recebimento e passa para o bloco Finalização)-->
+                            {%if consultareceb.status|stringformat:'s' == status_chave_receb %}
+                            <td class="quadrado_azul">
+                                {{ consultareceb.status }}
+                            </td>
+                            {%else%}
+                                <!-- Se o processo de pagamento não existir abre o cadastro -->
+                                {% if consultareceb == '' %}
+                                    <!-- se o status geral da locacao for igual ao status chave da contratação trava o
+                                     bloco Pagamentos e abre o cadastro  -->
+                                    {%if consulta.status_geral|stringformat:'s' == status_chave_contrat %}
+                                        <td class="quadrado">
+                                            <a href="#ModalCreateReceb" data-toggle="modal">Cadastrar</a>
+                                        </td>
+                                    {% else %}
+                                        <td class="quadrado">
+                                        </td>
+                                    {% endif %}
+                                {% else %}
+                                    <td class="quadrado_verde">
+                                        <a href="#ModalUpdReceb" data-toggle="modal"> {{ consultareceb.status }}</a>
+                                    </td>
+                                {% endif %}
+                            {% endif %}
+                            <td><img src="/static/img/seta_proximo.gif"></td>
+                            <td >
+
+                            </td>
+                            <td></td>
+                            <td>
 
                             </td>
                         </tr>
@@ -780,17 +940,7 @@
                                                 <td  align="left"><input type="text" name="valorlocacao" size="50" id="id_valorlocacao" maxlength="50" required></td>
                                                 <td></td>
                                             </tr>
-                                            <tr>
-                                                <td  align="right"><div class="form-horizontal"><b>Pagamento:</b></div></td>
-                                                <td  align="left"><select name="pagto" id="id_pagto">
-                                                                     {% for pagto in pagamentos %}
-                                                                            <option value="{{pagto.id}}">{{pagto.descricao}}</option>
-                                                                     {% endfor %}
 
-                                                                 </select>
-                                                </td>
-                                                <td></td>
-                                            </tr>
                                             <tr>
                                                 <td  align="right"><div class="form-horizontal"><b>Solicitação de Locacao:</b></div></td>
                                                 <td  align="left"><input type="text" name="locacao" id="id_locacao" size="5" maxlength="5" value="{{consulta.id}}" readonly> {{ consulta.acao }}</td>
@@ -852,6 +1002,214 @@
                                             </tr>
                                             <tr>
                                                 <td  align="right"><div class="form-horizontal"><b>Data do Processo:</b></div></td>
+                                                <td  align="left"><input type="text" name="dataprocesso" id="id_dataprocesso" maxlength="10" size="10" value="{{ consultacontrat.dataprocesso }}" required></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Instrumento Contratual:</b></div></td>
+                                                <td  align="left"><input type="text" name="instrcontratual" id="id_instrcontratual" maxlength="50" size="50" value="{{ consultacontrat.instrcontratual }}" required></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Data do Contrato:</b></div></td>
+                                                <td  align="left"><input type="text" name="datacontrato" id="id_datacontrato" size="50" maxlength="50" value="{{ consultacontrat.datacontrato }}" required></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Valor do Serviço:</b></div></td>
+                                                <td  align="left"><input type="text" name="valorservico" id="id_valorservico" size="20" maxlength="20" value="{{ consultacontrat.valorservico }}" required></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Valor da Locação:</b></div></td>
+                                                <td  align="left"><input type="text" name="valorlocacao" id="id_valorlocacao" size="20" maxlength="20" value="{{ consultacontrat.valorlocacao }}" required></td>
+                                                <td></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Solicitação de Locacao:</b></div></td>
+                                                <td  align="left"><input type="text" name="locacao" id="id_locacao" size="5" maxlength="5" value="{{consulta.id}}" readonly> {{ consulta.acao }}</td>
+                                                <td></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Status:</b></div></td>
+                                                <td  align="left"><select name="status"  id="id_status">
+                                                                     {% for status in statuses %}
+                                                                         {%if status.tipo_status|stringformat:'s' == 'Contratação' %}
+                                                                             {%if consultacontrat.status|stringformat:'s' == status.descricao %}
+                                                                                     <option value="{{status.id}}" selected>{{status.descricao}}</option>
+                                                                             {% else %}
+                                                                                     <option value="{{status.id}}">{{status.descricao}}</option>
+                                                                             {% endif %}
+                                                                         {% endif %}
+                                                                     {% endfor %}
+                                                                     <option value="">---------</option>
+                                                                 </select>
+                                                </td>
+                                                <td></td>
+                                            </tr>
+                                     </tbody>
+                                </table>
+                                <div class="grupo_botoes_form" align="center">
+
+                                            <button type="submit" class="btn btn-primary">Salvar</button>
+                                            <button type="button" class="btn btn-warning">
+                                                <a href="../../consultaumalocacao/{{consulta.id}}">Cancelar</a>
+                                            </button>
+
+                                </div>
+
+                            </form>
+                      </div>
+                </div>
+              </div>
+            </div>
+            <!--     Modal Criar Pagamento -->
+            <div id="ModalCreatePagto" class="modal fade" role="dialog">
+              <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                      <div class="modal-header">
+                           <div class="titulo_modal">Cadastrar Processo em Pagamento</div>
+                      </div>
+                      <div class="modal-body">
+                            <form method="POST" autocomplete="off" action="{% url 'add_pagto' %}">
+                                {% csrf_token %}
+                                <table style="border-collapse:separate; border-spacing:20px 20px">
+                                    <tbody>
+                                             <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Descrição:</b></div></td>
+                                                <td  align="left"><input type="text" name="descricao" size="50" id="id_descricao" maxlength="50" required></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Tipo de Pagamento:</b></div></td>
+                                                <td  align="left"><select name="tipo_pagto" id="id_tipo_pagto">
+                                                                     {% for tipopagto in tipospagto %}
+                                                                            <option value="{{tipopagto.id}}">{{tipopagto.descricao}}</option>
+                                                                     {% endfor %}
+                                                                 </select>
+                                                </td>
+                                                <td></td>
+                                            </tr>
+                                             <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Atividade:</b></div></td>
+                                                <td  align="left"><input type="text" name="atividade" size="50" id="id_atividade" maxlength="50" required></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Parcela:</b></div></td>
+                                                <td  align="left"><input type="text" name="parcela" size="10" id="id_parcela" maxlength="10" required></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Quantidade de Parcelas:</b></div></td>
+                                                <td  align="left"><input type="text" name="qtde_parcelas" size="10" id="id_qtde_parcelas" maxlength="10" required></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Valor:</b></div></td>
+                                                <td  align="left"><input type="text" name="valor" size="10" id="id_valor" maxlength="10" required></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Data Prévia da Nota:</b></div></td>
+                                                <td  align="left"><input type="date" name="dataprevnota" size="10" id="id_dataprevnota" maxlength="10" required></td>
+                                                <td></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Tipo de Nota:</b></div></td>
+                                                <td  align="left"><input type="text" name="tiponota" size="50" id="id_tiponota" maxlength="50" required></td>
+                                                <td></td>
+                                            </tr>
+                                             <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Número da nota:</b></div></td>
+                                                <td  align="left"><input type="text" name="numnota" size="50" id="id_numnota" maxlength="50" required></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Data de emissão:</b></div></td>
+                                                <td  align="left"><input type="date" name="dataemissnota" size="50" id="id_dataemissnota" maxlength="50" required></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Série:</b></div></td>
+                                                <td  align="left"><input type="text" name="serienota" size="50" id="id_serienota" maxlength="50" required></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>XML:</b></div></td>
+                                                <td  align="left"><input type="text" name="xml" size="50" id="id_xml" maxlength="50" required></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Anotações:</b></div></td>
+                                                <td  align="left"><input type="text" name="anotacoes" size="50" id="id_anotacoes" maxlength="50" required></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Solicitação de Locacao:</b></div></td>
+                                                <td  align="left"><input type="text" name="locacao" id="id_locacao" size="5" maxlength="5" value="{{consulta.id}}" readonly> {{ consulta.acao }}</td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Status:</b></div></td>
+                                                <td  align="left"><select name="status"  id="id_status">
+                                                                     {% for status in statuses %}
+                                                                         {%if status.tipo_status|stringformat:'s' == 'Pagamento' %}
+                                                                                 <option value="{{status.id}}">{{status.descricao}}</option>
+                                                                         {% endif %}
+                                                                     {% endfor %}
+                                                                     <option value="">---------</option>
+                                                                 </select>
+                                                </td>
+                                                <td></td>
+                                            </tr>
+                                     </tbody>
+                                </table>
+                                <div class="grupo_botoes_form" align="center">
+
+                                            <button type="submit" class="btn btn-primary">Salvar</button>
+                                            <button type="button" class="btn btn-warning">
+                                                <a href="../../consultaumalocacao/{{consulta.id}}">Cancelar</a>
+                                            </button>
+
+                                </div>
+
+                            </form>
+                      </div>
+                </div>
+              </div>
+            </div>
+            <!--     Modal Update Pagamento -->
+            <div id="ModalUpdPagto" class="modal fade" role="dialog">
+              <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                      <div class="modal-header">
+                           <div class="titulo_modal">Alterar Processo em Pagamento</div>
+                      </div>
+                      <div class="modal-body">
+                            <form method="POST" autocomplete="off" action="../../updatecontrat/{{consultacontrat.id}}/">
+                                {% csrf_token %}
+                                <table style="border-collapse:separate; border-spacing:20px 20px">
+                                    <tbody>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Descrição:</b></div></td>
+                                                <td  align="left"><input type="text" name="descricao" id="id_descricao" size="50" maxlength="50" value="{{ consultacontrat.descricao }}" required></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Processo:</b></div></td>
+                                                <td  align="left"><input type="text" name="processo" id="id_processo" size="50" maxlength="50" value="{{ consultacontrat.processo }}" required></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Data do Processo:</b></div></td>
                                                 <td  align="left"><input type="date" placeholder="dd/mm/yyyy" name="dataprocesso" id="id_processo" maxlength="10" size="10" value="{{ consultacontrat.dataprocesso }}" required></td>
                                                 <td></td>
                                             </tr>
@@ -875,21 +1233,7 @@
                                                 <td  align="left"><input type="data" name="valorlocacao" id="id_valorlocacao" size="20" maxlength="20" value="{{ consultacontrat.valorlocacao }}" required></td>
                                                 <td></td>
                                             </tr>
-                                            <tr>
-                                                <td  align="right"><div class="form-horizontal"><b>Pagamento:</b></div></td>
-                                                <td  align="left"><select name="pagto"  id="id_pagto">
-                                                                     {% for pagto in pagamentos %}
-                                                                        {% if consultacontrat.pagto|stringformat:'s' == pagto.descricao %}
-                                                                            <option value="{{pagto.id}}" selected>{{pagto.descricao}}</option>
-                                                                        {% else %}
-                                                                            <option value="{{pagto.id}}">{{pagto.descricao}}</option>
-                                                                        {% endif %}
-                                                                     {% endfor %}
-                                                                     <option value="">---------</option>
-                                                                 </select>
-                                                </td>
-                                                <td></td>
-                                            </tr>
+
                                             <tr>
                                                 <td  align="right"><div class="form-horizontal"><b>Solicitação de Locacao:</b></div></td>
                                                 <td  align="left"><input type="text" name="locacao" id="id_locacao" size="5" maxlength="5" value="{{consulta.id}}" readonly> {{ consulta.acao }}</td>

@@ -10,7 +10,8 @@ from .models import Locacao_Acao, Acao, TipoLocacao, Memorial, Compras_Locacao, 
                     Contrato_Locacao, Pagamento, Cronograma, Aprovacao, Fornecedor, CatFornecedor, EndFornecedor, \
                     ContFornecedor, Tipo_Status, Status, Local, Linguagem, Projeto, TipoPagto
 
-from .forms import TipoLocacaoModelForm, MemorialModelForm, ComprasLocacaoModelForm, LocacaoAcaoModelForm, SedeModelForm
+from .forms import TipoLocacaoModelForm, MemorialModelForm, ComprasLocacaoModelForm, LocacaoAcaoModelForm, \
+                   SedeModelForm,  ContratoLocacaoModelForm, PagamentoModelForm
 
 
 class ListLocacaoAcaoView(ListView):
@@ -217,7 +218,7 @@ class CreateContrView(CreateView, SuccessMessageMixin):
     model = Contrato_Locacao
     template_name = 'locacao_acao_consulta.html'
     fields = ['descricao', 'processo', 'dataprocesso', 'instrcontratual', 'datacontrato', 'valorservico',
-              'valorlocacao', 'pagto', 'locacao', 'status']
+              'valorlocacao', 'locacao', 'status']
     success_url = reverse_lazy('sistema')
 
     def get_context_data(self, **kwargs):
@@ -234,7 +235,7 @@ class CreateContrView(CreateView, SuccessMessageMixin):
             contrato = form.save()
             print(contrato.locacao)
             locacao = Locacao_Acao.objects.get(descricao = contrato.locacao)
-            locacao.status_geral = sede.status
+            locacao.status_geral = contrato.status
             print(locacao)
             print(contrato.status)
             locacao.save()
@@ -244,11 +245,11 @@ class CreateContrView(CreateView, SuccessMessageMixin):
         return render(request, 'resultado.html', {'form': form})
 
 
-class CreatePagtoView(CreateView):
+class CreatePagtoView(CreateView, SuccessMessageMixin):
     model = Pagamento
     template_name = 'locacao_acao_consulta.html'
     fields = ['descricao', 'tipo_pagto', 'atividade', 'parcela', 'qtde_parcelas', 'valor', 'dataprevnota',
-              'tiponota', 'numnota', 'dataemissnota', 'serienota', 'xml', 'anotacoes']
+              'tiponota', 'numnota', 'dataemissnota', 'serienota', 'xml', 'anotacoes', 'locacao', 'status']
     success_url = reverse_lazy('list_loc')
 
     def get_context_data(self, **kwargs):
@@ -267,7 +268,7 @@ class CreatePagtoView(CreateView):
             locacao = Locacao_Acao.objects.get(descricao = pagto.locacao)
             locacao.status_geral = pagto.status
             print(locacao)
-            print(contrato.status)
+            print(pagto.status)
             locacao.save()
             pagto.save()
             messages.success(request, 'Processo em Contratação cadastrado com sucesso')
@@ -450,6 +451,12 @@ def consultaumalocacao(request,pk):
     consultacontrat = ''
     if Contrato_Locacao.objects.filter(locacao=idpassado).exists():
         consultacontrat = Contrato_Locacao.objects.get(locacao=idpassado)
+    consultapagto = ''
+    if Pagamento.objects.filter(locacao=idpassado).exists():
+        consultapagto = Pagamento.objects.get(locacao=idpassado)
+    consultareceb = ''
+    if Cronograma.objects.filter(locacao=idpassado).exists():
+        consultareceb = Cronograma.objects.get(locacao=idpassado)
     statuses = Status.objects.all()
     tiposlocacao = TipoLocacao.objects.all()
     acoes = Acao.objects.all()
@@ -457,20 +464,27 @@ def consultaumalocacao(request,pk):
     trps = TRP.objects.all()
     licitacoes = Licitacao.objects.all()
     pagamentos = Pagamento.objects.all()
+    tipospagto = TipoPagto.objects.all()
     context = {
             'consulta': consulta,
             'consultacompras': consultacompras,
             'consultasede': consultasede,
             'consultacontrat': consultacontrat,
+            'consultapagto': consultapagto,
+            'consultareceb': consultareceb,
             'status_chave_sol': 'Solicitado',
             'status_chave_compras': 'Compras - Aprovado',
             'status_chave_sede': 'Sede - Aprovado',
+            'status_chave_contrat': 'Contratação - Aprovado',
+            'status_chave_pagto': 'Pagamento - Aprovado',
+            'status_chave_receb': 'Recebimento - Aprovado',
             'statuses': statuses,
             'trps': trps,
             'tiposlocacao': tiposlocacao,
             'acoes': acoes,
             'licitacoes': licitacoes,
             'pagamentos': pagamentos,
+            'tipospagto': tipospagto,
             'memoriais': memoriais
     }
     return render(request, 'locacao_acao_consulta.html', context)
@@ -547,7 +561,7 @@ class UpdContratView(UpdateView):
     model = Contrato_Locacao
     template_name = 'locacao_acao_consulta.html'
     fields = ['descricao', 'processo', 'dataprocesso', 'instrcontratual', 'datacontrato', 'valorservico',
-                   'valorlocacao', 'pagto', 'locacao', 'status']
+                   'valorlocacao', 'locacao', 'status']
     success_url = reverse_lazy('list_loc')
     context_object_name = 'consultacontrat'
 
@@ -568,7 +582,7 @@ class UpdContratView(UpdateView):
             locacao.status_geral = form.cleaned_data['status']
             locacao.save()
             super(UpdContratView, self).post(request, **kwargs)
-            messages.success(request, 'Processo em Sede atualizado com sucesso')
+            messages.success(request, 'Processo em Contratação atualizado com sucesso')
             return HttpResponseRedirect(reverse_lazy('consultaumalocacao', args=[locacao.id]))
         return render(request, 'resultado.html', {'form': form})
 
@@ -577,7 +591,7 @@ class UpdPagtoView(UpdateView):
     model = Pagamento
     template_name = 'locacao_acao_consulta.html'
     fields = ['descricao', 'tipo_pagto', 'atividade', 'parcela', 'qtde_parcelas', 'valor', 'dataprevnota',
-              'tiponota', 'numnota', 'dataemissnota', 'serienota', 'xml', 'anotacoes']
+              'tiponota', 'numnota', 'dataemissnota', 'serienota', 'xml', 'anotacoes', 'status']
     success_url = reverse_lazy('list_loc')
     context_object_name = 'consultapagto'
 
