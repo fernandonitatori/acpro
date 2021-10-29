@@ -27,7 +27,11 @@
                             <div class="card-header" align="center"><font size="2"><b>Em Compras</b></font></div>
                             <div class="card-body">
                               <h1 class="card-title" align="center"> {{ numcompras }} </h1>
-                              <p class="card-text" align="center"><a class="link_visualizar" href="">Visualizar</a></p>
+                               {% if numcompras != 0 %}
+                                    <p class="card-text" align="center"><a class="link_visualizar" href="{% url 'listloc_compras' %}">Visualizar</a></p>
+                               {% else %}
+                                    <p class="card-text" align="center">Visualizar</p>
+                               {% endif %}
                             </div>
                          </div>
                    </div>
@@ -35,9 +39,13 @@
                         <div class="card text-white bg-success mb-1" style="width: 9rem;">
                            <div class="card-header" align="center"><font size="2"><b>Em Sede</b></font></div>
                            <div class="card-body">
-                             <h1 class="card-title" align="center">{{ numsede }}</h1>
-                             <p class="card-text" align="center">Visualizar</p>
-                           </div>
+                                 <h1 class="card-title" align="center">{{ numsede }}</h1>
+                                 {% if numsede != 0 %}
+                                     <p class="card-text" align="center"><a class="link_visualizar" href="{% url 'listloc_sede' %}">Visualizar</a></p>
+                                 {% else %}
+                                     <p class="card-text" align="center">Visualizar</p>
+                                 {% endif %}
+                             </div>
                         </div>
                    </div>
                    <div class="col-3" align="center">
@@ -45,7 +53,11 @@
                             <div class="card-header" align="center"><b><font size="2">Em Contratação</b></font></div>
                             <div class="card-body">
                               <h1 class="card-title" align="center">{{ numcontr }}</h1>
-                              <p class="card-text" align="center">Visualizar</p>
+                              {% if numcontr != 0 %}
+                                    <p class="card-text" align="center"><a class="link_visualizar" href="{% url 'listloc_contr' %}">Visualizar</a></p>
+                               {% else %}
+                                    <p class="card-text" align="center">Visualizar</p>
+                               {% endif %}
                             </div>
                         </div>
                    </div>
@@ -54,7 +66,12 @@
                          <div class="card-header" align="center"><b><font size="1px">Em Recebimento</b></font></div>
                          <div class="card-body">
                            <h1 class="card-title" align="center">{{ numrec }}</h1>
-                           <p class="card-text" align="center">Visualizar</p>
+                             {% if numrec != 0 %}
+                                 <p class="card-text" align="center"><a class="link_visualizar" href="{% url 'listloc_crono' %}">Visualizar</a></p>
+                             {% else %}
+                                 <p class="card-text" align="center">Visualizar</p>
+                             {% endif %}
+
                          </div>
                        </div>
                    </div>
@@ -63,7 +80,11 @@
                          <div class="card-header" align="center"><b><font size="2">Em Pagamento</b></font></div>
                          <div class="card-body">
                            <h1 class="card-title" align="center">{{ numpagto }}</h1>
-                           <p class="card-text" align="center">Visualizar</p>
+                             {% if numpagto != 0 %}
+                                 <p class="card-text" align="center"><a class="link_visualizar" href="{% url 'listloc_pagto' %}">Visualizar</a></p>
+                             {% else %}
+                                 <p class="card-text" align="center">Visualizar</p>
+                             {% endif %}
                          </div>
                        </div>
                    </div>
@@ -72,7 +93,12 @@
                          <div class="card-header" align="center"><b><font size="2">Finalizados</b></font></div>
                          <div class="card-body">
                            <h1 class="card-title" align="center"><font color="white"> {{ numfin }} </font></h1>
-                           <p class="card-text" align="center">Visualizar</p>
+                             {% if numfin != 0 %}
+                                 <p class="card-text" align="center"><a class="link_visualizar" href="{% url 'listloc_fin' %}">Visualizar</a></p>
+                             {% else %}
+                                 <p class="card-text" align="center">Visualizar</p>
+                             {% endif %}
+
                          </div>
                        </div>
                    </div>

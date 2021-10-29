@@ -9,13 +9,19 @@ from .views import IndexView, SistemaView, CreateSolicitView, ListLocacaoAcaoVie
                    CreateTipoPagtoView, UpdPagtoView, UpdCronoView
 
 
-from .views import salvatipoloc, consultalocacao
+from .views import salvatipoloc, consultalocacao, listloc_compras, listloc_contr, listloc_pagto, listloc_crono, \
+                   listloc_fin
 
 urlpatterns = [
     path('', IndexView.as_view(), name='index'),
     path('sistema/', SistemaView.as_view(), name='sistema'),
     path('add/', core.views.CreateSolicitView.as_view(), name='add_loc'),
     path('listlocacoes/', core.views.ListLocacaoAcaoView.as_view(), name='list_loc'),
+    path('listloc_compras/', core.views.listloc_compras, name='listloc_compras'),
+    path('listloc_contr/', core.views.listloc_contr, name='listloc_contr'),
+    path('listloc_pagto/', core.views.listloc_pagto, name='listloc_pagto'),
+    path('listloc_crono/', core.views.listloc_crono, name='listloc_crono'),
+    path('listloc_fin/', core.views.listloc_fin, name='listloc_fin'),
     path('<int:pk>/consultalocacao/', ConsultaLocacaoAcaoView.as_view(), name='cons_loc'),
     path('add_acao/', CreateAcaoView.as_view(), name='add_acao'),
     path('add_tipoloc/', CreateTipoLocView.as_view(), name='add_tipoloc'),

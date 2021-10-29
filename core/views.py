@@ -571,6 +571,107 @@ def finalizarlocacao(request,pk):
     messages.success(request, 'Processo  de locação finalizado com sucesso!')
     return render(request, 'locacao_acao_consulta.html')
 
+
+def listloc_compras(request):
+    locacoes_compras = Locacao_Acao.objects.filter(status_geral__descricao__startswith='Compras')
+    tiposlocacao = TipoLocacao.objects.all()
+    acoes = Acao.objects.all()
+    memoriais = Memorial.objects.all()
+    statuses = Status.objects.all()
+
+    context = {
+        'locacoes': locacoes_compras,
+        'tiposlocacao': tiposlocacao,
+        'acoes': acoes,
+        'memoriais': memoriais,
+        'statuses': statuses
+    }
+    return render(request, 'locacao_acao_listview.html', context)
+
+
+def listloc_sede(request):
+    locacoes_sede = Locacao_Acao.objects.filter(status_geral__descricao__startswith='Sede')
+    tiposlocacao = TipoLocacao.objects.all()
+    acoes = Acao.objects.all()
+    memoriais = Memorial.objects.all()
+    statuses = Status.objects.all()
+
+    context = {
+        'locacoes': locacoes_sede,
+        'tiposlocacao': tiposlocacao,
+        'acoes': acoes,
+        'memoriais': memoriais,
+        'statuses': statuses
+    }
+    return render(request, 'locacao_acao_listview.html', context)
+
+
+def listloc_contr(request):
+    locacoes_contr = Locacao_Acao.objects.filter(status_geral__descricao__startswith='Contratação')
+    tiposlocacao = TipoLocacao.objects.all()
+    acoes = Acao.objects.all()
+    memoriais = Memorial.objects.all()
+    statuses = Status.objects.all()
+
+    context = {
+        'locacoes': locacoes_contr,
+        'tiposlocacao': tiposlocacao,
+        'acoes': acoes,
+        'memoriais': memoriais,
+        'statuses': statuses
+    }
+    return render(request, 'locacao_acao_listview.html', context)
+
+
+def listloc_pagto(request):
+    locacoes_pagto = Locacao_Acao.objects.filter(status_geral__descricao__startswith='Pagamento')
+    tiposlocacao = TipoLocacao.objects.all()
+    acoes = Acao.objects.all()
+    memoriais = Memorial.objects.all()
+    statuses = Status.objects.all()
+
+    context = {
+        'locacoes': locacoes_pagto,
+        'tiposlocacao': tiposlocacao,
+        'acoes': acoes,
+        'memoriais': memoriais,
+        'statuses': statuses
+    }
+    return render(request, 'locacao_acao_listview.html', context)
+
+def listloc_crono(request):
+    locacoes_crono = Locacao_Acao.objects.filter(status_geral__descricao__startswith='Recebimento')
+    tiposlocacao = TipoLocacao.objects.all()
+    acoes = Acao.objects.all()
+    memoriais = Memorial.objects.all()
+    statuses = Status.objects.all()
+
+    context = {
+        'locacoes': locacoes_crono,
+        'tiposlocacao': tiposlocacao,
+        'acoes': acoes,
+        'memoriais': memoriais,
+        'statuses': statuses
+    }
+    return render(request, 'locacao_acao_listview.html', context)
+
+def listloc_fin(request):
+    locacoes_fin = Locacao_Acao.objects.filter(status_geral__descricao__startswith='Finalizado')
+    tiposlocacao = TipoLocacao.objects.all()
+    acoes = Acao.objects.all()
+    memoriais = Memorial.objects.all()
+    statuses = Status.objects.all()
+
+    context = {
+        'locacoes': locacoes_fin,
+        'tiposlocacao': tiposlocacao,
+        'acoes': acoes,
+        'memoriais': memoriais,
+        'statuses': statuses
+    }
+    return render(request, 'locacao_acao_listview.html', context)
+
+
 def defcomprasupdumalocacao(request,pk):
     idpassado = pk
     consultacompras = Compras_Locacao.objects.get(locacao=idpassado)
