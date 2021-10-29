@@ -142,7 +142,7 @@ class Locacao_Acao(Base):
     memorial = models.ForeignKey('Memorial', verbose_name='memorial', null=True, on_delete=models.SET_NULL)
     status = models.ForeignKey('Status', verbose_name='status', related_name='Status', null=True, on_delete=models.SET_NULL)
     status_geral = models.ForeignKey('Status', verbose_name='status geral', null=True, on_delete=models.SET_NULL)
-    descricao = models.CharField('Descriçao', max_length=50)
+    descricao = models.CharField('Descriçao', max_length=90)
 
     class Meta:
         verbose_name = 'Solicitação de Locação'
@@ -228,7 +228,7 @@ class ContFornecedor(Base):
 
 
 class Compras_Locacao(Base):
-    descricao = models.CharField('Descrição', max_length=60)
+    descricao = models.CharField('Descrição', max_length=90)
     numero = models.CharField('Número', max_length=50)
     data = models.DateField('Data')
     observacoes = models.CharField('Observaçoes', null=True, max_length=100, default='',blank=False)
@@ -277,7 +277,7 @@ class Licitacao(Base):
 
 
 class Sede(Base):
-    descricao = models.CharField('Descrição', max_length=50)
+    descricao = models.CharField('Descrição', max_length=90)
     numero = models.CharField('Número', max_length=50)
     dataminuta = models.DateField('Data Minuta')
     datadca = models.DateField('Data DCA')
@@ -335,7 +335,7 @@ class TipoPagto(Base):
 
 
 class Pagamento(Base):
-    descricao = models.CharField('Descrição', max_length=50)
+    descricao = models.CharField('Descrição', max_length=90)
     tipo_pagto = models.ForeignKey(TipoPagto, verbose_name='Tipo de Pagamento', null=True, on_delete=models.SET_NULL)
     atividade = models.CharField('Atividade', max_length=100)
     parcela = models.DecimalField('Parcela', max_digits=10,decimal_places=2)
@@ -360,7 +360,7 @@ class Pagamento(Base):
 
 
 class Contrato_Locacao(Base):
-    descricao = models.CharField('Descrição', max_length=50)
+    descricao = models.CharField('Descrição', max_length=90)
     processo = models.CharField('Processo', max_length=50)
     dataprocesso = models.DateField('Data do Processo')
     instrcontratual = models.CharField('Instrumento Contratual', max_length=50)

@@ -127,6 +127,7 @@
                             </td>
 
                             <td><img src="/static/img/seta_proximo.gif"></td>
+
                             <!-- Bloco Sede -->
                             <!-- Se existe o processo da sede pra locação e o status é o status chave do processo de
                              sede (trava o bloco Sede e passa para o bloco Contratação)-->
@@ -155,9 +156,13 @@
                                     {% endif %}
                                  {% endif %}
                             {% else %}
+                                {%if consultacompras.status|stringformat:'s' == status_chave_compras %}
                                     <td class="quadrado_verde">
                                         Não tramitou pela Sede.
                                     </td>
+                                {% else %}
+                                    <td class="quadrado"></td>
+                                {% endif %}
                             {% endif %}
 
                             <td><img src="/static/img/seta_proximo.gif"></td>
@@ -226,13 +231,17 @@
                                 {% if consultapagto == '' %}
                                     <!-- se o status geral da locacao for igual ao status chave da contratação trava o
                                      bloco Pagamentos e abre o cadastro  -->
-                                    {%if consulta.status_geral|stringformat:'s' == status_chave_contrat %}
+
+                                    {%if "Recebimento" in consulta.status_geral|stringformat:'s'%}
                                         <td class="quadrado">
                                             <a href="#ModalCreatePagto" data-toggle="modal">Cadastrar</a>
                                         </td>
                                     {% else %}
-                                        <td class="quadrado">
-                                        </td>
+                                        {%if consulta.status_geral|stringformat:'s' == status_chave_contrat  %}
+                                            <td class="quadrado">
+                                                 <a href="#ModalCreatePagto" data-toggle="modal">Cadastrar</a>
+                                            </td>
+                                        {% endif %}
                                     {% endif %}
                                 {% else %}
                                     <td class="quadrado_verde">
@@ -381,7 +390,7 @@
                                             <a href="#ModalCreateReceb" data-toggle="modal">Cadastrar</a>
                                         </td>
                                     {% else %}
-                                         {% if consulta.status_geral|stringformat:'s' == status_chave_pagto %}
+                                         {%if "Pagamento" in consulta.status_geral|stringformat:'s'%}
                                             <td class="quadrado">
                                                 <a href="#ModalCreateReceb" data-toggle="modal">Cadastrar</a>
                                             </td>
@@ -410,10 +419,10 @@
 
             <!--     Modal Criar Compras -->
             <div id="ModalCreateCompras" class="modal fade" role="dialog">
-              <div class="modal-dialog">
+              <div class="modal-dialog modal-lg">
 
                 <!-- Modal content-->
-                <div class="modal-content">
+                <div class="modal-content" align="center">
                       <div class="modal-header">
                            <div class="titulo_modal">Cadastrar Processo em Compras</div>
                       </div>
@@ -424,7 +433,7 @@
                                     <tbody>
                                             <tr>
                                                 <td  align="right"><div class="form-horizontal"><b>Descrição:</b></div></td>
-                                                <td  align="left"><input type="text" name="descricao" size="50" id="id_descricao" maxlength="50" required></td>
+                                                <td  align="left"><input type="text" name="descricao" size="60" id="id_descricao" maxlength="60" value="SC de {{ consulta.tipo_locacao }} - {{consulta.descricao}}" required></td>
                                                 <td></td>
                                             </tr>
                                             <tr>
@@ -502,10 +511,10 @@
             </div>
             <!--     Modal Update Compras -->
             <div id="ModalUpdCompras" class="modal fade" role="dialog">
-              <div class="modal-dialog">
+              <div class="modal-dialog modal-lg">
 
                 <!-- Modal content-->
-                <div class="modal-content">
+                <div class="modal-content" align="center">
                       <div class="modal-header">
                            <div class="titulo_modal">Alterar Processo em Compras</div>
                       </div>
@@ -605,10 +614,10 @@
 
             <!--     Modal Update Solicitacoes -->
             <div id="ModalUpdSolicit" class="modal fade" role="dialog">
-              <div class="modal-dialog">
+              <div class="modal-dialog modal-lg">
 
                 <!-- Modal content-->
-                <div class="modal-content">
+                <div class="modal-content" align="center">
                       <div class="modal-header">
                            <div class="titulo_modal">Alterar Processo em Solicitação</div>
                       </div>
@@ -725,10 +734,10 @@
 
             <!--     Modal Criar sede -->
             <div id="ModalCreateSede" class="modal fade" role="dialog">
-              <div class="modal-dialog">
+              <div class="modal-dialog modal-lg">
 
                 <!-- Modal content-->
-                <div class="modal-content">
+                <div class="modal-content" align="center">
                       <div class="modal-header">
                            <div class="titulo_modal">Cadastrar Processo em Sede</div>
                       </div>
@@ -739,7 +748,7 @@
                                     <tbody>
                                              <tr>
                                                 <td  align="right"><div class="form-horizontal"><b>Descrição:</b></div></td>
-                                                <td  align="left"><input type="text" name="descricao" size="50" id="id_descricao" maxlength="50" required></td>
+                                                <td  align="left"><input type="text" name="descricao" size="60" id="id_descricao" maxlength="60" value="Sede - {{ consulta.tipo_locacao }} - {{ consulta.descricao }}" required></td>
                                                 <td></td>
                                             </tr>
 
@@ -811,10 +820,10 @@
             </div>
             <!--     Modal Update Sede -->
             <div id="ModalUpdSede" class="modal fade" role="dialog">
-              <div class="modal-dialog">
+              <div class="modal-dialog modal-lg">
 
                 <!-- Modal content-->
-                <div class="modal-content">
+                <div class="modal-content" align="center">
                       <div class="modal-header">
                            <div class="titulo_modal">Alterar Processo em Sede</div>
                       </div>
@@ -904,10 +913,10 @@
             </div>
             <!--     Modal Criar Contratacao -->
             <div id="ModalCreateContrat" class="modal fade" role="dialog">
-              <div class="modal-dialog">
+              <div class="modal-dialog modal-lg">
 
                 <!-- Modal content-->
-                <div class="modal-content">
+                <div class="modal-content" align="center">
                       <div class="modal-header">
                            <div class="titulo_modal">Cadastrar Processo em Contratação</div>
                       </div>
@@ -918,7 +927,7 @@
                                     <tbody>
                                              <tr>
                                                 <td  align="right"><div class="form-horizontal"><b>Descrição:</b></div></td>
-                                                <td  align="left"><input type="text" name="descricao" size="50" id="id_descricao" maxlength="50" required></td>
+                                                <td  align="left"><input type="text" name="descricao" size="60" id="id_descricao" maxlength="60" value="Contratação - {{ consulta.tipo_locacao }} - {{ consulta.descricao }}" required></td>
                                                 <td></td>
                                             </tr>
                                              <tr>
@@ -990,10 +999,10 @@
             </div>
             <!--     Modal Update Contratação -->
             <div id="ModalUpdContrat" class="modal fade" role="dialog">
-              <div class="modal-dialog">
+              <div class="modal-dialog modal-lg">
 
                 <!-- Modal content-->
-                <div class="modal-content">
+                <div class="modal-content" align="center">
                       <div class="modal-header">
                            <div class="titulo_modal">Alterar Processo em Contratação</div>
                       </div>
@@ -1078,8 +1087,8 @@
               </div>
             </div>
             <!--     Modal Criar Pagamento -->
-            <div id="ModalCreatePagto" class="modal fade" role="dialog">
-              <div class="modal-dialog">
+            <div id="ModalCreatePagto" class="modal faderole="dialog">
+              <div class="modal-dialog modal-lg" align="center" >
 
                 <!-- Modal content-->
                 <div class="modal-content">
@@ -1093,7 +1102,7 @@
                                     <tbody>
                                              <tr>
                                                 <td  align="right"><div class="form-horizontal"><b>Descrição:</b></div></td>
-                                                <td  align="left"><input type="text" name="descricao" size="50" id="id_descricao" maxlength="50" required></td>
+                                                <td  align="left"><input type="text" name="descricao" size="50" id="id_descricao" maxlength="50" value="Pagamento - {{ consulta.tipo_locacao }} - {{ consulta.descricao }}" required></td>
                                                 <td></td>
                                             </tr>
                                             <tr>
@@ -1104,8 +1113,7 @@
                                                                      {% endfor %}
                                                                  </select>
                                                 </td>
-                                                <td></td>
-                                            </tr>
+                                             </tr>
                                              <tr>
                                                 <td  align="right"><div class="form-horizontal"><b>Atividade:</b></div></td>
                                                 <td  align="left"><input type="text" name="atividade" size="50" id="id_atividade" maxlength="50" required></td>
@@ -1198,10 +1206,10 @@
             </div>
             <!--     Modal Update Pagamento -->
             <div id="ModalUpdPagto" class="modal fade" role="dialog">
-              <div class="modal-dialog">
+              <div class="modal-dialog modal-lg">
 
                 <!-- Modal content-->
-                <div class="modal-content">
+                <div class="modal-content" align="center">
                       <div class="modal-header">
                            <div class="titulo_modal">Alterar Processo em Pagamento</div>
                       </div>
@@ -1325,10 +1333,10 @@
             </div>
             <!--     Modal Criar Recebimento -->
             <div id="ModalCreateReceb" class="modal fade" role="dialog">
-              <div class="modal-dialog">
+              <div class="modal-dialog modal-lg">
 
                 <!-- Modal content-->
-                <div class="modal-content">
+                <div class="modal-content" align="center">
                       <div class="modal-header">
                            <div class="titulo_modal">Cadastrar Processo em Recebimento</div>
                       </div>
@@ -1396,14 +1404,14 @@
                 </div>
               </div>
             </div>
-            <!--     Modal Update Pagamento -->
+            <!--     Modal Update Recebimento-->
             <div id="ModalUpdReceb" class="modal fade" role="dialog">
-              <div class="modal-dialog">
+              <div class="modal-dialog modal-lg">
 
                 <!-- Modal content-->
-                <div class="modal-content">
+                <div class="modal-content" align="center">
                       <div class="modal-header">
-                           <div class="titulo_modal">Alterar Processo em Pagamento</div>
+                           <div class="titulo_modal">Alterar Processo em Recebimento</div>
                       </div>
                       <div class="modal-body">
                             <form method="POST" autocomplete="off" action="../../updatecrono/{{consultareceb.id}}/">
@@ -1417,26 +1425,26 @@
                                              </tr>
                                              <tr>
                                                 <td  align="right"><div class="form-horizontal"><b>Atividade:</b></div></td>
-                                                <td  align="left"><input type="text" name="atividade" size="50" id="id_atividade" maxlength="50" value="{{ consultapagto.atividade }}" required> </td>
+                                                <td  align="left"><input type="text" name="atividade" size="50" id="id_atividade" maxlength="50" value="{{ consultareceb.atividade }}" required> </td>
                                                 <td></td>
                                             </tr>
 
                                             <tr>
                                                 <td  align="right"><div class="form-horizontal"><b>Data de Início:</b></div></td>
-                                                <td  align="left"><input type="text" name="datainicio" size="10" id="id_datainicio" value="{{ consultapagto.dataprevnota }}" maxlength="10" required></td>
+                                                <td  align="left"><input type="text" name="datainicio" size="10" id="id_datainicio" value="{{ consultareceb.datainicio }}" maxlength="10" required></td>
                                                 <td></td>
                                             </tr>
 
 
                                             <tr>
                                                 <td  align="right"><div class="form-horizontal"><b>Data de Término:</b></div></td>
-                                                <td  align="left"><input type="text" name="datafim" size="10" id="id_datafim" maxlength="10" value="{{ consultapagto.dataemissnota }}" required></td>
+                                                <td  align="left"><input type="text" name="datafim" size="10" id="id_datafim" maxlength="10" value="{{ consultareceb.datafim }}" required></td>
                                                 <td></td>
                                             </tr>
 
                                             <tr>
                                                 <td  align="right"><div class="form-horizontal"><b>Anotações:</b></div></td>
-                                                <td  align="left"><input type="text" name="anotacoes" size="50" id="id_anotacoes" maxlength="50" value="{{ consultapagto.anotacoes }}" required></td>
+                                                <td  align="left"><input type="text" name="anotacoes" size="50" id="id_anotacoes" maxlength="50" value="{{ consultareceb.anotacoes }}" required></td>
                                                 <td></td>
                                             </tr>
 
@@ -1475,10 +1483,10 @@
             </div>
             <!--     Modal Finalizar-->
             <div id="ModalFinalizar" class="modal fade" role="dialog">
-              <div class="modal-dialog">
+              <div class="modal-dialog modal-lg">
 
                 <!-- Modal content-->
-                <div class="modal-content">
+                <div class="modal-content" align="center">
                       <div class="modal-header">
                            <div class="titulo_modal">Finalizar Processo de Locação</div>
                       </div>
