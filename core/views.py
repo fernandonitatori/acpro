@@ -569,7 +569,7 @@ def finalizarlocacao(request,pk):
     consulta.status_geral = statusfinal
     consulta.save()
     messages.success(request, 'Processo  de locação finalizado com sucesso!')
-    return render(request, 'locacao_acao_consulta.html')
+    return redirect('consultaumalocacao',pk=idpassado)
 
 
 def listloc_compras(request):

@@ -212,9 +212,11 @@
                                                     </td>
                                                 {% endif %}
                                     {% else %}
+                                            {%if consulta.status_geral|stringformat:'s' == status_chave_compras %}
                                                 <td class="quadrado_verde">
                                                     <a href="#ModalUpdContrat" data-toggle="modal"> {{ consultacontrat.status }}</a>
                                                 </td>
+                                            {% endif %}
                                     {% endif %}
                                 {% endif %}
                             {% endif %}
@@ -223,9 +225,9 @@
                             <!-- Se existe o processo de contratação pra locação e o status é o status chave do processo de
                              pagamento (trava o bloco Pagamento e passa para o bloco Finalização)-->
                             {%if consultapagto.status|stringformat:'s' == status_chave_pagto %}
-                            <td class="quadrado_azul">
-                                {{ consultapagto.status }}
-                            </td>
+                                <td class="quadrado_azul">
+                                    {{ consultapagto.status }}
+                                </td>
                             {%else%}
                                 <!-- Se o processo de pagamento não existir abre o cadastro -->
                                 {% if consultapagto == '' %}
@@ -241,7 +243,10 @@
                                             <td class="quadrado">
                                                  <a href="#ModalCreatePagto" data-toggle="modal">Cadastrar</a>
                                             </td>
+                                        {% else %}
+                                                <td class="quadrado"></td>
                                         {% endif %}
+
                                     {% endif %}
                                 {% else %}
                                     <td class="quadrado_verde">
@@ -1136,7 +1141,7 @@
                                             </tr>
                                             <tr>
                                                 <td  align="right"><div class="form-horizontal"><b>Data Prévia da Nota:</b></div></td>
-                                                <td  align="left"><input type="text" name="dataprevnota" size="10" id="id_dataprevnota" maxlength="10" required></td>
+                                                <td  align="left"><input type="date" name="dataprevnota" size="10" id="id_dataprevnota" maxlength="10" required></td>
                                                 <td></td>
                                             </tr>
 
@@ -1152,7 +1157,7 @@
                                             </tr>
                                             <tr>
                                                 <td  align="right"><div class="form-horizontal"><b>Data de emissão:</b></div></td>
-                                                <td  align="left"><input type="text" name="dataemissnota" size="50" id="id_dataemissnota" maxlength="50" required></td>
+                                                <td  align="left"><input type="date" name="dataemissnota" size="50" id="id_dataemissnota" maxlength="50" required></td>
                                                 <td></td>
                                             </tr>
                                             <tr>
