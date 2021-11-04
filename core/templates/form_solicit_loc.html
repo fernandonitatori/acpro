@@ -84,6 +84,11 @@
                                                 <td></td>
                                             </tr>
                                             <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Prazo:</b></div></td>
+                                                <td  align="left"><input type="text" name="prazo" id="prazo" size="10" maxlength="10" value="{{consultacompras.prazo}}" placeholder="Prazo em dias" required ></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
                                                 <td  align="right"><div class="form-horizontal"><b>Status:</b></div></td>
                                                 <td  align="left"><select name="status"  id="id_status">
                                                                  {% for status in statuses %}

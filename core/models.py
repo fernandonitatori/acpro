@@ -143,6 +143,7 @@ class Locacao_Acao(Base):
     status = models.ForeignKey('Status', verbose_name='status', related_name='Status', null=True, on_delete=models.SET_NULL)
     status_geral = models.ForeignKey('Status', verbose_name='status geral', null=True, on_delete=models.SET_NULL)
     descricao = models.CharField('Descriçao', max_length=90)
+    prazo = models.IntegerField('Prazo')
 
     class Meta:
         verbose_name = 'Solicitação de Locação'
@@ -234,6 +235,7 @@ class Compras_Locacao(Base):
     observacoes = models.CharField('Observaçoes', null=True, max_length=100, default='',blank=False)
     locacao = models.ForeignKey(Locacao_Acao, verbose_name='ação', null=True, on_delete=models.SET_NULL)
     trp = models.ForeignKey(TRP, verbose_name='tRP', null=True, on_delete=models.SET_NULL, blank=False)
+    prazo = models.IntegerField('Prazo')
     status = models.ForeignKey(Status, verbose_name='status', null=True, on_delete=models.SET_NULL)
     sede = models.BooleanField('Sede')
 
@@ -284,6 +286,7 @@ class Sede(Base):
     anotacoes = models.CharField('Anotaçoes', max_length=100)
     licitacao = models.ForeignKey(Licitacao, verbose_name='Licitação', null=True, on_delete=models.SET_NULL)
     locacao = models.ForeignKey(Locacao_Acao, verbose_name='Solicitação', null=True, on_delete=models.SET_NULL)
+    prazo = models.IntegerField('Prazo')
     status = models.ForeignKey(Status, verbose_name='Status', null=True, on_delete=models.SET_NULL)
 
     class Meta:
@@ -313,6 +316,7 @@ class Cronograma(Base):
     datainicio = models.DateField('Data Inicial')
     datafim = models.DateField('Data Final')
     anotacoes = models.CharField('Anotaçoes', max_length=100, null=True, blank=True)
+    prazo = models.IntegerField('Prazo')
     status = models.ForeignKey(Status, verbose_name='Status', null=True, on_delete=models.SET_NULL)
 
     class Meta:
@@ -349,6 +353,7 @@ class Pagamento(Base):
     xml = models.CharField('XML', max_length=100)
     anotacoes = models.CharField('Anotaçoes', max_length=100)
     locacao = models.ForeignKey(Locacao_Acao, verbose_name='Solicitação', null=True, on_delete=models.SET_NULL)
+    prazo = models.IntegerField('Prazo')
     status = models.ForeignKey(Status, verbose_name='Status', null=True, on_delete=models.SET_NULL)
 
     class Meta:
@@ -368,6 +373,7 @@ class Contrato_Locacao(Base):
     valorservico = models.DecimalField('Valor do Serviço', max_digits=10, decimal_places=2)
     valorlocacao = models.DecimalField('Valor da Locação', max_digits=10, decimal_places=2)
     locacao = models.ForeignKey(Locacao_Acao, verbose_name='Solicitação', null=True, on_delete=models.SET_NULL)
+    prazo = models.IntegerField('Prazo')
     status = models.ForeignKey(Status, verbose_name='Status', null=True, on_delete=models.SET_NULL)
 
     class Meta:

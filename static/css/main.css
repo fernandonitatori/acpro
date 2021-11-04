@@ -7,12 +7,12 @@ body {
   background: #fff;
   font-size: 14px;
   font-weight: 400;
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Oswald', sans-serif;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   -webkit-font-smoothing: subpixel-antialiased;
-  color: #abacae;
+  color: #000000;
   line-height: 25px;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
@@ -20,7 +20,7 @@ body {
 }
 
 h1, h2, h3, h4 {
-  font-size: 38px;
+  font-size: 30px;
   color: #222222;
   font-weight: 700;
   font-family: 'Arvo', serif;
@@ -106,7 +106,7 @@ a:not([href]):not([tabindex]) {
 }
 
 .btn {
-  font-size: 14px;
+  font-size: 12px;
   padding: 10px 30px;
   cursor: pointer;
   font-weight: 400;
@@ -1413,4 +1413,130 @@ textarea {
 
 .social-icon .google:hover {
   background: #CE332A;
+}
+
+.conteudo_tabela {
+    font-size: 11px;
+    font-family: 'Oswald',sans-serif;
+}
+
+.conteudo_form {
+    font-size: 12px;
+    padding: 0px 0px 0px 0px;
+}
+
+.titulo_listview {
+    padding: 5px 15px 0px;
+    font-size: 20px;
+    font-family: 'Oswald',sans-serif;
+}
+
+.titulo_cadastro {
+    padding: 5px 15px 0px;
+    font-size: 20px;
+    font-family: 'Oswald',sans-serif;
+}
+
+.titulo_modal{
+    padding: 5px 15px 0px;
+    font-size: 20px;
+    font-family: 'Oswald',sans-serif;
+    font-weight: bold;
+}
+
+.filtro_processo {
+        padding: 0px 0px 0px 0px;
+}
+
+.grupo_botoes_form {
+    padding: 20px 20px 20px 20px;
+}
+
+.link_visualizar {
+    color: #FFFFFF;
+}
+
+.caixa_input {
+    width: 70px;
+    height: 20px;
+}
+
+.retangulo {
+    border-top: 2px solid black;
+    border-left: 2px solid black;
+    border-bottom: 2px solid black;
+    border-right: 2px solid black;
+    width: 100px;
+    height: 20px;
+    text-align: center;
+    font-weight: bold;
+    background-color: #ECF0F1;
+}
+
+.prazo_verde {
+    border-top: 2px solid black;
+    border-left: 2px solid black;
+    border-bottom: 2px solid black;
+    border-right: 2px solid black;
+    width: 100px;
+    height: 20px;
+    text-align: center;
+    font-weight: bold;
+    background-color: #AED6F1;
+}
+
+
+.retangulo_vazio {
+    width: 100px;
+    height: 20px;
+    text-align: center;
+    font-weight: bold;
+    background-color: #ECF0F1;
+}
+
+.quadrado {
+    border-top: 2px solid black;
+    border-left: 2px solid black;
+    border-bottom: 2px solid black;
+    border-right: 2px solid black;
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.quadrado_azul {
+    border-top: 2px solid black;
+    border-left: 2px solid black;
+    border-bottom: 2px solid black;
+    border-right: 2px solid black;
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    font-weight: bold;
+    background-color: #AED6F1;
+}
+
+.quadrado_verde {
+    border-top: 2px solid black;
+    border-left: 2px solid black;
+    border-bottom: 2px solid black;
+    border-right: 2px solid black;
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    font-weight: bold;
+    background-color: #D5F5E3 ;
+}
+
+.login-header {
+    width: 100%;
+    height: 100px;
+    align: center;
+}
+
+.login-body {
+    width: 100%;
+    height: 300x;
+    align: center;
 }

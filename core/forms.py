@@ -7,7 +7,7 @@ class LocacaoAcaoModelForm(forms.ModelForm):
 
     class Meta:
         model = Locacao_Acao
-        fields = ['tipo_locacao', 'acao', 'memorial', 'status', 'status_geral']
+        fields = ['tipo_locacao', 'acao', 'memorial', 'prazo', 'status', 'status_geral']
 
 
 class AcaoModelForm(forms.ModelForm):
@@ -35,14 +35,14 @@ class ComprasLocacaoModelForm(forms.ModelForm):
 
     class Meta:
          model = Compras_Locacao
-         fields = ['descricao', 'numero', 'data', 'observacoes', 'locacao', 'trp', 'status', 'sede']
+         fields = ['descricao', 'numero', 'data', 'observacoes', 'locacao', 'trp', 'prazo', 'status', 'sede']
 
 
 class SedeModelForm(forms.ModelForm):
 
     class Meta:
          model = Sede
-         fields = ['descricao', 'numero', 'dataminuta', 'datadca', 'anotacoes', 'licitacao', 'locacao', 'status']
+         fields = ['descricao', 'numero', 'dataminuta', 'datadca', 'anotacoes', 'licitacao', 'locacao', 'prazo', 'status']
 
 
 class ContratoLocacaoModelForm(forms.ModelForm):
@@ -50,21 +50,21 @@ class ContratoLocacaoModelForm(forms.ModelForm):
     class Meta:
          model = Contrato_Locacao
          fields = ['descricao', 'processo', 'dataprocesso', 'instrcontratual', 'datacontrato', 'valorservico',
-                   'valorlocacao', 'locacao', 'status']
+                   'valorlocacao', 'locacao', 'prazo', 'status']
 
 
 class PagamentoModelForm(forms.ModelForm):
     class Meta:
         model = Pagamento
         fields = ['descricao', 'tipo_pagto', 'atividade', 'parcela', 'qtde_parcelas', 'valor', 'dataprevnota',
-                   'tiponota', 'numnota', 'dataemissnota', 'serienota', 'xml', 'anotacoes', 'locacao', 'status']
+                   'tiponota', 'numnota', 'dataemissnota', 'serienota', 'xml', 'anotacoes', 'locacao', 'prazo', 'status']
 
 
 class CronogramaModelForm(forms.ModelForm):
 
     class Meta:
         model = Cronograma
-        fields = ['locacao', 'atividade', 'datainicio', 'datafim', 'anotacoes', 'status']
+        fields = ['locacao', 'atividade', 'datainicio', 'datafim', 'anotacoes', 'prazo', 'status']
 
 
 

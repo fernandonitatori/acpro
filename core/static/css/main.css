@@ -1470,7 +1470,43 @@ textarea {
     height: 20px;
     text-align: center;
     font-weight: bold;
-    background-color: #ECF0F1 ;
+    background-color: #ECF0F1;
+}
+
+.prazo_verde {
+    border-top: 2px solid black;
+    border-left: 2px solid black;
+    border-bottom: 2px solid black;
+    border-right: 2px solid black;
+    width: 100px;
+    height: 20px;
+    text-align: center;
+    font-weight: bold;
+    background-color: #00FF00;
+}
+
+.prazo_amarelo {
+    border-top: 2px solid black;
+    border-left: 2px solid black;
+    border-bottom: 2px solid black;
+    border-right: 2px solid black;
+    width: 100px;
+    height: 20px;
+    text-align: center;
+    font-weight: bold;
+    background-color: #FFFF00;
+}
+
+.prazo_vermelho {
+    border-top: 2px solid black;
+    border-left: 2px solid black;
+    border-bottom: 2px solid black;
+    border-right: 2px solid black;
+    width: 100px;
+    height: 20px;
+    text-align: center;
+    font-weight: bold;
+    background-color: #FF0000;
 }
 
 .retangulo_vazio {
@@ -1478,7 +1514,7 @@ textarea {
     height: 20px;
     text-align: center;
     font-weight: bold;
-    background-color: #ECF0F1 ;
+    background-color: #ECF0F1;
 }
 
 .quadrado {

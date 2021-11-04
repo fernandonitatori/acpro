@@ -212,11 +212,10 @@
                                                     </td>
                                                 {% endif %}
                                     {% else %}
-                                            {%if consulta.status_geral|stringformat:'s' == status_chave_compras %}
                                                 <td class="quadrado_verde">
                                                     <a href="#ModalUpdContrat" data-toggle="modal"> {{ consultacontrat.status }}</a>
                                                 </td>
-                                            {% endif %}
+
                                     {% endif %}
                                 {% endif %}
                             {% endif %}
@@ -271,6 +270,141 @@
 
                         </tr>
                         <tr>
+                            <td class="retangulo">
+
+                            </td>
+
+                            <td>
+
+                            </td>
+                            {% if consultacompras != '' %}
+                                {% if consultacompras.status|stringformat:'s' != status_chave_compras %}
+                                    {% if datahoje < dataprazo1compras %}
+                                        <td class="prazo_verde">
+                                            Prazo:<br>
+                                            {{dataprazocompras}}
+                                        </td>
+                                    {% else %}
+                                        {% if datahoje > dataprazo1compras and datahoje < dataprazo2compras %}
+                                            <td class="prazo_amarelo">
+                                                Prazo:<br>
+                                                {{dataprazocompras}}
+                                            </td>
+                                        {% else %}
+                                           {% if datahoje > dataprazo2compras %}
+                                                <td class="prazo_vermelho">
+                                                    Prazo:<br>
+                                                    {{dataprazocompras}}
+                                                </td>
+                                           {% endif %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% else %}
+                                    <td class="retangulo">Concluído</td>
+                                {% endif %}
+                            {% else %}
+                                <td class="retangulo"></td>
+                            {% endif %}
+                            <td></td>
+                            {% if consultasede != '' %}
+                                {% if consultacompras.sede == True %}
+                                    {% if consultasede.status|stringformat:'s' != status_chave_sede %}
+                                        {% if datahoje < dataprazo1sede %}
+                                            <td class="prazo_verde">
+                                                Prazo:<br>
+                                                {{dataprazosede}}
+                                            </td>
+                                        {% else %}
+                                            {% if datahoje > dataprazo1sede and datahoje < dataprazo2sede %}
+                                                <td class="prazo_amarelo">
+                                                    Prazo:<br>
+                                                    {{dataprazosede}}
+                                                </td>
+                                            {% else %}
+                                               {% if datahoje > dataprazo2sede %}
+                                                    <td class="prazo_vermelho">
+                                                        Prazo:<br>
+                                                        {{dataprazosede}}
+                                                    </td>
+                                               {% endif %}
+                                            {% endif %}
+                                        {% endif %}
+                                    {% else %}
+                                        <td class="retangulo">Concluído</td>
+                                    {% endif %}
+                                {% else %}
+                                    <td class="retangulo">Concluído</td>
+                                {% endif %}
+                            {% else %}
+                                <td class="retangulo">Concluído</td>
+                            {% endif %}
+                            <td></td>
+                            {% if consultacontrat != '' %}
+                                {% if consultacontrat.status|stringformat:'s' != status_chave_contrat %}
+                                    {% if datahoje < dataprazo1contrat %}
+                                        <td class="prazo_verde">
+                                            Prazo:<br>
+                                            {{dataprazocontrat}}
+                                        </td>
+                                    {% else %}
+                                        {% if datahoje > dataprazo1contrat and datahoje < dataprazo2contrat %}
+                                            <td class="prazo_amarelo">
+                                                Prazo:<br>
+                                                {{dataprazocontrat}}
+                                            </td>
+                                        {% else %}
+                                           {% if datahoje > dataprazo2contrat %}
+                                                <td class="prazo_vermelho">
+                                                    Prazo:<br>
+                                                    {{dataprazocontrat}}
+                                                </td>
+                                           {% endif %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% else %}
+                                    <td class="retangulo">Concluído</td>
+                                {% endif %}
+                            {% else %}
+                                <td class="retangulo"></td>
+                            {% endif %}
+                            <td></td>
+                            {% if consultapagto != '' %}
+                                {% if consultapagto.status|stringformat:'s' != status_chave_pagto %}
+                                    {% if datahoje < dataprazo1pagto %}
+                                        <td class="prazo_verde">
+                                            Prazo:<br>
+                                            {{dataprazopagto}}
+                                        </td>
+                                    {% else %}
+                                        {% if datahoje > dataprazo1pagto and datahoje < dataprazo2pagto %}
+                                            <td class="prazo_amarelo">
+                                                Prazo:<br>
+                                                {{dataprazopagto}}
+                                            </td>
+                                        {% else %}
+                                           {% if datahoje > dataprazo2pagto %}
+                                                <td class="prazo_vermelho">
+                                                    Prazo:<br>
+                                                    {{dataprazopagto}}
+                                                </td>
+                                           {% endif %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% else %}
+                                    <td class="retangulo">Concluído</td>
+                                {% endif %}
+                            {% else %}
+                                <td class="retangulo"></td>
+                            {% endif %}
+                            <td></td>
+
+                            </td>
+                            <td></td>
+                            <td>
+
+                            </td>
+                        </tr>
+                        <tr>
                             <td >
 
                             </td>
@@ -301,7 +435,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="retangulo_vazio">
+                            <td>
 
                             </td>
                             </a>
@@ -419,6 +553,63 @@
 
                             </td>
                         </tr>
+                        <tr>
+                            <td >
+
+                            </td>
+
+                            <td></td>
+                            <td >
+
+                            </td>
+                            <td></td>
+                            <td >
+
+                            </td>
+                            <td></td>
+                            <td >
+
+                            </td>
+                            <td></td>
+                            {% if consultareceb != '' %}
+                                {% if consultareceb.status|stringformat:'s' != status_chave_receb %}
+                                    {% if datahoje < dataprazo1receb %}
+                                        <td class="prazo_verde">
+                                            Prazo:<br>
+                                            {{dataprazoreceb}}
+                                        </td>
+                                    {% else %}
+                                        {% if datahoje > dataprazo1receb and datahoje < dataprazo2receb %}
+                                            <td class="prazo_amarelo">
+                                                Prazo:<br>
+                                                {{dataprazoreceb}}
+                                            </td>
+                                        {% else %}
+                                           {% if datahoje > dataprazo2receb %}
+                                                <td class="prazo_vermelho">
+                                                    Prazo:<br>
+                                                    {{dataprazoreceb}}
+                                                </td>
+                                           {% endif %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% else %}
+                                    <td class="retangulo">Concluído</td>
+                                {% endif %}
+                            {% else %}
+                                <td class="retangulo"></td>
+                            {% endif %}
+
+                            <td></td>
+                            <td >
+
+                            </td>
+                            <td></td>
+                            <td>
+
+                            </td>
+                        </tr>
+
                     </table>
                 </div>
 
@@ -474,6 +665,11 @@
 
                                                                  </select>
                                                 </td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Prazo:</b></div></td>
+                                                <td  align="left"><input type="text" name="prazo" id="id_prazo" size="10" maxlength="10"></td>
                                                 <td></td>
                                             </tr>
                                             <tr>
@@ -570,6 +766,11 @@
                                                 <td></td>
                                             </tr>
                                             <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Prazo:</b></div></td>
+                                                <td  align="left"><input type="text" name="prazo" id="id_prazo" size="10" maxlength="10" value="{{ consultacompras.prazo }}" required></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
                                                 <td  align="right"><div class="form-horizontal"><b>Status:</b></div></td>
                                                 <td  align="left"><select name="status"  id="id_status">
                                                                  {% for status in statuses %}
@@ -640,7 +841,7 @@
                                                 <td  align="right"><div class="form-horizontal"><b>Tipo de Locação:</b></div></td>
                                                 <td  align="left"><select name="tipo_locacao" id="id_tipo_locacao">
                                                                       {% for tipoloc in tiposlocacao %}
-                                                                          {% if consulta.tipolocacao|stringformat:'s' == tipoloc.descricao %}
+                                                                          {% if consulta.tipo_locacao|stringformat:'s' == tipoloc.descricao %}
                                                                               <option value="{{tipoloc.id}}" selected>{{tipoloc.descricao}}</option>
                                                                           {% else %}
                                                                               <option value="{{tipoloc.id}}">{{tipoloc.descricao}}</option>
@@ -682,6 +883,12 @@
                                                 </td>
                                                 <td></td>
                                             </tr>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Prazo:</b></div></td>
+                                                <td  align="left"><input type="text" name="prazo" id="prazo" size="10" maxlength="10" value="{{consulta.prazo}}" required></td>
+                                                <td></td>
+                                            </tr>
+
                                             <tr>
                                                 <td  align="right"><div class="form-horizontal"><b>Status:</b></div></td>
                                                 <td  align="left"><select name="status" id="id_status">
@@ -793,6 +1000,11 @@
                                                 <td  align="left"><input type="text" name="locacao" id="id_locacao" size="5" maxlength="5" value="{{consulta.id}}" readonly> {{ consulta.acao }}</td>
                                                 <td></td>
                                             </tr>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Prazo:</b></div></td>
+                                                <td  align="left"><input type="text" name="prazo" id="id_prazo" size="10" maxlength="10"></td>
+                                                <td></td>
+                                            </tr>
 
                                             <tr>
                                                 <td  align="right"><div class="form-horizontal"><b>Status:</b></div></td>
@@ -882,7 +1094,11 @@
                                                 <td  align="left"><input type="text" name="locacao" id="id_locacao" size="5" maxlength="5" value="{{consulta.id}}" readonly> {{ consulta.acao }}</td>
                                                 <td></td>
                                             </tr>
-
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Prazo:</b></div></td>
+                                                <td  align="left"><input type="text" name="prazo" id="id_prazo" size="10" maxlength="10" value="{{ consultasede.prazo}}" required></td>
+                                                <td></td>
+                                            </tr>
                                             <tr>
                                                 <td  align="right"><div class="form-horizontal"><b>Status:</b></div></td>
                                                 <td  align="left"><select name="status"  id="id_status">
@@ -972,7 +1188,11 @@
                                                 <td  align="left"><input type="text" name="locacao" id="id_locacao" size="5" maxlength="5" value="{{consulta.id}}" readonly> {{ consulta.acao }}</td>
                                                 <td></td>
                                             </tr>
-
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Prazo:</b></div></td>
+                                                <td  align="left"><input type="text" name="prazo" size="10" id="id_prazo" maxlength="10" required></td>
+                                                <td></td>
+                                            </tr>
                                             <tr>
                                                 <td  align="right"><div class="form-horizontal"><b>Status:</b></div></td>
                                                 <td  align="left"><select name="status"  id="id_status">
@@ -1055,6 +1275,11 @@
                                             <tr>
                                                 <td  align="right"><div class="form-horizontal"><b>Solicitação de Locacao:</b></div></td>
                                                 <td  align="left"><input type="text" name="locacao" id="id_locacao" size="5" maxlength="5" value="{{consulta.id}}" readonly> {{ consulta.acao }}</td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Prazo:</b></div></td>
+                                                <td  align="left"><input type="text" name="prazo" id="id_prazo" size="10" maxlength="10" value="{{ consultacontrat.prazo }}" required></td>
                                                 <td></td>
                                             </tr>
 
@@ -1181,6 +1406,12 @@
                                                 <td></td>
                                             </tr>
                                             <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Prazo:</b></div></td>
+                                                <td  align="left"><input type="text" name="prazo" size="10" id="id_prazo" maxlength="10" required></td>
+                                                <td></td>
+                                            </tr>
+
+                                            <tr>
                                                 <td  align="right"><div class="form-horizontal"><b>Status:</b></div></td>
                                                 <td  align="left"><select name="status"  id="id_status">
                                                                      {% for status in statuses %}
@@ -1304,6 +1535,11 @@
                                                 <td></td>
                                             </tr>
                                             <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Prazo:</b></div></td>
+                                                <td  align="left"><input type="text" name="prazo" size="10" id="id_prazo" maxlength="10" value=" {{ consultapagto.prazo }}" required></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
                                                 <td  align="right"><div class="form-horizontal"><b>Status:</b></div></td>
                                                 <td  align="left"><select name="status"  id="id_status">
                                                                      {% for status in statuses %}
@@ -1379,6 +1615,11 @@
                                                 <td  align="left"><input type="text" name="anotacoes" size="50" id="id_anotacoes" maxlength="50" ></td>
                                                 <td></td>
                                             </tr>
+                                             <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Prazo:</b></div></td>
+                                                <td  align="left"><input type="text" name="prazo" size="10" id="id_prazo" maxlength="10" required></td>
+                                                <td></td>
+                                            </tr>
 
                                             <tr>
                                                 <td  align="right"><div class="form-horizontal"><b>Status:</b></div></td>
@@ -1450,6 +1691,11 @@
                                             <tr>
                                                 <td  align="right"><div class="form-horizontal"><b>Anotações:</b></div></td>
                                                 <td  align="left"><input type="text" name="anotacoes" size="50" id="id_anotacoes" maxlength="50" value="{{ consultareceb.anotacoes }}" required></td>
+                                                <td></td>
+                                            </tr>
+                                             <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Prazo:</b></div></td>
+                                                <td  align="left"><input type="text" name="prazo" size="10" id="id_prazo" maxlength="10" value="{{ consultareceb.prazo }}" required> </td>
                                                 <td></td>
                                             </tr>
 
