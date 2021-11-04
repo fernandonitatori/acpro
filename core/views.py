@@ -13,13 +13,13 @@ from .models import Locacao_Acao, Acao, TipoLocacao, Memorial, Compras_Locacao, 
                     ContFornecedor, Tipo_Status, Status, Local, Linguagem, Projeto, TipoPagto
 
 from .forms import TipoLocacaoModelForm, MemorialModelForm, ComprasLocacaoModelForm, LocacaoAcaoModelForm, \
-                   SedeModelForm,  ContratoLocacaoModelForm, PagamentoModelForm, CronogramaModelForm
+                   SedeModelForm,  ContratoLocacaoModelForm, PagamentoModelForm, CronogramaModelForm, ProjetoModelForm
 
 
 class ListLocacaoAcaoView(ListView):
     model = Locacao_Acao
     template_name = 'locacao_acao_listview.html'
-    queryset = Locacao_Acao.objects.all()
+    queryset = Locacao_Acao.objects.all().order_by('-id')
     context_object_name = 'locacoes'
 
     def get_context_data(self, **kwargs):
@@ -29,6 +29,7 @@ class ListLocacaoAcaoView(ListView):
         context['memoriais'] = Memorial.objects.all()
         context['statuses'] = Status.objects.all()
         return context
+
 
 class IndexView(TemplateView):
     template_name = 'index.html'
@@ -217,7 +218,16 @@ class CreateTRPView(CreateView):
     model = TRP
     template_name = 'form_create_trp.html'
     fields = ['numeroTRP', 'descricao', 'data_fim_contrato', 'data_fim_contrato_pror', 'observacoes']
-    success_url = reverse_lazy('sistema')
+    success_url = reverse_lazy('add_trp')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['trps'] = TRP.objects.all().order_by('-id')
+        return context
+
+    def get_success_message(self, cleaned_data):
+        print(cleaned_data)
+        return "TRP cadastrada com sucesso!"
 
 
 class CreateOrcView(CreateView):
@@ -261,7 +271,16 @@ class CreateLicView(CreateView):
     model = Licitacao
     template_name = 'form_create_lic.html'
     fields = ['dataabertura', 'datapregao', 'dataassinatura', 'datahomologacao', 'vencedor', 'valor']
-    success_url = reverse_lazy('sistema')
+    success_url = reverse_lazy('add_lic')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['licitacoes'] = Licitacao.objects.all().order_by('-id')
+        return context
+
+    def get_success_message(self, cleaned_data):
+        print(cleaned_data)
+        return "Licitação cadastrado com sucesso!"
 
 
 class CreateContrView(CreateView, SuccessMessageMixin):
@@ -363,11 +382,20 @@ class CreateAprovView(CreateView):
     success_url = reverse_lazy('sistema')
 
 
-class CreateFornecView(CreateView):
+class CreateFornecView(SuccessMessageMixin, CreateView):
     model = Fornecedor
     template_name = 'form_create_fornec.html'
     fields = ['nome', 'cnpj', 'site', 'observacoes']
-    success_url = reverse_lazy('sistema')
+    success_url = reverse_lazy('add_fornec')
+
+    def get_success_message(self, cleaned_data):
+        print(cleaned_data)
+        return "Fornecedor cadastrado com sucesso!"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['fornecedores'] = Fornecedor.objects.all().order_by('-id')
+        return context
 
 
 class CreateCatFornecView(CreateView):
@@ -402,7 +430,17 @@ class CreateStatusView(CreateView):
     model = Status
     template_name = 'form_create_status.html'
     fields = ['tipo_status', 'descricao']
-    success_url = reverse_lazy('sistema')
+    success_url = reverse_lazy('add_status')
+
+    def get_success_message(self, cleaned_data):
+        print(cleaned_data)
+        return "Status cadastrado com sucesso!"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tiposstatuses'] = Tipo_Status.objects.all()
+        context['statuses'] = Status.objects.all()
+        return context
 
 
 class CreateLocalView(CreateView):
@@ -419,11 +457,21 @@ class CreateLinguagemView(CreateView):
     success_url = reverse_lazy('sistema')
 
 
-class CreateProjetoView(CreateView):
+class CreateProjetoView(SuccessMessageMixin, CreateView):
     model = Projeto
     template_name = 'form_create_proj.html'
     fields = ['descricao']
-    success_url = reverse_lazy('sistema')
+    success_url = reverse_lazy('add_projeto')
+
+    def get_success_message(self, cleaned_data):
+        print(cleaned_data)
+        return "Projeto cadastrado com sucesso!"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['projetos'] = Projeto.objects.all().order_by('-id')
+        return context
+
 
 
 class CreateTipoPagtoView(CreateView):
@@ -456,6 +504,19 @@ def salvamemorial(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Memorial Cadastrado com sucesso')
+            return redirect('../add/')
+
+
+def salvaprojeto(request):
+    descricao = request.POST.get('descricao')
+    if Projeto.objects.filter(descricao=descricao).exists():
+        messages.error(request, "Projeto já cadastrado!")
+        return redirect('../add/')
+    else:
+        form = ProjetoModelForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Projeto Cadastrado com sucesso')
             return redirect('../add/')
 
 
@@ -503,7 +564,7 @@ def consultalocacao(request):
     acoes = Acao.objects.all()
     memoriais = Memorial.objects.all()
     statuses = Status.objects.all()
-    context = {'locacoes': locacoes,
+    context = {'locacoes': locacoes.order_by('-id'),
                'tiposlocacao': tiposlocacao,
                'acoes': acoes,
                'memoriais': memoriais,

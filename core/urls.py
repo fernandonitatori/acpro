@@ -46,6 +46,7 @@ urlpatterns = [
     path('add_projeto/', CreateProjetoView.as_view(), name='add_projeto'),
     path('add_tipopagto/', CreateTipoPagtoView.as_view(), name='add_tipopagto'),
     path('salvamemorial', core.views.salvamemorial, name='salvamemorial'),
+    path('salvaprojeto', core.views.salvaprojeto, name='salvaprojeto'),
     path('consultalocacao', core.views.consultalocacao, name='consultalocacao'),
     path('finalizarlocacao/<int:pk>', core.views.finalizarlocacao, name='finalizarlocacao'),
     path('salvatipoloc', core.views.salvatipoloc, name='salvatipoloc'),

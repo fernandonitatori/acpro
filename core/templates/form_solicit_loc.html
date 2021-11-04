@@ -177,6 +177,7 @@
                                                                       {% endfor %}
                                                                      <option value="" selected>---------</option>
                                                                  </select>
+                                                                <a href="#ModalProjeto" data-toggle="modal" class="tooltip-test" title="Adiciona Projeto"><img src="/static/admin/img/icon-addlink.svg"></a>
                                             </td>
                                         </tr>
                                         <tr>
@@ -206,7 +207,7 @@
 
                                     <button type="submit" class="btn btn-primary">Salvar</button>
                                     <button type="button" class="btn btn-warning" data-dismiss="modal">
-                                        <a href="{% url 'sistema' %}">Cancelar</a>
+                                        <a href="">Cancelar</a>
                                     </button>
 
                             </div>
@@ -256,5 +257,42 @@
                   </div>
               </div>
            </div>
+           <!-- Modal Projeto -->
+           <div id="ModalProjeto" class="modal fade" role="dialog">
+              <div class="modal-dialog">
+
+                <!-- Modal content-->
+                  <div class="modal-content">
+                      <div class="modal-header">
+                           <div class="titulo_modal">Adicionar Projeto</div>
+                      </div>
+                      <div class="modal-body">
+                            <form method="POST" autocomplete="off" action="{% url 'salvaprojeto' %}" >
+                                {% csrf_token %}
+                                <table style="border-collapse:separate; border-spacing:20px 20px">
+                                    <tbody>
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Descrição:</b></div></td>
+                                                <td  align="left"><input type="text" name="descricao" id="descricao" size="50" maxlength="50" placeholder="Descrição do Projeto"></td>
+                                                <td></td>
+                                            </tr>
+
+                                     </tbody>
+                                </table>
+                                <div class="grupo_botoes_form" align="center">
+
+                                            <button type="submit" class="btn btn-primary">Salvar</button>
+                                            <button type="button" class="btn btn-warning" data-dismiss="modal">
+                                                <a href="">Cancelar</a>
+                                            </button>
+
+                                </div>
+
+                            </form>
+                      </div>
+                  </div>
+              </div>
+           </div>
+           <!-- Fim do Modal Projeto -->
         </div>
 {% endblock %}
