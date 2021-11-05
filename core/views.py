@@ -230,11 +230,22 @@ class CreateTRPView(CreateView):
         return "TRP cadastrada com sucesso!"
 
 
-class CreateOrcView(CreateView):
+class CreateOrcView(SuccessMessageMixin, CreateView):
     model = Orcamento
     template_name = 'form_create_orc.html'
     fields = ['compras_loc', 'fornecedor', 'valor', 'observacoes']
-    success_url = reverse_lazy('sistema')
+    success_url = reverse_lazy('add_orc')
+
+    def get_success_message(self, cleaned_data):
+        print(cleaned_data)
+        return "Orçamento cadastrado com sucesso!"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['compras'] = Compras_Locacao.objects.all()
+        context['fornecedores'] = Fornecedor.objects.all()
+        context['orcamentos'] = Orcamento.objects.all().order_by('-id')
+        return context
 
 
 class CreateSedeView(SuccessMessageMixin, CreateView):
@@ -267,7 +278,7 @@ class CreateSedeView(SuccessMessageMixin, CreateView):
         return render(request, 'resultado.html', {'form': form})
 
 
-class CreateLicView(CreateView):
+class CreateLicView(SuccessMessageMixin, CreateView):
     model = Licitacao
     template_name = 'form_create_lic.html'
     fields = ['dataabertura', 'datapregao', 'dataassinatura', 'datahomologacao', 'vencedor', 'valor']
@@ -345,7 +356,7 @@ class CreatePagtoView(CreateView, SuccessMessageMixin):
         return render(request, 'resultado.html', {'form': form})
 
 
-class CreateCronoView(CreateView):
+class CreateCronoView(SuccessMessageMixin, CreateView):
     model = Cronograma
     template_name = 'locacao_acao_consulta.html'
     fields = ['locacao', 'atividade', 'datainicio', 'datafim', 'anotacoes', 'prazo', 'status']
@@ -426,7 +437,7 @@ class CreateTipoStatusView(CreateView):
     success_url = reverse_lazy('sistema')
 
 
-class CreateStatusView(CreateView):
+class CreateStatusView(SuccessMessageMixin, CreateView):
     model = Status
     template_name = 'form_create_status.html'
     fields = ['tipo_status', 'descricao']
@@ -443,18 +454,35 @@ class CreateStatusView(CreateView):
         return context
 
 
-class CreateLocalView(CreateView):
+class CreateLocalView(SuccessMessageMixin, CreateView):
     model = Local
     template_name = 'form_create_local.html'
     fields = ['descricao']
-    success_url = reverse_lazy('sistema')
+    success_url = reverse_lazy('add_local')
 
+    def get_success_message(self, cleaned_data):
+        print(cleaned_data)
+        return "Local cadastrado com sucesso!"
 
-class CreateLinguagemView(CreateView):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['locais'] = Local.objects.all().order_by('-id')
+        return context
+
+class CreateLinguagemView(SuccessMessageMixin, CreateView):
     model = Linguagem
     template_name = 'form_create_ling.html'
     fields = ['descricao']
-    success_url = reverse_lazy('sistema')
+    success_url = reverse_lazy('add_linguagem')
+
+    def get_success_message(self, cleaned_data):
+        print(cleaned_data)
+        return "Linguagem cadastrado com sucesso!"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['linguagens'] = Linguagem.objects.all().order_by('-id')
+        return context
 
 
 class CreateProjetoView(SuccessMessageMixin, CreateView):

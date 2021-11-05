@@ -258,7 +258,7 @@ class Orcamento(Base):
         verbose_name_plural = 'Orçamentos'
 
     def __str__(self):
-        return f'{self.id} {self.valor}'
+        return self.observacoes
 
 
 class Licitacao(Base):
