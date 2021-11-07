@@ -210,7 +210,7 @@ class EndFornecedor(Base):
         verbose_name_plural = 'Endereços de Fornecedores'
 
     def __str__(self):
-        return f'{self.id} {self.logradouro} {self.numero}'
+        return self.logradouro
 
 
 class ContFornecedor(Base):
@@ -298,16 +298,17 @@ class Sede(Base):
 
 
 class Aprovacao(Base):
-    setor = models.CharField('Observaçoes', max_length=50)
+    setor = models.CharField('Setor', max_length=50)
     data = models.DateField('Data')
     sede = models.ForeignKey(Sede, verbose_name='Sede', null=True, on_delete=models.SET_NULL)
+    descricao = models.CharField('Descrição', max_length=50)
 
     class Meta:
         verbose_name = 'Aprovaçao'
         verbose_name_plural = 'Aprovaçoes'
 
     def __str__(self):
-        return f'{self.id} {self.setor} {self.sede}'
+        return self.descricao
 
 
 class Cronograma(Base):
