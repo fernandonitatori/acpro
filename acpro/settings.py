@@ -82,7 +82,7 @@ WSGI_APPLICATION = 'acpro.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -93,6 +93,20 @@ DATABASES = {
         'PORT:': '3306', 
     }
 }
+"""
+
+#Postgres
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'acpro',
+        'USER': 'acpro',
+        'PASSWORD': 'Un1V&SP',
+        'HOST': 'localhost',
+        'PORT:': '5432',
+    }
+}
+
 
 
 # Password validation
