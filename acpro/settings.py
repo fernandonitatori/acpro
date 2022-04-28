@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -50,7 +51,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-#    'whitenoise.middleware.WhiteNoiseMiddleware', 
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -82,6 +83,12 @@ WSGI_APPLICATION = 'acpro.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
+
+#Para usar no Heroku
+DATABASES = {
+    'default': dj_database_url.config()
+}
+
 """
 DATABASES = {
     'default': {
@@ -95,6 +102,7 @@ DATABASES = {
 }
 """
 
+"""
 #Postgres
 DATABASES = {
     'default': {
@@ -106,7 +114,7 @@ DATABASES = {
         'PORT:': '5432',
     }
 }
-
+"""
 
 
 # Password validation
