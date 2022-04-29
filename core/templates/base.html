@@ -23,7 +23,11 @@
     <!-- Responsive Style -->
     <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
 
+    <link rel="stylesheet" href="{% static 'css/contrast.css' %}">
+
+
   </head>
+
   <body>
 
     <!-- Header Area wrapper Starts -->
@@ -43,21 +47,21 @@
 
            <!-- <ul class="nav nav-pills justify-content-end">-->
               <li class="nav-item active">
-                <a class="nav-link" href="#hero-area">
-                  Início
+                <a class="nav-link acessibilidade" href="#hero-area">
+                    Início
                 </a>
               </li>
 
 
               <li class="nav-item">
-                <a class="nav-link" href="#features">
+                <a class="nav-link acessibilidade" href="#features">
                   Funcionalidades
                 </a>
               </li>
 
 
               <li class="nav-item">
-                <a class="nav-link" href="#team">
+                <a class="nav-link acessibilidade" href="#team">
                   Equipe
                 </a>
               </li>
@@ -66,15 +70,16 @@
                 {% if user.is_anonymous %}
 
                 {% else %}
-                   <a class="nav-link" href="{% url 'sistema' %}">
+                   <a class="nav-link acessibilidade" href="{% url 'sistema' %}">
                     Sistema</a>
                 {% endif %}
 
               </li>
 
+
               <li class="nav-item">
                 {% if user.is_anonymous %}
-                <a class="nav-link" href="{% url 'login' %}">
+                <a class="nav-link acessibilidade" href="{% url 'login' %}">
                   Login
                 </a>
                 {% else %}
@@ -82,11 +87,21 @@
                   Logout - {{ user.get_username }}
                 </a>
                 {% endif %}
-
               </li>
+
               <li class="nav-item">
+                  <a title="Aumentar fonte"  onClick="fonte('a');"><img src="{% static 'img/aumentar_fonte.png' %}"></a>
+                  <a title="Diminuir fonte"  onClick="fonte('d');"><img src="{% static 'img/diminuir_fonte.png' %}"></a>
+                  <a title="Alto contraste"  href="#altocontraste" id="altocontraste" accesskey="3" onclick="window.toggleContrast()" onkeydown="window.toggleContrast()"><img src="{% static 'img/alto_contraste.png' %}"></a>
+              </li>
+
+              <li class="nav-item">
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+              </li>
+
+              <li class="nav-item ">
                   {% if user.is_anonymous %}
-                    <a class="nav-link active" href="admin/">
+                    <a class="nav-link acessibilidade active" href="admin/">
                       Painel-Adm
                     </a>
                   {% endif %}
@@ -123,6 +138,14 @@
     <script src="{% static 'js/main.js' %}"></script>
     <script src="{% static 'js/form-validator.min.js' %}"></script>
     <script src="{% static 'js/contact-form-script.min.js' %}"></script>
+    <script src="{% static 'js/high-contrast.js' %}"></script>
+
+  <!--
+    <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+  -->
+    <!-- Script com a função de aumentar a fonte -->
+    <script src="{% static 'js/fonte.js' %}"></script>
+
 
   </body>
 </html>
