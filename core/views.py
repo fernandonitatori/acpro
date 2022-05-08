@@ -15,6 +15,24 @@ from .models import Locacao_Acao, Acao, TipoLocacao, Memorial, Compras_Locacao, 
 from .forms import TipoLocacaoModelForm, MemorialModelForm, ComprasLocacaoModelForm, LocacaoAcaoModelForm, \
                    SedeModelForm,  ContratoLocacaoModelForm, PagamentoModelForm, CronogramaModelForm, ProjetoModelForm
 
+from rest_framework import generics
+from rest_framework import viewsets
+from .serializers import Locacao_AcaoSerializer
+from  rest_framework import mixins
+""" 
+API V1
+"""
+class LocacaoAPIView(generics.ListAPIView):
+    queryset = Locacao_Acao.objects.all()
+    serializer_class = Locacao_AcaoSerializer
+
+"""
+API V2
+"""
+class LocacaoViewSet(viewsets.ModelViewSet):
+    queryset = Locacao_Acao.objects.all()
+    serializer_class = Locacao_AcaoSerializer
+
 
 class ListLocacaoAcaoView(ListView):
     model = Locacao_Acao

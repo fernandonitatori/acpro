@@ -6,13 +6,19 @@ from .views import IndexView, SistemaView, CreateSolicitView, ListLocacaoAcaoVie
                    CreateMemorialView, CreateComprasLocView, CreateTRPView, CreateOrcView, CreatePagtoView,\
                    CreateAprovView, CreateFornecView, CreateCatFornecView, CreateEndFornecView, CreateContFornecView,\
                    CreateStatusView, CreateTipoStatusView, CreateLocalView, CreateProjetoView, CreateLinguagemView,\
-                   CreateTipoPagtoView, UpdPagtoView, UpdCronoView
+                   CreateTipoPagtoView, UpdPagtoView, UpdCronoView, LocacaoAPIView, LocacaoViewSet
 
+from rest_framework.routers import SimpleRouter
 
 from .views import salvatipoloc, consultalocacao, listloc_compras, listloc_contr, listloc_pagto, listloc_crono, \
                    listloc_fin
 
+router = SimpleRouter()
+router.register('locacoes',LocacaoViewSet)
+
+
 urlpatterns = [
+    path('locacoes/', LocacaoAPIView.as_view(), name='locacoes'),
     path('', IndexView.as_view(), name='index'),
     path('sistema/', SistemaView.as_view(), name='sistema'),
     path('add/', core.views.CreateSolicitView.as_view(), name='add_loc'),

@@ -42,6 +42,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'django_filters',
+    'rest_framework',
+    'rest_framework.authtoken',
+
     'core',
     'bootstrap4',
     'stdimage',
@@ -84,10 +88,12 @@ WSGI_APPLICATION = 'acpro.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+
 #Para usar no Heroku
 DATABASES = {
     'default': dj_database_url.config()
 }
+
 
 """
 DATABASES = {
@@ -169,3 +175,14 @@ LOGOUT_REDIRECT_URL = 'index'
 DATE_FORMAT = ('d/m/Y')
 DATE_INPUT_FORMATS = ('%d/%m/%Y', '%Y-%m-%d')
 DATETIME_FORMAT = ('d/m/Y H:i')
+
+# DRF
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+  #      'rest_framework.authentication.SessionAuthentication'
+         'rest_framework.authentication.TokenAuthentication'
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated'
+    ]
+}
