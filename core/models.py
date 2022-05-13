@@ -27,7 +27,7 @@ class Parametro(Base):
 
 
 class Local(Base):
-    descricao = models.CharField('Descrição', max_length=50)
+    descricao = models.CharField('Descrição', max_length=50, unique=True)
 
     class Meta:
         verbose_name = 'Local'
@@ -38,7 +38,7 @@ class Local(Base):
 
 
 class Linguagem(Base):
-    descricao = models.CharField('Descrição', max_length=50)
+    descricao = models.CharField('Descrição', max_length=50, unique=True)
 
     class Meta:
         verbose_name = 'Linguagem'
@@ -49,7 +49,7 @@ class Linguagem(Base):
 
 
 class Projeto(Base):
-    descricao = models.CharField('Descrição', max_length=50)
+    descricao = models.CharField('Descrição', max_length=50, unique=True)
 
     class Meta:
         verbose_name = 'Projeto'
@@ -60,7 +60,7 @@ class Projeto(Base):
 
 
 class TipoLocacao(Base):
-    descricao = models.CharField('Descrição', max_length=50)
+    descricao = models.CharField('Descrição', max_length=50, unique=True)
 
     class Meta:
         verbose_name = 'Tipo de Locação'
@@ -71,7 +71,7 @@ class TipoLocacao(Base):
 
 
 class Tipo_Status(Base):
-    descricao = models.CharField('Descrição', max_length=50)
+    descricao = models.CharField('Descrição', max_length=50, unique=True)
 
     class Meta:
         verbose_name = 'Tipo de Status'
@@ -83,7 +83,7 @@ class Tipo_Status(Base):
 
 class Status(Base):
     tipo_status = models.ForeignKey('Tipo_Status', verbose_name='tipo de Status', null=True, on_delete=models.SET_NULL)
-    descricao = models.CharField('Descrição', max_length=50)
+    descricao = models.CharField('Descrição', max_length=50, unique=True)
 
     class Meta:
         verbose_name = 'Status'
@@ -94,7 +94,7 @@ class Status(Base):
 
 
 class Memorial(Base):
-    descricao = models.CharField('Descrição', max_length=50)
+    descricao = models.CharField('Descrição', max_length=50, unique=True)
     data_memorial = models.DateField('Data do Memorial')
 
     class Meta:
@@ -329,7 +329,7 @@ class Cronograma(Base):
 
 
 class TipoPagto(Base):
-    descricao = models.CharField('Descrição', max_length=50)
+    descricao = models.CharField('Descrição', max_length=50, unique=True)
 
     class Meta:
         verbose_name = 'Tipo de Pagamento'
