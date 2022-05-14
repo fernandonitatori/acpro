@@ -50,7 +50,7 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 cover/
-core/tests/
+
 
 # Translations
 *.mo
@@ -139,3 +139,4 @@ dmypy.json
 cython_debug/
 
 htmlcov/*
+/core/tests/
