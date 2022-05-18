@@ -141,7 +141,7 @@ class CreateSolicitView(SuccessMessageMixin, CreateView):
         print(cleaned_data)
         return "Solicitação cadastrada com sucesso!"
 
-
+xbcxzzz\1   queuea'aaa'\
 
 class ConsultaLocacaoAcaoView(UpdateView):
     model = Locacao_Acao
