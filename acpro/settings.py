@@ -88,7 +88,11 @@ WSGI_APPLICATION = 'acpro.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+<<<<<<< HEAD
 
+=======
+"""
+>>>>>>> 0b4c0e30593465dc9089841aa9dcf83f25d6cc5b
 #Para usar no Heroku
 DATABASES = {
     'default': dj_database_url.config()
@@ -108,7 +112,10 @@ DATABASES = {
 }
 """
 
+<<<<<<< HEAD
 """
+=======
+>>>>>>> 0b4c0e30593465dc9089841aa9dcf83f25d6cc5b
 #Postgres
 DATABASES = {
     'default': {
