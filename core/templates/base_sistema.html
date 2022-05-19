@@ -104,21 +104,45 @@
                                         <a class="active" href="{% url 'sistema' %}"><b>Dashboard</b></a>
                                     </li>
                                     <li class="shadow-lg p-1 mb-2 bg-light rounded">
-                                        <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle active"><b>Processos - Locação</b></a>
-                                        <ul class="collapse " id="homeSubmenu">
+                                        <a href="#homeSubmenu5" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle active"><b>Processos</b></a>
+                                        <ul class="collapse " id="homeSubmenu5">
                                             <li>
-                                                <a href="../add"> > Solicitar</a>
+                                                <a href="#homeSubmenu6" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle active"><b> &nbsp;&nbsp; Locação</b></a>
+                                                <ul class="collapse " id="homeSubmenu6">
+                                                    <li>
+                                                        <a href="../add"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; > Solicitar</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="../listlocacoes" id="menu"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; > Consultar</a>
+                                                    </li>
+                                                </ul>
                                             </li>
-                                     <!--       <li>
-                                                <a href="../listupdlocacoes"> > Atualizar</a>
-                                            </li>
-                                       -->
                                             <li>
-                                                <a href="../listlocacoes" id="menu"> > Consultar</a>
+                                                <a href="#homeSubmenu7" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle active"><b> &nbsp;&nbsp; Aquisição</b></a>
+                                                <ul class="collapse " id="homeSubmenu7">
+                                                    <li>
+                                                        <a href="../add_aquisicao"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; > Solicitar</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="../listlocacoes" id="menu"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; > Consultar</a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <a href="#homeSubmenu8" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle active"><b> &nbsp;&nbsp; Manutenção</b></a>
+                                                <ul class="collapse " id="homeSubmenu8">
+                                                    <li>
+                                                        <a href="../add_manut"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; > Solicitar</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="../listlocacoes" id="menu"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; > Consultar</a>
+                                                    </li>
+                                                </ul>
                                             </li>
 
                                         </ul>
                                     </li>
+
                                     <li class="shadow-lg p-1 mb-2 bg-bg-light rounded">
                                         <a href="../admin"><b>Painel-Adm</b></a>
                                     </li>

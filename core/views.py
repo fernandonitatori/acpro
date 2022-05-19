@@ -1019,3 +1019,27 @@ def resultloc(request, id):
         'id': idpassado,
     }
     return render(request, 'resultado.html', context)
+
+def add_aquisicao (request):
+    acoes = Acao.objects.all()
+    memoriais = Memorial.objects.all()
+    statuses = Status.objects.all()
+
+    context = {'acoes': acoes,
+               'memoriais': memoriais,
+               'statuses': statuses
+               }
+
+    return render(request, 'form_solicit_aquisicao.html', context)
+
+def add_manut (request):
+    acoes = Acao.objects.all()
+    memoriais = Memorial.objects.all()
+    statuses = Status.objects.all()
+
+    context = {'acoes': acoes,
+               'memoriais': memoriais,
+               'statuses': statuses
+               }
+
+    return render(request, 'form_solicit_manut.html', context)
