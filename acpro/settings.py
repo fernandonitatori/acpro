@@ -108,7 +108,7 @@ DATABASES = {
 }
 """
 
-"""
+
 #Postgres
 DATABASES = {
     'default': {
@@ -120,7 +120,6 @@ DATABASES = {
         'PORT:': '5432',
     }
 }
-"""
 
 
 # Password validation
