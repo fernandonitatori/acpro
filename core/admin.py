@@ -1,5 +1,8 @@
 from django.contrib import admin
-from .models import Fornecedor, Parametro, Local, Linguagem, Projeto, TipoLocacao, Tipo_Status, Status, Memorial, Periodo, Acao, Locacao_Acao, TRP, CatFornecedor, EndFornecedor, ContFornecedor, Compras_Locacao, Orcamento, Licitacao, Aprovacao, Sede, Cronograma, TipoPagto, Pagamento, Contrato_Locacao
+from .models import Fornecedor, Parametro, Local, Linguagem, Projeto, TipoLocacao, Tipo_Status, Status, Memorial, \
+                    Periodo, Acao, Locacao_Acao, TRP, CatFornecedor, EndFornecedor, ContFornecedor, Compras_Locacao, \
+                    Orcamento, Licitacao, Aprovacao, Sede, Cronograma, TipoPagto, Pagamento, Contrato_Locacao, \
+                    Aquisicao_Acao, Manutencao_Acao, Compras_Manutencao, Compras_Aquisicao
 
 @admin.register(Fornecedor)
 class FornecedorAdmin(admin.ModelAdmin):
@@ -50,6 +53,14 @@ class AcaoAdmin(admin.ModelAdmin):
 class Locacao_AcaoAdmin(admin.ModelAdmin):
     list_display = ['tipo_locacao', 'acao', 'memorial', 'status', 'status_geral']
 
+@admin.register(Aquisicao_Acao)
+class Aquisicao_AcaoAdmin(admin.ModelAdmin):
+    list_display = ['acao', 'memorial', 'status', 'status_geral']
+
+@admin.register(Manutencao_Acao)
+class Manutencao_AcaoAdmin(admin.ModelAdmin):
+    list_display = ['acao', 'memorial', 'status', 'status_geral']
+
 @admin.register(TRP)
 class TRPAdmin(admin.ModelAdmin):
     list_display = ['id', 'descricao',]
@@ -68,6 +79,14 @@ class ContFornecedorAdmin(admin.ModelAdmin):
 
 @admin.register(Compras_Locacao)
 class Compras_LocacaoAdmin(admin.ModelAdmin):
+    list_display = ['id', 'descricao', 'status',]
+
+@admin.register(Compras_Aquisicao)
+class Compras_AquisicaoAdmin(admin.ModelAdmin):
+    list_display = ['id', 'descricao', 'status',]
+
+@admin.register(Compras_Manutencao)
+class Compras_ManutencaoAdmin(admin.ModelAdmin):
     list_display = ['id', 'descricao', 'status',]
 
 @admin.register(Orcamento)

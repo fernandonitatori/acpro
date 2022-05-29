@@ -65,7 +65,7 @@
                                     <tr>
                                         <th scope="col">#</th>
                                         <!-- <th scope="col">Tipo de locação</th> -->
-                                        <th scope="col">Ação</th>
+                                        <th scope="col">Ação/Descrição</th>
                                         <th scope="col">Memorial</th>
                                         <th scope="col">Data e Hora da Solicitação</th>
                                         <th scope="col">Status Geral</th>
@@ -77,7 +77,9 @@
                                         <tr>
                                             <td>{{ aquisicao.id }}</td>
                                             <!--<td>{{ locacao.tipo_locacao }}</td>-->
-                                            <td> <a href="../consultaumaaquisicao/{{aquisicao.pk}}">{{ aquisicao.acao }}</a></td>
+                                            <td> <strong><a href="../consultaumaaquisicao/{{aquisicao.pk}}">{{ aquisicao.acao }}</strong><br>
+                                                 Descrição: {{aquisicao.descricao}}</a>
+                                            </td>
                                             <td> {{ aquisicao.memorial }}</td>
                                             <td> {{ aquisicao.criado}} </td>
                                             <td>{{ aquisicao.status_geral }}</td>

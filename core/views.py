@@ -11,18 +11,20 @@ from dateutil.relativedelta import relativedelta
 from .models import Locacao_Acao, Acao, TipoLocacao, Memorial, Compras_Locacao, TRP, Orcamento, Sede, Licitacao, \
                     Contrato_Locacao, Pagamento, Cronograma, Aprovacao, Fornecedor, CatFornecedor, EndFornecedor, \
                     ContFornecedor, Tipo_Status, Status, Local, Linguagem, Projeto, TipoPagto, Aquisicao_Acao, \
-                    Manutencao_Acao
+                    Manutencao_Acao, Compras_Aquisicao, Compras_Manutencao, Sede_Aquisicao, Sede_Manutencao, \
+                    Contrato_Aquisicao, Contrato_Manutencao, Pagamento_Aquisicao, Pagamento_Manutencao, \
+                    Cronograma_Aquisicao, Cronograma_Manutencao
 
 from .forms import TipoLocacaoModelForm, MemorialModelForm, ComprasLocacaoModelForm, LocacaoAcaoModelForm, \
-                   SedeModelForm,  ContratoLocacaoModelForm, PagamentoModelForm, CronogramaModelForm, ProjetoModelForm
+                   SedeModelForm,  ContratoLocacaoModelForm, PagamentoModelForm, CronogramaModelForm, ProjetoModelForm,\
+                   ComprasAquisicaoModelForm, ComprasManutencaoModelForm
 
 from rest_framework import generics
 from rest_framework import viewsets
 from .serializers import Locacao_AcaoSerializer, TipoLocacao_AcaoSerializer
 from  rest_framework import mixins
-""" 
-API V1
-"""
+
+# APIViews da API V1
 class LocacaoAPIView(generics.ListAPIView):
     queryset = Locacao_Acao.objects.all()
     serializer_class = Locacao_AcaoSerializer
@@ -31,9 +33,8 @@ class TipoLocacaoAPIView(generics.ListAPIView):
     queryset = TipoLocacao.objects.all()
     serializer_class = TipoLocacao_AcaoSerializer
 
-"""
-API V2
-"""
+
+# ViewSets da API V2
 class LocacaoViewSet(viewsets.ModelViewSet):
     queryset = Locacao_Acao.objects.all()
     serializer_class = Locacao_AcaoSerializer
@@ -43,6 +44,7 @@ class TipoLocacaoViewSet(viewsets.ModelViewSet):
     serializer_class = TipoLocacao_AcaoSerializer
 
 
+# Listar Locações
 class ListLocacaoAcaoView(ListView):
     model = Locacao_Acao
     template_name = 'locacao_acao_listview.html'
@@ -58,6 +60,7 @@ class ListLocacaoAcaoView(ListView):
         return context
 
 
+# Listar Aquisições
 class ListAquisicaoAcaoView(ListView):
     model = Aquisicao_Acao
     template_name = 'aquisicao_acao_listview.html'
@@ -72,6 +75,7 @@ class ListAquisicaoAcaoView(ListView):
         return context
 
 
+# Listar Manutenções
 class ListManutencaoAcaoView(ListView):
     model = Manutencao_Acao
     template_name = 'manutencao_acao_listview.html'
@@ -86,14 +90,14 @@ class ListManutencaoAcaoView(ListView):
         return context
 
 
+# View do index
 class IndexView(TemplateView):
     template_name = 'index.html'
 
 
+# View da página inicial do sistema
 class SistemaView(TemplateView):
-
     template_name = 'sistema.html'
-
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -149,6 +153,7 @@ class SistemaView(TemplateView):
         return context
 
 
+# View para criar solicitação de Locação
 class CreateSolicitView(SuccessMessageMixin, CreateView):
     model = Locacao_Acao
     template_name = 'form_solicit_loc.html'
@@ -171,7 +176,53 @@ class CreateSolicitView(SuccessMessageMixin, CreateView):
         return "Solicitação cadastrada com sucesso!"
 
 
+# View para Criar Solicitações de Aquisição
+class CreateAquisicaoView(SuccessMessageMixin, CreateView):
+    model = Aquisicao_Acao
+    template_name = 'form_solicit_aquisicao.html'
+    fields = ['acao', 'memorial', 'prazo', 'status', 'status_geral', 'descricao']
+    success_url = reverse_lazy('add_aquisicao')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+       # context['tiposlocacao'] = TipoLocacao.objects.all()
+        context['acoes'] = Acao.objects.all()
+        context['memoriais'] = Memorial.objects.all()
+        context['statuses'] = Status.objects.all()
+        context['projetos'] = Projeto.objects.all()
+        context['linguagens'] = Linguagem.objects.all()
+        context['locais'] = Local.objects.all()
+        return context
+
+    def get_success_message(self, cleaned_data):
+        print(cleaned_data)
+        return "Solicitação cadastrada com sucesso!"
+
+
+# View para Criar Solicitações de Manutenção
+class CreateManutencaoView(SuccessMessageMixin, CreateView):
+    model = Manutencao_Acao
+    template_name = 'form_solicit_manut.html'
+    fields = ['acao', 'memorial', 'prazo', 'status', 'status_geral', 'descricao']
+    success_url = reverse_lazy('add_manut')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+       # context['tiposlocacao'] = TipoLocacao.objects.all()
+        context['acoes'] = Acao.objects.all()
+        context['memoriais'] = Memorial.objects.all()
+        context['statuses'] = Status.objects.all()
+        context['projetos'] = Projeto.objects.all()
+        context['linguagens'] = Linguagem.objects.all()
+        context['locais'] = Local.objects.all()
+        return context
+
+    def get_success_message(self, cleaned_data):
+        print(cleaned_data)
+        return "Solicitação cadastrada com sucesso!"
+
+
+# View para consulta de Locações
 class ConsultaLocacaoAcaoView(UpdateView):
     model = Locacao_Acao
     template_name = 'locacao_acao_consulta.html'
@@ -198,6 +249,8 @@ class ConsultaLocacaoAcaoView(UpdateView):
             return HttpResponseRedirect(reverse_lazy('consultaumalocacao', args=[loc]))
         return render(request, 'resultado.html', {'form': form})
 
+
+# View para consulta de Aquisições
 class ConsultaAquisicaoAcaoView(UpdateView):
     model = Aquisicao_Acao
     template_name = 'aquisicao_acao_consulta.html'
@@ -224,7 +277,7 @@ class ConsultaAquisicaoAcaoView(UpdateView):
             return HttpResponseRedirect(reverse_lazy('consultaumaaquisicao', args=[aquis]))
         return render(request, 'resultado.html', {'form': form})
 
-
+"""
 class ListUpdLocacaoAcaoView(ListView):
     model = Locacao_Acao
     template_name = 'locacao_acao_updlistview.html'
@@ -237,8 +290,9 @@ class ListUpdAquiscaoAcaoView(ListView):
     template_name = 'aquisicao_acao_updlistview.html'
     queryset = Aquisicao_Acao.objects.all()
     context_object_name = 'updaquisicoes'
+"""
 
-
+# View para criar Ação
 class CreateAcaoView(SuccessMessageMixin, CreateView):
     model = Acao
     template_name = 'form_solicit_loc.html'
@@ -256,6 +310,8 @@ class CreateAcaoView(SuccessMessageMixin, CreateView):
         print(cleaned_data)
         return "Ação cadastrada com sucesso!"
 
+
+# View para criar tipo de locação
 class CreateTipoLocView(CreateView):
     model = TipoLocacao
     template_name = 'form_create_tipoloc.html'
@@ -263,6 +319,7 @@ class CreateTipoLocView(CreateView):
     success_url = reverse_lazy('sistema')
 
 
+# View para criar Memorial
 class CreateMemorialView(CreateView):
     model = Memorial
     template_name = 'form_create_memorial.html'
@@ -270,6 +327,7 @@ class CreateMemorialView(CreateView):
     success_url = reverse_lazy('sistema')
 
 
+# View para criar etapa de Compras em Locações
 class CreateComprasLocView(SuccessMessageMixin, CreateView):
     model = Compras_Locacao
     template_name = 'locacao_acao_consulta.html'
@@ -302,6 +360,7 @@ class CreateComprasLocView(SuccessMessageMixin, CreateView):
         return render(request, 'resultado.html', {'form': form})
 
 
+# View para criar TRP
 class CreateTRPView(CreateView):
     model = TRP
     template_name = 'form_create_trp.html'
@@ -318,6 +377,7 @@ class CreateTRPView(CreateView):
         return "TRP cadastrada com sucesso!"
 
 
+# View para criar Orçamentos
 class CreateOrcView(SuccessMessageMixin, CreateView):
     model = Orcamento
     template_name = 'form_create_orc.html'
@@ -336,6 +396,7 @@ class CreateOrcView(SuccessMessageMixin, CreateView):
         return context
 
 
+# View para criar etapa de Sede em Locações
 class CreateSedeView(SuccessMessageMixin, CreateView):
     model = Sede
     template_name = 'locacao_acao_consulta.html'
@@ -366,6 +427,7 @@ class CreateSedeView(SuccessMessageMixin, CreateView):
         return render(request, 'resultado.html', {'form': form})
 
 
+# View para criar Licitação
 class CreateLicView(SuccessMessageMixin, CreateView):
     model = Licitacao
     template_name = 'form_create_lic.html'
@@ -382,6 +444,7 @@ class CreateLicView(SuccessMessageMixin, CreateView):
         return "Licitação cadastrado com sucesso!"
 
 
+#View para criar Contratos de Locação
 class CreateContrView(CreateView, SuccessMessageMixin):
     model = Contrato_Locacao
     template_name = 'locacao_acao_consulta.html'
@@ -413,6 +476,7 @@ class CreateContrView(CreateView, SuccessMessageMixin):
         return render(request, 'resultado.html', {'form': form})
 
 
+#View para criar Pagamentos
 class CreatePagtoView(CreateView, SuccessMessageMixin):
     model = Pagamento
     template_name = 'locacao_acao_consulta.html'
@@ -444,6 +508,7 @@ class CreatePagtoView(CreateView, SuccessMessageMixin):
         return render(request, 'resultado.html', {'form': form})
 
 
+# View para criar Cronograma
 class CreateCronoView(SuccessMessageMixin, CreateView):
     model = Cronograma
     template_name = 'locacao_acao_consulta.html'
@@ -474,6 +539,7 @@ class CreateCronoView(SuccessMessageMixin, CreateView):
         return render(request, 'resultado.html', {'form': form})
 
 
+# View para criar Aprovação
 class CreateAprovView(CreateView):
     model = Aprovacao
     template_name = 'form_create_aprov.html'
@@ -481,6 +547,7 @@ class CreateAprovView(CreateView):
     success_url = reverse_lazy('sistema')
 
 
+# View para criar Fornecedor
 class CreateFornecView(SuccessMessageMixin, CreateView):
     model = Fornecedor
     template_name = 'form_create_fornec.html'
@@ -497,6 +564,7 @@ class CreateFornecView(SuccessMessageMixin, CreateView):
         return context
 
 
+# View para criar Categorias de Fornecedores
 class CreateCatFornecView(CreateView):
     model = CatFornecedor
     template_name = 'form_create_catfornec.html'
@@ -504,6 +572,7 @@ class CreateCatFornecView(CreateView):
     success_url = reverse_lazy('sistema')
 
 
+# View para criar Endereços de Fornecedor
 class CreateEndFornecView(CreateView):
     model = EndFornecedor
     template_name = 'form_create_endfornec.html'
@@ -511,6 +580,7 @@ class CreateEndFornecView(CreateView):
     success_url = reverse_lazy('sistema')
 
 
+# View para criar Contatos de Fornecedor
 class CreateContFornecView(CreateView):
     model = ContFornecedor
     template_name = 'form_create_contfornec.html'
@@ -518,6 +588,7 @@ class CreateContFornecView(CreateView):
     success_url = reverse_lazy('sistema')
 
 
+# View para criar tipos de Status
 class CreateTipoStatusView(CreateView):
     model = Tipo_Status
     template_name = 'form_create_tipostatus.html'
@@ -525,6 +596,7 @@ class CreateTipoStatusView(CreateView):
     success_url = reverse_lazy('sistema')
 
 
+# View para criar Status
 class CreateStatusView(SuccessMessageMixin, CreateView):
     model = Status
     template_name = 'form_create_status.html'
@@ -542,6 +614,7 @@ class CreateStatusView(SuccessMessageMixin, CreateView):
         return context
 
 
+# View para criar Local
 class CreateLocalView(SuccessMessageMixin, CreateView):
     model = Local
     template_name = 'form_create_local.html'
@@ -557,6 +630,8 @@ class CreateLocalView(SuccessMessageMixin, CreateView):
         context['locais'] = Local.objects.all().order_by('-id')
         return context
 
+
+# View para criar Linguagem
 class CreateLinguagemView(SuccessMessageMixin, CreateView):
     model = Linguagem
     template_name = 'form_create_ling.html'
@@ -573,6 +648,7 @@ class CreateLinguagemView(SuccessMessageMixin, CreateView):
         return context
 
 
+# View para criar Projeto
 class CreateProjetoView(SuccessMessageMixin, CreateView):
     model = Projeto
     template_name = 'form_create_proj.html'
@@ -589,7 +665,7 @@ class CreateProjetoView(SuccessMessageMixin, CreateView):
         return context
 
 
-
+# View para criar Tipo de Pagamento
 class CreateTipoPagtoView(CreateView):
     model = TipoPagto
     template_name = 'form_create_tipopagto.html'
@@ -597,6 +673,7 @@ class CreateTipoPagtoView(CreateView):
     success_url = reverse_lazy('sistema')
 
 
+# Função para salvar Tipo de Locação - utilizada nos formulário Modal
 def salvatipoloc(request):
     descricao = request.POST.get('descricao')
     if TipoLocacao.objects.filter(descricao=descricao).exists():
@@ -610,6 +687,7 @@ def salvatipoloc(request):
             return redirect('../add/')
 
 
+# Função para salvar Memorial- utilizada nos formulário Modal
 def salvamemorial(request):
     descricao = request.POST.get('descricao')
     if Memorial.objects.filter(descricao=descricao).exists():
@@ -623,6 +701,7 @@ def salvamemorial(request):
             return redirect('../add/')
 
 
+# Função para salvar Tipo de Locação - utilizada nos formulário Modal
 def salvaprojeto(request):
     descricao = request.POST.get('descricao')
     if Projeto.objects.filter(descricao=descricao).exists():
@@ -636,6 +715,7 @@ def salvaprojeto(request):
             return redirect('../add/')
 
 
+# Função para consultar locações
 def consultalocacao(request):
     tipoloc = request.POST.get("tipo_locacao")
     acao = request.POST.get("acao")
@@ -688,9 +768,9 @@ def consultalocacao(request):
                }
     return render(request, 'locacao_acao_listview.html', context)
 
-"""
+
+# Função para consultar aquisições
 def consultaaquisicao(request):
-    tipoloc = request.POST.get("tipo_locacao")
     acao = request.POST.get("acao")
     memorial = request.POST.get("memorial")
     status_geral = request.POST.get("status_geral")
@@ -699,169 +779,85 @@ def consultaaquisicao(request):
     criterio1 = False
     criterio2 = False
     criterio3 = False
-    criterio4 = False
 
-    if tipoloc != '':
-        criterio1 = True
     if acao != '':
-        criterio2 = True
+        criterio1 = True
     if memorial != '':
-        criterio3 = True
+        criterio2 = True
     if status_geral != '':
-        criterio4 = True
+        criterio3 = True
 
+    if criterio1 == False and criterio2 == False and criterio3 == False:
+        aquisicoes = Aquisicao_Acao.objects.all()
     if criterio1 == True and criterio2 == False and criterio3 == False:
-        locacoes = Locacao_Acao.objects.filter(tipo_locacao=tipoloc)
+        aquisicoes = Aquisicao_Acao.objects.filter(acao=acao)
     if criterio1 == False and criterio2 == True and criterio3 == False:
-        locacoes = Locacao_Acao.objects.filter(acao=acao)
+        aquisicoes = Aquisicao_Acao.objects.filter(memorial=memorial)
     if criterio1 == False and criterio2 == False and criterio3 == True:
-        locacoes = Locacao_Acao.objects.filter(memorial=memorial)
+        aquisicoes = Aquisicao_Acao.objects.filter(status_geral=status_geral)
     if criterio1 == True and criterio2 == True and criterio3 == False:
-        locacoes = Locacao_Acao.objects.filter(tipo_locacao=tipoloc,acao=acao)
+        aquisicoes = Locacao_Acao.objects.filter(acao=acao, memorial=memorial)
     if criterio1 == True and criterio2 == False and criterio3 == True:
-        locacoes = Locacao_Acao.objects.filter(tipo_locacao=tipoloc, memorial=memorial)
+        aquisicoes = Locacao_Acao.objects.filter(acao=acao, status_geral=status_geral)
     if criterio1 == False and criterio2 == True and criterio3 == True:
-        locacoes = Locacao_Acao.objects.filter(acao=acao, memorial=memorial)
-    if criterio1 == True and criterio2 == True and criterio3 == True:
-        locacoes = Locacao_Acao.objects.filter(tipo_locacao=tipoloc, acao=acao, memorial=memorial)
-    if criterio4 == True:
-        locacoes = Locacao_Acao.objects.filter(status_geral=status_geral)
-    if criterio1 == False and criterio2 == False and criterio3 == False and criterio4 == False:
-        locacoes = Locacao_Acao.objects.all()
+        aquisicoes = Locacao_Acao.objects.filter(memorial=memorial, status_geral=status_geral)
 
-    tiposlocacao = TipoLocacao.objects.all()
     acoes = Acao.objects.all()
     memoriais = Memorial.objects.all()
     statuses = Status.objects.all()
-    context = {'locacoes': locacoes.order_by('-id'),
-               'tiposlocacao': tiposlocacao,
+    context = {'aquisicoes': aquisicoes.order_by('-id'),
                'acoes': acoes,
                'memoriais': memoriais,
                'statuses': statuses
                }
-    return render(request, 'locacao_acao_listview.html', context)
+    return render(request, 'aquisicao_acao_listview.html', context)
 
 
-def consultaumaaquisicao(request,pk):
+# Função para consultar manutenções
+def consultamanutencao(request):
+    acao = request.POST.get("acao")
+    memorial = request.POST.get("memorial")
+    status_geral = request.POST.get("status_geral")
+    print(request.POST)
 
-    idpassado = pk
-    consulta = get_object_or_404(Locacao_Acao,id=pk)
-    consultacompras = ''
-    dataprazocompras = ''
-    dataprazo1compras = ''
-    dataprazo2compras = ''
-    if Compras_Locacao.objects.filter(locacao=idpassado).exists():
-        consultacompras = Compras_Locacao.objects.get(locacao=idpassado)
-        dataprazocompras = consultacompras.criado + relativedelta(days=consultacompras.prazo)
-        dataprazo1compras = consultacompras.criado + relativedelta(days=(consultacompras.prazo/3))
-        dataprazo2compras = dataprazo1compras + relativedelta(days=(consultacompras.prazo/3))
-        dataprazocompras = dataprazocompras.date()
-        dataprazo1compras = dataprazo1compras.date()
-        dataprazo2compras = dataprazo2compras.date()
+    criterio1 = False
+    criterio2 = False
+    criterio3 = False
 
-    consultasede = ''
-    dataprazosede = ''
-    dataprazo1sede = ''
-    dataprazo2sede = ''
-    if Sede.objects.filter(locacao=idpassado).exists():
-        consultasede = Sede.objects.get(locacao=idpassado)
-        dataprazosede = consultasede.criado + relativedelta(days=consultasede.prazo)
-        dataprazo1sede = consultasede.criado + relativedelta(days=(consultasede.prazo / 3))
-        dataprazo2sede = dataprazo1sede + relativedelta(days=(consultasede.prazo / 3))
-        dataprazosede = dataprazosede.date()
-        dataprazo1sede = dataprazo1sede.date()
-        dataprazo2sede = dataprazo2sede.date()
+    if acao != '':
+        criterio1 = True
+    if memorial != '':
+        criterio2 = True
+    if status_geral != '':
+        criterio3 = True
 
-    consultacontrat = ''
-    dataprazocontrat = ''
-    dataprazo1contrat = ''
-    dataprazo2contrat = ''
+    if criterio1 == False and criterio2 == False and criterio3 == False:
+        aquisicoes = Aquisicao_Acao.objects.all()
+    if criterio1 == True and criterio2 == False and criterio3 == False:
+        aquisicoes = Aquisicao_Acao.objects.filter(acao=acao)
+    if criterio1 == False and criterio2 == True and criterio3 == False:
+        aquisicoes = Aquisicao_Acao.objects.filter(memorial=memorial)
+    if criterio1 == False and criterio2 == False and criterio3 == True:
+        aquisicoes = Aquisicao_Acao.objects.filter(status_geral=status_geral)
+    if criterio1 == True and criterio2 == True and criterio3 == False:
+        aquisicoes = Locacao_Acao.objects.filter(acao=acao, memorial=memorial)
+    if criterio1 == True and criterio2 == False and criterio3 == True:
+        aquisicoes = Locacao_Acao.objects.filter(acao=acao, status_geral=status_geral)
+    if criterio1 == False and criterio2 == True and criterio3 == True:
+        aquisicoes = Locacao_Acao.objects.filter(memorial=memorial, status_geral=status_geral)
 
-    if Contrato_Locacao.objects.filter(locacao=idpassado).exists():
-        consultacontrat = Contrato_Locacao.objects.get(locacao=idpassado)
-        dataprazocontrat = consultacontrat.criado + relativedelta(days=consultacontrat.prazo)
-        dataprazo1contrat = consultacontrat.criado + relativedelta(days=(consultacontrat.prazo / 3))
-        dataprazo2contrat = dataprazo1contrat + relativedelta(days=(consultacontrat.prazo / 3))
-        dataprazocontrat = dataprazocontrat.date()
-        dataprazo1contrat = dataprazo1contrat.date()
-        dataprazo2contrat = dataprazo2contrat.date()
-
-    consultapagto = ''
-    dataprazopagto = ''
-    dataprazo1pagto = ''
-    dataprazo2pagto = ''
-    if Pagamento.objects.filter(locacao=idpassado).exists():
-        consultapagto = Pagamento.objects.get(locacao=idpassado)
-        dataprazopagto = consultapagto.criado + relativedelta(days=consultapagto.prazo)
-        dataprazo1pagto = consultapagto.criado + relativedelta(days=(consultapagto.prazo / 3))
-        dataprazo2pagto = dataprazo1pagto + relativedelta(days=(consultapagto.prazo / 3))
-        dataprazopagto = dataprazopagto.date()
-        dataprazo1pagto = dataprazo1pagto.date()
-        dataprazo2pagto = dataprazo2pagto.date()
-
-    consultareceb = ''
-    dataprazoreceb = ''
-    dataprazo1receb = ''
-    dataprazo2receb = ''
-    if Cronograma.objects.filter(locacao=idpassado).exists():
-        consultareceb = Cronograma.objects.get(locacao=idpassado)
-        dataprazoreceb = consultareceb.criado + relativedelta(days=consultareceb.prazo)
-        dataprazo1receb = consultareceb.criado + relativedelta(days=(consultareceb.prazo / 3))
-        dataprazo2receb = dataprazo1receb + relativedelta(days=(consultareceb.prazo / 3))
-        dataprazoreceb = dataprazoreceb.date()
-        dataprazo1receb = dataprazo1receb.date()
-        dataprazo2receb = dataprazo2receb.date()
-
-    datahoje = date.today()
-    statuses = Status.objects.all()
-    tiposlocacao = TipoLocacao.objects.all()
     acoes = Acao.objects.all()
     memoriais = Memorial.objects.all()
-    trps = TRP.objects.all()
-    licitacoes = Licitacao.objects.all()
-    pagamentos = Pagamento.objects.all()
-    tipospagto = TipoPagto.objects.all()
-    context = {
-            'consulta': consulta,
-            'consultacompras': consultacompras,
-            'consultasede': consultasede,
-            'consultacontrat': consultacontrat,
-            'consultapagto': consultapagto,
-            'consultareceb': consultareceb,
-            'status_chave_sol': 'Solicitado',
-            'status_chave_compras': 'Compras - Aprovado',
-            'status_chave_sede': 'Sede - Aprovado',
-            'status_chave_contrat': 'Contratação - Aprovado',
-            'status_chave_pagto': 'Pagamento - Aprovado',
-            'status_chave_receb': 'Recebimento - Aprovado',
-            'statuses': statuses,
-            'trps': trps,
-            'tiposlocacao': tiposlocacao,
-            'acoes': acoes,
-            'licitacoes': licitacoes,
-            'pagamentos': pagamentos,
-            'tipospagto': tipospagto,
-            'memoriais': memoriais,
-            'datahoje': datahoje,
-            'dataprazocompras': dataprazocompras,
-            'dataprazo1compras': dataprazo1compras,
-            'dataprazo2compras': dataprazo2compras,
-            'dataprazosede': dataprazosede,
-            'dataprazo1sede': dataprazo1sede,
-            'dataprazo2sede': dataprazo2sede,
-            'dataprazocontrat': dataprazocontrat,
-            'dataprazo1contrat': dataprazo1contrat,
-            'dataprazo2contrat': dataprazo2contrat,
-            'dataprazopagto': dataprazopagto,
-            'dataprazo1pagto': dataprazo1pagto,
-            'dataprazo2pagto': dataprazo2pagto,
-            'dataprazoreceb': dataprazoreceb,
-            'dataprazo1receb': dataprazo1receb,
-            'dataprazo2receb': dataprazo2receb
-    }
-    return render(request, 'aquisicao_acao_consulta.html', context)
-"""
+    statuses = Status.objects.all()
+    context = {'manutencoes': manutencoes.order_by('-id'),
+               'acoes': acoes,
+               'memoriais': memoriais,
+               'statuses': statuses
+               }
+    return render(request, 'manutencao_acao_listview.html', context)
 
+
+# Função para consultar uma determinada locação
 def consultaumalocacao(request,pk):
 
     idpassado = pk
@@ -982,6 +978,243 @@ def consultaumalocacao(request,pk):
     return render(request, 'locacao_acao_consulta.html', context)
 
 
+# Função que consulta uma determinada aquisição
+def consultaumaaquisicao(request,pk):
+
+    idpassado = pk
+    consulta = get_object_or_404(Aquisicao_Acao,id=pk)
+    consultacompras = ''
+    dataprazocompras = ''
+    dataprazo1compras = ''
+    dataprazo2compras = ''
+    if Compras_Aquisicao.objects.filter(aquisicao=idpassado).exists():
+        consultacompras = Compras_Aquisicao.objects.get(aquisicao=idpassado)
+        dataprazocompras = consultacompras.criado + relativedelta(days=consultacompras.prazo)
+        dataprazo1compras = consultacompras.criado + relativedelta(days=(consultacompras.prazo/3))
+        dataprazo2compras = dataprazo1compras + relativedelta(days=(consultacompras.prazo/3))
+        dataprazocompras = dataprazocompras.date()
+        dataprazo1compras = dataprazo1compras.date()
+        dataprazo2compras = dataprazo2compras.date()
+
+    consultasede = ''
+    dataprazosede = ''
+    dataprazo1sede = ''
+    dataprazo2sede = ''
+    if Sede_Aquisicao.objects.filter(aquisicao=idpassado).exists():
+        consultasede = Sede_Aquisicao.objects.get(aquisicao=idpassado)
+        dataprazosede = consultasede.criado + relativedelta(days=consultasede.prazo)
+        dataprazo1sede = consultasede.criado + relativedelta(days=(consultasede.prazo / 3))
+        dataprazo2sede = dataprazo1sede + relativedelta(days=(consultasede.prazo / 3))
+        dataprazosede = dataprazosede.date()
+        dataprazo1sede = dataprazo1sede.date()
+        dataprazo2sede = dataprazo2sede.date()
+
+    consultacontrat = ''
+    dataprazocontrat = ''
+    dataprazo1contrat = ''
+    dataprazo2contrat = ''
+
+    if Contrato_Aquisicao.objects.filter(aquisicao=idpassado).exists():
+        consultacontrat = Contrato_Aquisicao.objects.get(aquisicao=idpassado)
+        dataprazocontrat = consultacontrat.criado + relativedelta(days=consultacontrat.prazo)
+        dataprazo1contrat = consultacontrat.criado + relativedelta(days=(consultacontrat.prazo / 3))
+        dataprazo2contrat = dataprazo1contrat + relativedelta(days=(consultacontrat.prazo / 3))
+        dataprazocontrat = dataprazocontrat.date()
+        dataprazo1contrat = dataprazo1contrat.date()
+        dataprazo2contrat = dataprazo2contrat.date()
+
+    consultapagto = ''
+    dataprazopagto = ''
+    dataprazo1pagto = ''
+    dataprazo2pagto = ''
+    if Pagamento_Aquisicao.objects.filter(aquisicao=idpassado).exists():
+        consultapagto = Pagamento_Aquisicao.objects.get(aquisicao=idpassado)
+        dataprazopagto = consultapagto.criado + relativedelta(days=consultapagto.prazo)
+        dataprazo1pagto = consultapagto.criado + relativedelta(days=(consultapagto.prazo / 3))
+        dataprazo2pagto = dataprazo1pagto + relativedelta(days=(consultapagto.prazo / 3))
+        dataprazopagto = dataprazopagto.date()
+        dataprazo1pagto = dataprazo1pagto.date()
+        dataprazo2pagto = dataprazo2pagto.date()
+
+    consultareceb = ''
+    dataprazoreceb = ''
+    dataprazo1receb = ''
+    dataprazo2receb = ''
+    if Cronograma_Aquisicao.objects.filter(aquisicao=idpassado).exists():
+        consultareceb = Cronograma_Aquisicao.objects.get(aquisicao=idpassado)
+        dataprazoreceb = consultareceb.criado + relativedelta(days=consultareceb.prazo)
+        dataprazo1receb = consultareceb.criado + relativedelta(days=(consultareceb.prazo / 3))
+        dataprazo2receb = dataprazo1receb + relativedelta(days=(consultareceb.prazo / 3))
+        dataprazoreceb = dataprazoreceb.date()
+        dataprazo1receb = dataprazo1receb.date()
+        dataprazo2receb = dataprazo2receb.date()
+
+    datahoje = date.today()
+    statuses = Status.objects.all()
+    acoes = Acao.objects.all()
+    memoriais = Memorial.objects.all()
+    trps = TRP.objects.all()
+    licitacoes = Licitacao.objects.all()
+    pagamentos = Pagamento.objects.all()
+    tipospagto = TipoPagto.objects.all()
+    context = {
+            'consulta': consulta,
+            'consultacompras': consultacompras,
+            'consultasede': consultasede,
+            'consultacontrat': consultacontrat,
+            'consultapagto': consultapagto,
+            'consultareceb': consultareceb,
+            'status_chave_sol': 'Solicitado',
+            'status_chave_compras': 'Compras - Aprovado',
+            'status_chave_sede': 'Sede - Aprovado',
+            'status_chave_contrat': 'Contratação - Aprovado',
+            'status_chave_pagto': 'Pagamento - Aprovado',
+            'status_chave_receb': 'Recebimento - Aprovado',
+            'statuses': statuses,
+            'trps': trps,
+            'acoes': acoes,
+            'licitacoes': licitacoes,
+            'pagamentos': pagamentos,
+            'tipospagto': tipospagto,
+            'memoriais': memoriais,
+            'datahoje': datahoje,
+            'dataprazocompras': dataprazocompras,
+            'dataprazo1compras': dataprazo1compras,
+            'dataprazo2compras': dataprazo2compras,
+            'dataprazosede': dataprazosede,
+            'dataprazo1sede': dataprazo1sede,
+            'dataprazo2sede': dataprazo2sede,
+            'dataprazocontrat': dataprazocontrat,
+            'dataprazo1contrat': dataprazo1contrat,
+            'dataprazo2contrat': dataprazo2contrat,
+            'dataprazopagto': dataprazopagto,
+            'dataprazo1pagto': dataprazo1pagto,
+            'dataprazo2pagto': dataprazo2pagto,
+            'dataprazoreceb': dataprazoreceb,
+            'dataprazo1receb': dataprazo1receb,
+            'dataprazo2receb': dataprazo2receb
+    }
+    return render(request, 'aquisicao_acao_consulta.html', context)
+
+
+# Função que consulta uma determinada manutenção
+def consultaumamanutencao(request,pk):
+
+    idpassado = pk
+    consulta = get_object_or_404(Manutencao_Acao,id=pk)
+    consultacompras = ''
+    dataprazocompras = ''
+    dataprazo1compras = ''
+    dataprazo2compras = ''
+    if Compras_Manutencao.objects.filter(manutencao=idpassado).exists():
+        consultacompras = Compras_Manutencao.objects.get(manutencao=idpassado)
+        dataprazocompras = consultacompras.criado + relativedelta(days=consultacompras.prazo)
+        dataprazo1compras = consultacompras.criado + relativedelta(days=(consultacompras.prazo/3))
+        dataprazo2compras = dataprazo1compras + relativedelta(days=(consultacompras.prazo/3))
+        dataprazocompras = dataprazocompras.date()
+        dataprazo1compras = dataprazo1compras.date()
+        dataprazo2compras = dataprazo2compras.date()
+
+    consultasede = ''
+    dataprazosede = ''
+    dataprazo1sede = ''
+    dataprazo2sede = ''
+    if Sede_Manutencao.objects.filter(manutencao=idpassado).exists():
+        consultasede = Sede_Manutencao.objects.get(manutencao=idpassado)
+        dataprazosede = consultasede.criado + relativedelta(days=consultasede.prazo)
+        dataprazo1sede = consultasede.criado + relativedelta(days=(consultasede.prazo / 3))
+        dataprazo2sede = dataprazo1sede + relativedelta(days=(consultasede.prazo / 3))
+        dataprazosede = dataprazosede.date()
+        dataprazo1sede = dataprazo1sede.date()
+        dataprazo2sede = dataprazo2sede.date()
+
+    consultacontrat = ''
+    dataprazocontrat = ''
+    dataprazo1contrat = ''
+    dataprazo2contrat = ''
+
+    if Contrato_Manutencao.objects.filter(manutencao=idpassado).exists():
+        consultacontrat = Contrato_Manutencao.objects.get(manutencao=idpassado)
+        dataprazocontrat = consultacontrat.criado + relativedelta(days=consultacontrat.prazo)
+        dataprazo1contrat = consultacontrat.criado + relativedelta(days=(consultacontrat.prazo / 3))
+        dataprazo2contrat = dataprazo1contrat + relativedelta(days=(consultacontrat.prazo / 3))
+        dataprazocontrat = dataprazocontrat.date()
+        dataprazo1contrat = dataprazo1contrat.date()
+        dataprazo2contrat = dataprazo2contrat.date()
+
+    consultapagto = ''
+    dataprazopagto = ''
+    dataprazo1pagto = ''
+    dataprazo2pagto = ''
+    if Pagamento_Manutencao.objects.filter(manutencao=idpassado).exists():
+        consultapagto = Pagamento_Manutencao.objects.get(manutencao=idpassado)
+        dataprazopagto = consultapagto.criado + relativedelta(days=consultapagto.prazo)
+        dataprazo1pagto = consultapagto.criado + relativedelta(days=(consultapagto.prazo / 3))
+        dataprazo2pagto = dataprazo1pagto + relativedelta(days=(consultapagto.prazo / 3))
+        dataprazopagto = dataprazopagto.date()
+        dataprazo1pagto = dataprazo1pagto.date()
+        dataprazo2pagto = dataprazo2pagto.date()
+
+    consultareceb = ''
+    dataprazoreceb = ''
+    dataprazo1receb = ''
+    dataprazo2receb = ''
+    if Cronograma_Manutencao.objects.filter(manutencao=idpassado).exists():
+        consultareceb = Cronograma_Manutencao.objects.get(manutencao=idpassado)
+        dataprazoreceb = consultareceb.criado + relativedelta(days=consultareceb.prazo)
+        dataprazo1receb = consultareceb.criado + relativedelta(days=(consultareceb.prazo / 3))
+        dataprazo2receb = dataprazo1receb + relativedelta(days=(consultareceb.prazo / 3))
+        dataprazoreceb = dataprazoreceb.date()
+        dataprazo1receb = dataprazo1receb.date()
+        dataprazo2receb = dataprazo2receb.date()
+
+    datahoje = date.today()
+    statuses = Status.objects.all()
+    acoes = Acao.objects.all()
+    memoriais = Memorial.objects.all()
+    trps = TRP.objects.all()
+    licitacoes = Licitacao.objects.all()
+    pagamentos = Pagamento.objects.all()
+    tipospagto = TipoPagto.objects.all()
+    context = {
+            'consulta': consulta,
+            'consultacompras': consultacompras,
+            'consultasede': consultasede,
+            'consultacontrat': consultacontrat,
+            'consultapagto': consultapagto,
+            'consultareceb': consultareceb,
+            'status_chave_sol': 'Solicitado',
+            'status_chave_compras': 'Compras - Aprovado',
+            'status_chave_sede': 'Sede - Aprovado',
+            'status_chave_contrat': 'Contratação - Aprovado',
+            'status_chave_pagto': 'Pagamento - Aprovado',
+            'status_chave_receb': 'Recebimento - Aprovado',
+            'statuses': statuses,
+            'trps': trps,
+            'acoes': acoes,
+            'licitacoes': licitacoes,
+            'pagamentos': pagamentos,
+            'tipospagto': tipospagto,
+            'memoriais': memoriais,
+            'datahoje': datahoje,
+            'dataprazocompras': dataprazocompras,
+            'dataprazo1compras': dataprazo1compras,
+            'dataprazo2compras': dataprazo2compras,
+            'dataprazosede': dataprazosede,
+            'dataprazo1sede': dataprazo1sede,
+            'dataprazo2sede': dataprazo2sede,
+            'dataprazocontrat': dataprazocontrat,
+            'dataprazo1contrat': dataprazo1contrat,
+            'dataprazo2contrat': dataprazo2contrat,
+            'dataprazopagto': dataprazopagto,
+            'dataprazo1pagto': dataprazo1pagto,
+            'dataprazo2pagto': dataprazo2pagto,
+            'dataprazoreceb': dataprazoreceb,
+            'dataprazo1receb': dataprazo1receb,
+            'dataprazo2receb': dataprazo2receb
+    }
+    return render(request, 'manutencao_acao_consulta.html', context)
+
 def finalizarlocacao(request,pk):
     idpassado = pk
     consulta = Locacao_Acao.objects.get(id=idpassado)
@@ -1008,6 +1241,20 @@ def listloc_compras(request):
         'statuses': statuses
     }
     return render(request, 'locacao_acao_listview.html', context)
+
+def listaquis_compras(request):
+    aquisicao_compras = Aquisicao_Acao.objects.filter(status_geral__descricao__startswith='Compras')
+    acoes = Acao.objects.all()
+    memoriais = Memorial.objects.all()
+    statuses = Status.objects.all()
+
+    context = {
+        'locacoes': locacoes_compras,
+        'acoes': acoes,
+        'memoriais': memoriais,
+        'statuses': statuses
+    }
+    return render(request, 'aquisicao_acao_listview.html', context)
 
 
 def listloc_sede(request):
@@ -1256,6 +1503,7 @@ def resultloc(request, id):
     }
     return render(request, 'resultado.html', context)
 
+
 def add_aquisicao (request):
     acoes = Acao.objects.all()
     memoriais = Memorial.objects.all()
@@ -1267,6 +1515,7 @@ def add_aquisicao (request):
                }
 
     return render(request, 'form_solicit_aquisicao.html', context)
+
 
 def add_manut (request):
     acoes = Acao.objects.all()

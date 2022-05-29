@@ -4,16 +4,16 @@
 
             <div class="col-10 container conteudo_tabela">
                     <div class="row">
-                        <div class="col-10 titulo_listview"><b>Consulta de Locações</b></div>
+                        <div class="col-10 titulo_listview"><b>Consulta de Manutenções</b></div>
                     </div>
                     <div class="text-center"><hr style="height:4px;border-width:0;color:gray;background-color:gray"></div>
                     <div class="filtro_processo" align="center">
-                        <form method="post" action = "../consultalocacao">
+                        <form method="post" action = "../consultamanutencao">
                             {% csrf_token %}
                             <table style="border-collapse:separate; border-spacing:18px 10px ">
                                     <tbody>
                                             <tr>
-
+                                                <!--
                                                     <td  align="right"><div class="form-horizontal"><b>Tipo de Locação:</b></div></td>
                                                     <td  align="left"><select name="tipo_locacao" id="id_tipo_locacao">
                                                     {% for tipolocacao in tiposlocacao %}
@@ -21,7 +21,7 @@
                                                     {% endfor %}
                                                               <option value="" selected>---------</option>
                                                     </select></td>
-
+                                                -->
                                             </tr>
                                             <tr>
                                                 <td align="right"><div class="form-horizontal"><b>Ação:</b></div></td>
@@ -64,7 +64,7 @@
                                 <thead class="thead-dark">
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">Tipo de locação</th>
+                                        <!-- <th scope="col">Tipo de locação</th> -->
                                         <th scope="col">Ação</th>
                                         <th scope="col">Memorial</th>
                                         <th scope="col">Data e Hora da Solicitação</th>
@@ -73,15 +73,16 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for locacao in locacoes %}
+                                    {% for manutencao in manutencoes %}
                                         <tr>
-                                            <td>{{ locacao.id }}</td>
-                                            <td>{{ locacao.tipo_locacao }}</td>
-                                            <td> <a href="../consultaumalocacao/{{locacao.pk}}">{{ locacao.acao }}</a></td>
-                                            <td> {{ locacao.memorial }}</td>
-                                            <td> {{ locacao.criado}} </td>
-                                            <td>{{ locacao.status_geral }}</td>
-                                            <td> <a href="../consultaumalocacao/{{locacao.pk}}"><img src="/static/img/visualizar.png"></a></td>
+                                            <td>{{ manutencao.id }}</td>
+                                            <!-- <td>{{ locacao.tipo_locacao }}</td>-->
+                                            <td> <strong><a href="../consultaumamanutencao/{{manutencao.pk}}">{{ manutencao.acao }}</strong><br>
+                                                 Descrição: {{ manutencao.descricao }}</a></td>
+                                            <td> {{ manutencao.memorial }}</td>
+                                            <td> {{ manutencao.criado}} </td>
+                                            <td>{{ manutencao.status_geral }}</td>
+                                            <td> <a href="../consultaumamanutencao/{{manutencao.pk}}"><img src="/static/img/visualizar.png"></a></td>
                                         </tr>
                                     {% endfor %}
                                 </tbody>

@@ -65,7 +65,7 @@
                                     <tr>
                                         <th scope="col">#</th>
                                         <th scope="col">Tipo de locação</th>
-                                        <th scope="col">Ação</th>
+                                        <th scope="col">Ação/Descrição</th>
                                         <th scope="col">Memorial</th>
                                         <th scope="col">Data e Hora da Solicitação</th>
                                         <th scope="col">Status Geral</th>
@@ -77,7 +77,9 @@
                                         <tr>
                                             <td>{{ locacao.id }}</td>
                                             <td>{{ locacao.tipo_locacao }}</td>
-                                            <td> <a href="../consultaumalocacao/{{locacao.pk}}">{{ locacao.acao }}</a></td>
+                                            <td> <strong><a href="../consultaumalocacao/{{locacao.pk}}">{{ locacao.acao }}</strong><br>
+                                                 Descrição: {{ locacao.descricao }}</a>
+                                            </td>
                                             <td> {{ locacao.memorial }}</td>
                                             <td> {{ locacao.criado}} </td>
                                             <td>{{ locacao.status_geral }}</td>

@@ -7,7 +7,8 @@ from .views import IndexView, SistemaView, CreateSolicitView, ListLocacaoAcaoVie
                    CreateAprovView, CreateFornecView, CreateCatFornecView, CreateEndFornecView, CreateContFornecView,\
                    CreateStatusView, CreateTipoStatusView, CreateLocalView, CreateProjetoView, CreateLinguagemView,\
                    CreateTipoPagtoView, UpdPagtoView, UpdCronoView, LocacaoAPIView, TipoLocacaoAPIView, LocacaoViewSet,\
-                   TipoLocacaoViewSet, ConsultaAquisicaoAcaoView, ListAquisicaoAcaoView
+                   TipoLocacaoViewSet, ConsultaAquisicaoAcaoView, ListAquisicaoAcaoView, CreateAquisicaoView, \
+                   ComprasManutencaoModelForm
 
 from rest_framework.routers import SimpleRouter
 
@@ -25,8 +26,8 @@ urlpatterns = [
     path('', IndexView.as_view(), name='index'),
     path('sistema/', SistemaView.as_view(), name='sistema'),
     path('add/', core.views.CreateSolicitView.as_view(), name='add_loc'),
-    path('add_aquisicao/', core.views.add_aquisicao, name='add_aquisicao'),
-    path('add_manut/', core.views.add_manut, name='add_manut'),
+    path('add_aquisicao/', core.views.CreateAquisicaoView.as_view(), name='add_aquisicao'),
+    path('add_manut/', core.views.CreateManutencaoView.as_view(), name='add_manut'),
     path('listlocacoes/', core.views.ListLocacaoAcaoView.as_view(), name='list_loc'),
     path('listaquisicoes/', core.views.ListAquisicaoAcaoView.as_view(), name='list_aquis'),
     path('listmanutencoes/', core.views.ListManutencaoAcaoView.as_view(), name='list_manut'),
@@ -62,7 +63,8 @@ urlpatterns = [
     path('salvamemorial', core.views.salvamemorial, name='salvamemorial'),
     path('salvaprojeto', core.views.salvaprojeto, name='salvaprojeto'),
     path('consultalocacao', core.views.consultalocacao, name='consultalocacao'),
-#    path('consultaaquisicao', core.views.consultaaquisicao, name='consultaaquisicao'),
+    path('consultaaquisicao', core.views.consultaaquisicao, name='consultaaquisicao'),
+    path('consultamanutencao', core.views.consultamanutencao, name='consultamanutencao'),
     path('finalizarlocacao/<int:pk>', core.views.finalizarlocacao, name='finalizarlocacao'),
     path('salvatipoloc', core.views.salvatipoloc, name='salvatipoloc'),
     path('resultloc/<int:id>', core.views.resultloc, name='resultloc'),
@@ -72,5 +74,6 @@ urlpatterns = [
     path('updatepagto/<int:pk>/', core.views.UpdPagtoView.as_view(), name='updatepagto'),
     path('updatecrono/<int:pk>/', core.views.UpdCronoView.as_view(), name='updatecrono'),
     path('consultaumalocacao/<int:pk>/', core.views.consultaumalocacao, name='consultaumalocacao'),
-#    path('consultaumaaquisicao/<int:pk>/', core.views.consultaumaaquisicao, name='consultaumaaquisicao')
+    path('consultaumaaquisicao/<int:pk>/', core.views.consultaumaaquisicao, name='consultaumaaquisicao'),
+    path('consultaumamanutencao/<int:pk>/', core.views.consultaumamanutencao, name='consultaumamanutencao')
 ]
