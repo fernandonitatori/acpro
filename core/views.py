@@ -277,7 +277,7 @@ class ConsultaAquisicaoAcaoView(UpdateView):
             return HttpResponseRedirect(reverse_lazy('consultaumaaquisicao', args=[aquis]))
         return render(request, 'resultado.html', {'form': form})
 
-"""
+
 class ListUpdLocacaoAcaoView(ListView):
     model = Locacao_Acao
     template_name = 'locacao_acao_updlistview.html'
@@ -290,7 +290,7 @@ class ListUpdAquiscaoAcaoView(ListView):
     template_name = 'aquisicao_acao_updlistview.html'
     queryset = Aquisicao_Acao.objects.all()
     context_object_name = 'updaquisicoes'
-"""
+
 
 # View para criar Ação
 class CreateAcaoView(SuccessMessageMixin, CreateView):
@@ -796,11 +796,11 @@ def consultaaquisicao(request):
     if criterio1 == False and criterio2 == False and criterio3 == True:
         aquisicoes = Aquisicao_Acao.objects.filter(status_geral=status_geral)
     if criterio1 == True and criterio2 == True and criterio3 == False:
-        aquisicoes = Locacao_Acao.objects.filter(acao=acao, memorial=memorial)
+        aquisicoes = Aquisicao_Acao.objects.filter(acao=acao, memorial=memorial)
     if criterio1 == True and criterio2 == False and criterio3 == True:
-        aquisicoes = Locacao_Acao.objects.filter(acao=acao, status_geral=status_geral)
+        aquisicoes = Aquisicao_Acao.objects.filter(acao=acao, status_geral=status_geral)
     if criterio1 == False and criterio2 == True and criterio3 == True:
-        aquisicoes = Locacao_Acao.objects.filter(memorial=memorial, status_geral=status_geral)
+        aquisicoes = Aquisicao_Acao.objects.filter(memorial=memorial, status_geral=status_geral)
 
     acoes = Acao.objects.all()
     memoriais = Memorial.objects.all()
@@ -832,19 +832,19 @@ def consultamanutencao(request):
         criterio3 = True
 
     if criterio1 == False and criterio2 == False and criterio3 == False:
-        aquisicoes = Aquisicao_Acao.objects.all()
+        manutencoes = Manutencao_Acao.objects.all()
     if criterio1 == True and criterio2 == False and criterio3 == False:
-        aquisicoes = Aquisicao_Acao.objects.filter(acao=acao)
+        manutencoes = Manutencao_Acao.objects.filter(acao=acao)
     if criterio1 == False and criterio2 == True and criterio3 == False:
-        aquisicoes = Aquisicao_Acao.objects.filter(memorial=memorial)
+        manutencoes = Manutencao_Acao.objects.filter(memorial=memorial)
     if criterio1 == False and criterio2 == False and criterio3 == True:
-        aquisicoes = Aquisicao_Acao.objects.filter(status_geral=status_geral)
+        manutencoes = Manutencao_Acao.objects.filter(status_geral=status_geral)
     if criterio1 == True and criterio2 == True and criterio3 == False:
-        aquisicoes = Locacao_Acao.objects.filter(acao=acao, memorial=memorial)
+        manutencoes = Manutencao_Acao.objects.filter(acao=acao, memorial=memorial)
     if criterio1 == True and criterio2 == False and criterio3 == True:
-        aquisicoes = Locacao_Acao.objects.filter(acao=acao, status_geral=status_geral)
+        manutencoes = Manutencao_Acao.objects.filter(acao=acao, status_geral=status_geral)
     if criterio1 == False and criterio2 == True and criterio3 == True:
-        aquisicoes = Locacao_Acao.objects.filter(memorial=memorial, status_geral=status_geral)
+        manutencoes = Manutencao_Acao.objects.filter(memorial=memorial, status_geral=status_geral)
 
     acoes = Acao.objects.all()
     memoriais = Memorial.objects.all()
