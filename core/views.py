@@ -10,7 +10,8 @@ from dateutil.relativedelta import relativedelta
 
 from .models import Locacao_Acao, Acao, TipoLocacao, Memorial, Compras_Locacao, TRP, Orcamento, Sede, Licitacao, \
                     Contrato_Locacao, Pagamento, Cronograma, Aprovacao, Fornecedor, CatFornecedor, EndFornecedor, \
-                    ContFornecedor, Tipo_Status, Status, Local, Linguagem, Projeto, TipoPagto
+                    ContFornecedor, Tipo_Status, Status, Local, Linguagem, Projeto, TipoPagto, Aquisicao_Acao, \
+                    Manutencao_Acao
 
 from .forms import TipoLocacaoModelForm, MemorialModelForm, ComprasLocacaoModelForm, LocacaoAcaoModelForm, \
                    SedeModelForm,  ContratoLocacaoModelForm, PagamentoModelForm, CronogramaModelForm, ProjetoModelForm
@@ -51,6 +52,34 @@ class ListLocacaoAcaoView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['tiposlocacao'] = TipoLocacao.objects.all()
+        context['acoes'] = Acao.objects.all()
+        context['memoriais'] = Memorial.objects.all()
+        context['statuses'] = Status.objects.all()
+        return context
+
+
+class ListAquisicaoAcaoView(ListView):
+    model = Aquisicao_Acao
+    template_name = 'aquisicao_acao_listview.html'
+    queryset = Aquisicao_Acao.objects.all().order_by('-id')
+    context_object_name = 'aquisicoes'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['acoes'] = Acao.objects.all()
+        context['memoriais'] = Memorial.objects.all()
+        context['statuses'] = Status.objects.all()
+        return context
+
+
+class ListManutencaoAcaoView(ListView):
+    model = Manutencao_Acao
+    template_name = 'manutencao_acao_listview.html'
+    queryset = Manutencao_Acao.objects.all().order_by('-id')
+    context_object_name = 'manutencoes'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         context['acoes'] = Acao.objects.all()
         context['memoriais'] = Memorial.objects.all()
         context['statuses'] = Status.objects.all()
@@ -169,12 +198,45 @@ class ConsultaLocacaoAcaoView(UpdateView):
             return HttpResponseRedirect(reverse_lazy('consultaumalocacao', args=[loc]))
         return render(request, 'resultado.html', {'form': form})
 
+class ConsultaAquisicaoAcaoView(UpdateView):
+    model = Aquisicao_Acao
+    template_name = 'aquisicao_acao_consulta.html'
+    fields = ['acao', 'memorial', 'prazo', 'status', 'status_geral']
+    context_object_name = 'consulta'
+    success_url = reverse_lazy('sistema')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['status_chave_sol'] = 'Solicitado'
+        # context['tiposlocacao'] = TipoLocacao.objects.all()
+        context['acoes'] = Acao.objects.all()
+        context['memoriais'] = Memorial.objects.all()
+        context['statuses'] = Status.objects.all()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = AquisicaoAcaoModelForm(request.POST)
+        if form.is_valid():
+            aquis = self.kwargs.get("pk")
+            print(aquis)
+            super(ConsultaAquisicaoAcaoViewAcaoView, self).post(request, **kwargs)
+            messages.success(request, 'Processo em Solicitação atualizado com sucesso')
+            return HttpResponseRedirect(reverse_lazy('consultaumaaquisicao', args=[aquis]))
+        return render(request, 'resultado.html', {'form': form})
+
 
 class ListUpdLocacaoAcaoView(ListView):
     model = Locacao_Acao
     template_name = 'locacao_acao_updlistview.html'
     queryset = Locacao_Acao.objects.all()
     context_object_name = 'updlocacoes'
+
+
+class ListUpdAquiscaoAcaoView(ListView):
+    model = Aquisicao_Acao
+    template_name = 'aquisicao_acao_updlistview.html'
+    queryset = Aquisicao_Acao.objects.all()
+    context_object_name = 'updaquisicoes'
 
 
 class CreateAcaoView(SuccessMessageMixin, CreateView):
@@ -625,6 +687,180 @@ def consultalocacao(request):
                'statuses': statuses
                }
     return render(request, 'locacao_acao_listview.html', context)
+
+"""
+def consultaaquisicao(request):
+    tipoloc = request.POST.get("tipo_locacao")
+    acao = request.POST.get("acao")
+    memorial = request.POST.get("memorial")
+    status_geral = request.POST.get("status_geral")
+    print(request.POST)
+
+    criterio1 = False
+    criterio2 = False
+    criterio3 = False
+    criterio4 = False
+
+    if tipoloc != '':
+        criterio1 = True
+    if acao != '':
+        criterio2 = True
+    if memorial != '':
+        criterio3 = True
+    if status_geral != '':
+        criterio4 = True
+
+    if criterio1 == True and criterio2 == False and criterio3 == False:
+        locacoes = Locacao_Acao.objects.filter(tipo_locacao=tipoloc)
+    if criterio1 == False and criterio2 == True and criterio3 == False:
+        locacoes = Locacao_Acao.objects.filter(acao=acao)
+    if criterio1 == False and criterio2 == False and criterio3 == True:
+        locacoes = Locacao_Acao.objects.filter(memorial=memorial)
+    if criterio1 == True and criterio2 == True and criterio3 == False:
+        locacoes = Locacao_Acao.objects.filter(tipo_locacao=tipoloc,acao=acao)
+    if criterio1 == True and criterio2 == False and criterio3 == True:
+        locacoes = Locacao_Acao.objects.filter(tipo_locacao=tipoloc, memorial=memorial)
+    if criterio1 == False and criterio2 == True and criterio3 == True:
+        locacoes = Locacao_Acao.objects.filter(acao=acao, memorial=memorial)
+    if criterio1 == True and criterio2 == True and criterio3 == True:
+        locacoes = Locacao_Acao.objects.filter(tipo_locacao=tipoloc, acao=acao, memorial=memorial)
+    if criterio4 == True:
+        locacoes = Locacao_Acao.objects.filter(status_geral=status_geral)
+    if criterio1 == False and criterio2 == False and criterio3 == False and criterio4 == False:
+        locacoes = Locacao_Acao.objects.all()
+
+    tiposlocacao = TipoLocacao.objects.all()
+    acoes = Acao.objects.all()
+    memoriais = Memorial.objects.all()
+    statuses = Status.objects.all()
+    context = {'locacoes': locacoes.order_by('-id'),
+               'tiposlocacao': tiposlocacao,
+               'acoes': acoes,
+               'memoriais': memoriais,
+               'statuses': statuses
+               }
+    return render(request, 'locacao_acao_listview.html', context)
+
+
+def consultaumaaquisicao(request,pk):
+
+    idpassado = pk
+    consulta = get_object_or_404(Locacao_Acao,id=pk)
+    consultacompras = ''
+    dataprazocompras = ''
+    dataprazo1compras = ''
+    dataprazo2compras = ''
+    if Compras_Locacao.objects.filter(locacao=idpassado).exists():
+        consultacompras = Compras_Locacao.objects.get(locacao=idpassado)
+        dataprazocompras = consultacompras.criado + relativedelta(days=consultacompras.prazo)
+        dataprazo1compras = consultacompras.criado + relativedelta(days=(consultacompras.prazo/3))
+        dataprazo2compras = dataprazo1compras + relativedelta(days=(consultacompras.prazo/3))
+        dataprazocompras = dataprazocompras.date()
+        dataprazo1compras = dataprazo1compras.date()
+        dataprazo2compras = dataprazo2compras.date()
+
+    consultasede = ''
+    dataprazosede = ''
+    dataprazo1sede = ''
+    dataprazo2sede = ''
+    if Sede.objects.filter(locacao=idpassado).exists():
+        consultasede = Sede.objects.get(locacao=idpassado)
+        dataprazosede = consultasede.criado + relativedelta(days=consultasede.prazo)
+        dataprazo1sede = consultasede.criado + relativedelta(days=(consultasede.prazo / 3))
+        dataprazo2sede = dataprazo1sede + relativedelta(days=(consultasede.prazo / 3))
+        dataprazosede = dataprazosede.date()
+        dataprazo1sede = dataprazo1sede.date()
+        dataprazo2sede = dataprazo2sede.date()
+
+    consultacontrat = ''
+    dataprazocontrat = ''
+    dataprazo1contrat = ''
+    dataprazo2contrat = ''
+
+    if Contrato_Locacao.objects.filter(locacao=idpassado).exists():
+        consultacontrat = Contrato_Locacao.objects.get(locacao=idpassado)
+        dataprazocontrat = consultacontrat.criado + relativedelta(days=consultacontrat.prazo)
+        dataprazo1contrat = consultacontrat.criado + relativedelta(days=(consultacontrat.prazo / 3))
+        dataprazo2contrat = dataprazo1contrat + relativedelta(days=(consultacontrat.prazo / 3))
+        dataprazocontrat = dataprazocontrat.date()
+        dataprazo1contrat = dataprazo1contrat.date()
+        dataprazo2contrat = dataprazo2contrat.date()
+
+    consultapagto = ''
+    dataprazopagto = ''
+    dataprazo1pagto = ''
+    dataprazo2pagto = ''
+    if Pagamento.objects.filter(locacao=idpassado).exists():
+        consultapagto = Pagamento.objects.get(locacao=idpassado)
+        dataprazopagto = consultapagto.criado + relativedelta(days=consultapagto.prazo)
+        dataprazo1pagto = consultapagto.criado + relativedelta(days=(consultapagto.prazo / 3))
+        dataprazo2pagto = dataprazo1pagto + relativedelta(days=(consultapagto.prazo / 3))
+        dataprazopagto = dataprazopagto.date()
+        dataprazo1pagto = dataprazo1pagto.date()
+        dataprazo2pagto = dataprazo2pagto.date()
+
+    consultareceb = ''
+    dataprazoreceb = ''
+    dataprazo1receb = ''
+    dataprazo2receb = ''
+    if Cronograma.objects.filter(locacao=idpassado).exists():
+        consultareceb = Cronograma.objects.get(locacao=idpassado)
+        dataprazoreceb = consultareceb.criado + relativedelta(days=consultareceb.prazo)
+        dataprazo1receb = consultareceb.criado + relativedelta(days=(consultareceb.prazo / 3))
+        dataprazo2receb = dataprazo1receb + relativedelta(days=(consultareceb.prazo / 3))
+        dataprazoreceb = dataprazoreceb.date()
+        dataprazo1receb = dataprazo1receb.date()
+        dataprazo2receb = dataprazo2receb.date()
+
+    datahoje = date.today()
+    statuses = Status.objects.all()
+    tiposlocacao = TipoLocacao.objects.all()
+    acoes = Acao.objects.all()
+    memoriais = Memorial.objects.all()
+    trps = TRP.objects.all()
+    licitacoes = Licitacao.objects.all()
+    pagamentos = Pagamento.objects.all()
+    tipospagto = TipoPagto.objects.all()
+    context = {
+            'consulta': consulta,
+            'consultacompras': consultacompras,
+            'consultasede': consultasede,
+            'consultacontrat': consultacontrat,
+            'consultapagto': consultapagto,
+            'consultareceb': consultareceb,
+            'status_chave_sol': 'Solicitado',
+            'status_chave_compras': 'Compras - Aprovado',
+            'status_chave_sede': 'Sede - Aprovado',
+            'status_chave_contrat': 'Contratação - Aprovado',
+            'status_chave_pagto': 'Pagamento - Aprovado',
+            'status_chave_receb': 'Recebimento - Aprovado',
+            'statuses': statuses,
+            'trps': trps,
+            'tiposlocacao': tiposlocacao,
+            'acoes': acoes,
+            'licitacoes': licitacoes,
+            'pagamentos': pagamentos,
+            'tipospagto': tipospagto,
+            'memoriais': memoriais,
+            'datahoje': datahoje,
+            'dataprazocompras': dataprazocompras,
+            'dataprazo1compras': dataprazo1compras,
+            'dataprazo2compras': dataprazo2compras,
+            'dataprazosede': dataprazosede,
+            'dataprazo1sede': dataprazo1sede,
+            'dataprazo2sede': dataprazo2sede,
+            'dataprazocontrat': dataprazocontrat,
+            'dataprazo1contrat': dataprazo1contrat,
+            'dataprazo2contrat': dataprazo2contrat,
+            'dataprazopagto': dataprazopagto,
+            'dataprazo1pagto': dataprazo1pagto,
+            'dataprazo2pagto': dataprazo2pagto,
+            'dataprazoreceb': dataprazoreceb,
+            'dataprazo1receb': dataprazo1receb,
+            'dataprazo2receb': dataprazo2receb
+    }
+    return render(request, 'aquisicao_acao_consulta.html', context)
+"""
 
 def consultaumalocacao(request,pk):
 

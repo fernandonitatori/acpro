@@ -1,6 +1,6 @@
 from django import forms
 from core.models import Acao, Locacao_Acao, TipoLocacao, Memorial, Compras_Locacao, Sede, Contrato_Locacao, Pagamento,\
-                        Cronograma, Projeto
+                        Cronograma, Projeto, Aquisicao_Acao, Manutencao_Acao
 
 
 class LocacaoAcaoModelForm(forms.ModelForm):
@@ -8,6 +8,20 @@ class LocacaoAcaoModelForm(forms.ModelForm):
     class Meta:
         model = Locacao_Acao
         fields = ['tipo_locacao', 'acao', 'memorial', 'prazo', 'status', 'status_geral']
+
+
+class AquisicaoAcaoModelForm(forms.ModelForm):
+
+    class Meta:
+        model = Aquisicao_Acao
+        fields = ['acao', 'memorial', 'prazo', 'status', 'status_geral']
+
+
+class ManutencaoAcaoModelForm(forms.ModelForm):
+
+    class Meta:
+        model = Manutencao_Acao
+        fields = ['acao', 'memorial', 'prazo', 'status', 'status_geral']
 
 
 class AcaoModelForm(forms.ModelForm):

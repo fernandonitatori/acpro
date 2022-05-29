@@ -152,6 +152,37 @@ class Locacao_Acao(Base):
     def __str__(self):
         return str(self.descricao)
 
+class Aquisicao_Acao(Base):
+    acao = models.ForeignKey('Acao', verbose_name='açao', null=True, on_delete=models.SET_NULL)
+    memorial = models.ForeignKey('Memorial', verbose_name='memorial', null=True, on_delete=models.SET_NULL)
+    status = models.ForeignKey('Status', verbose_name='status', related_name='status_aquisicao', null=True, on_delete=models.SET_NULL)
+    status_geral = models.ForeignKey('Status', verbose_name='status geral', related_name='status_geral_aquisicao',null=True, on_delete=models.SET_NULL)
+    descricao = models.CharField('Descriçao', max_length=90)
+    prazo = models.IntegerField('Prazo')
+
+    class Meta:
+        verbose_name = 'Solicitação de Aquisição'
+        verbose_name_plural = 'Solicitações de Aquisição'
+
+    def __str__(self):
+        return str(self.descricao)
+
+
+class Manutencao_Acao(Base):
+    acao = models.ForeignKey('Acao', verbose_name='açao', null=True, on_delete=models.SET_NULL)
+    memorial = models.ForeignKey('Memorial', verbose_name='memorial', null=True, on_delete=models.SET_NULL)
+    status = models.ForeignKey('Status', verbose_name='status', related_name='status_manutencao', null=True, on_delete=models.SET_NULL)
+    status_geral = models.ForeignKey('Status', verbose_name='status geral', related_name='status_geral_manutencao', null=True, on_delete=models.SET_NULL)
+    descricao = models.CharField('Descriçao', max_length=90)
+    prazo = models.IntegerField('Prazo')
+
+    class Meta:
+        verbose_name = 'Solicitação de Manutenção'
+        verbose_name_plural = 'Solicitações de Manutenção'
+
+    def __str__(self):
+        return str(self.descricao)
+
 
 class TRP(Base):
     numeroTRP = models.IntegerField('Número da TRP')
