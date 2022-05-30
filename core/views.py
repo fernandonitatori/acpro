@@ -7,6 +7,11 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponseRedirect
 from datetime import *
 from dateutil.relativedelta import relativedelta
+# MatPlotLib
+import matplotlib
+matplotlib.use('Agg')
+from matplotlib import pyplot as plt
+import numpy as np
 
 from .models import Locacao_Acao, Acao, TipoLocacao, Memorial, Compras_Locacao, TRP, Orcamento, Sede, Licitacao, \
                     Contrato_Locacao, Pagamento, Cronograma, Aprovacao, Fornecedor, CatFornecedor, EndFornecedor, \
@@ -24,6 +29,29 @@ from rest_framework import generics
 from rest_framework import viewsets
 from .serializers import Locacao_AcaoSerializer, TipoLocacao_AcaoSerializer
 from  rest_framework import mixins
+
+
+# Pie Chart
+def piechart(request):
+    # Pie chart, where the slices will be ordered and plotted counter-clockwise:
+    labels = 'Locações', 'Aquisições', 'Manutenções'
+    numlocacoes = Locacao_Acao.objects.count()
+    numaquisicoes = Aquisicao_Acao.objects.count()
+    nummanutencoes = Manutencao_Acao.objects.count()
+    numsolicit = numlocacoes + numaquisicoes + nummanutencoes
+    percentlocacoes = (numlocacoes/numsolicit) * 100
+    percentaquisicoes = (numaquisicoes / numsolicit) * 100
+    percentmanutencoes = (nummanutencoes / numsolicit) * 100
+    sizes = [percentlocacoes, percentaquisicoes, percentmanutencoes]
+  #  explode = (0.1, 0)  # only "explode" the 2nd slice (i.e. 'Hogs')
+
+
+    plt.pie(sizes, labels=labels, autopct='%1.1f%%',
+            shadow=True, startangle=90)
+    plt.title('Solicitações por tipo')
+    plt.savefig('static/img/grafico_solicitacoes.png',dpi=80)
+    return render(request,'piechart.html')
+
 
 # APIViews da API V1
 class LocacaoAPIView(generics.ListAPIView):
@@ -102,7 +130,10 @@ class SistemaView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['numsolicit'] = Locacao_Acao.objects.count()
+        numlocacoes = Locacao_Acao.objects.count()
+        numaquisicoes = Aquisicao_Acao.objects.count()
+        nummanutencoes = Manutencao_Acao.objects.count()
+        context['numsolicit'] = numlocacoes + numaquisicoes + nummanutencoes
         compras = Compras_Locacao.objects.all()
         countcompras = 0
         for compra in compras:
@@ -144,6 +175,9 @@ class SistemaView(TemplateView):
             if str(loc.status_geral) == 'Finalizado':
                 countfin += 1
 
+        context['numlocacoes'] = numlocacoes
+        context['numaquisicoes'] = numaquisicoes
+        context['nummanutencoes'] = nummanutencoes
         context['numcompras'] = countcompras
         context['numsede'] = countsede
         context['numcontr'] = countcontr

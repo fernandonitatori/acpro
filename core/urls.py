@@ -19,8 +19,14 @@ router = SimpleRouter()
 router.register('locacoes',LocacaoViewSet)
 router.register('tipolocacoes',TipoLocacaoViewSet)
 
+from . import views
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 urlpatterns = [
+    path('grafico_solicitacoes/',views.piechart, name='piechart'),
+
     # URLS para APIs
     path('locacoes/', LocacaoAPIView.as_view(), name='locacoes'),
     path('tipolocacoes/', TipoLocacaoAPIView.as_view(), name='tipolocacoes'),
@@ -118,3 +124,5 @@ urlpatterns = [
     path('consultaumaaquisicao/<int:pk>/', core.views.consultaumaaquisicao, name='consultaumaaquisicao'),
     path('consultaumamanutencao/<int:pk>/', core.views.consultaumamanutencao, name='consultaumamanutencao')
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
