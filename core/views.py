@@ -17,7 +17,8 @@ from .models import Locacao_Acao, Acao, TipoLocacao, Memorial, Compras_Locacao, 
 
 from .forms import TipoLocacaoModelForm, MemorialModelForm, ComprasLocacaoModelForm, LocacaoAcaoModelForm, \
                    SedeModelForm,  ContratoLocacaoModelForm, PagamentoModelForm, CronogramaModelForm, ProjetoModelForm,\
-                   ComprasAquisicaoModelForm, ComprasManutencaoModelForm
+                   ComprasAquisicaoModelForm, ComprasManutencaoModelForm, AquisicaoAcaoModelForm, \
+                   ManutencaoAcaoModelForm
 
 from rest_framework import generics
 from rest_framework import viewsets
@@ -226,7 +227,7 @@ class CreateManutencaoView(SuccessMessageMixin, CreateView):
 class ConsultaLocacaoAcaoView(UpdateView):
     model = Locacao_Acao
     template_name = 'locacao_acao_consulta.html'
-    fields = ['tipo_locacao', 'acao', 'memorial', 'prazo', 'status', 'status_geral']
+    fields = ['tipo_locacao', 'acao', 'memorial', 'prazo', 'descricao', 'status', 'status_geral']
     context_object_name = 'consulta'
     success_url = reverse_lazy('sistema')
 
@@ -250,11 +251,49 @@ class ConsultaLocacaoAcaoView(UpdateView):
         return render(request, 'resultado.html', {'form': form})
 
 
-# View para consulta de Aquisições
+# View para consulta e atualização de Aquisições
 class ConsultaAquisicaoAcaoView(UpdateView):
     model = Aquisicao_Acao
     template_name = 'aquisicao_acao_consulta.html'
-    fields = ['acao', 'memorial', 'prazo', 'status', 'status_geral']
+    fields = ['acao', 'memorial', 'prazo', 'descricao', 'status', 'status_geral']
+    context_object_name = 'consulta_aquis'
+    success_url = reverse_lazy('sistema')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['status_chave_sol'] = 'Solicitado'
+        context['acoes'] = Acao.objects.all()
+        context['memoriais'] = Memorial.objects.all()
+        context['statuses'] = Status.objects.all()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = AquisicaoAcaoModelForm(request.POST)
+        if form.is_valid():
+            aquis = self.kwargs.get("pk")
+            print(aquis)
+            """
+            aquisicao = Aquisicao_Acao.objects.get(id=aquis)
+            aquisicao.acao = form.cleaned_data['acao']
+            print(aquisicao.acao)
+            aquisicao.status = form.cleaned_data['status']
+            aquisicao.memorial = form.cleaned_data['memorial']
+            aquisicao.prazo = form.cleaned_data['prazo']
+            aquisicao.status_geral = form.cleaned_data['status_geral']
+            aquisicao.descricao = 
+            aquisicao.save()
+            """
+            super(ConsultaAquisicaoAcaoView, self).post(request, **kwargs)
+            messages.success(request, 'Processo em Aquisição atualizado com sucesso')
+            return HttpResponseRedirect(reverse_lazy('consultaumaaquisicao', args=[aquis]))
+        return render(request, 'resultado.html', {'form': form})
+
+
+# View para consulta de Manutenções
+class ConsultaManutencaoAcaoView(UpdateView):
+    model = Manutencao_Acao
+    template_name = 'manutencao_acao_consulta.html'
+    fields = ['acao', 'memorial', 'prazo', 'descricao', 'status', 'status_geral']
     context_object_name = 'consulta'
     success_url = reverse_lazy('sistema')
 
@@ -268,16 +307,17 @@ class ConsultaAquisicaoAcaoView(UpdateView):
         return context
 
     def post(self, request, *args, **kwargs):
-        form = AquisicaoAcaoModelForm(request.POST)
+        form = ManutencaoAcaoModelForm(request.POST)
         if form.is_valid():
-            aquis = self.kwargs.get("pk")
-            print(aquis)
-            super(ConsultaAquisicaoAcaoViewAcaoView, self).post(request, **kwargs)
-            messages.success(request, 'Processo em Solicitação atualizado com sucesso')
-            return HttpResponseRedirect(reverse_lazy('consultaumaaquisicao', args=[aquis]))
+            manut = self.kwargs.get("pk")
+            print(manut)
+            super(ConsultaManutencaoAcaoView, self).post(request, **kwargs)
+            messages.success(request, 'Processo de Aquisição em Solicitação atualizado com sucesso')
+            return HttpResponseRedirect(reverse_lazy('consultaumamanutencao', args=[manut]))
         return render(request, 'resultado.html', {'form': form})
 
 
+# View para update de Locações
 class ListUpdLocacaoAcaoView(ListView):
     model = Locacao_Acao
     template_name = 'locacao_acao_updlistview.html'
@@ -285,11 +325,20 @@ class ListUpdLocacaoAcaoView(ListView):
     context_object_name = 'updlocacoes'
 
 
-class ListUpdAquiscaoAcaoView(ListView):
+# View para update de Aquisicao
+class ListUpdAquisicaoAcaoView(ListView):
     model = Aquisicao_Acao
     template_name = 'aquisicao_acao_updlistview.html'
     queryset = Aquisicao_Acao.objects.all()
     context_object_name = 'updaquisicoes'
+
+
+# View para update de Aquisicao
+class ListUpdManutencaoAcaoView(ListView):
+    model = Manutencao_Acao
+    template_name = 'manutencao_acao_updlistview.html'
+    queryset = Manutencao_Acao.objects.all()
+    context_object_name = 'updmanutencoes'
 
 
 # View para criar Ação
@@ -1215,6 +1264,8 @@ def consultaumamanutencao(request,pk):
     }
     return render(request, 'manutencao_acao_consulta.html', context)
 
+
+# Função para finalizar o processo de Locação
 def finalizarlocacao(request,pk):
     idpassado = pk
     consulta = Locacao_Acao.objects.get(id=idpassado)
@@ -1226,6 +1277,31 @@ def finalizarlocacao(request,pk):
     return redirect('consultaumalocacao',pk=idpassado)
 
 
+# Função para finalizar o processo de Aquisicao
+def finalizaraquisicao(request,pk):
+    idpassado = pk
+    consulta = Aquisicao_Acao.objects.get(id=idpassado)
+    statusfinal = Status.objects.get(descricao='Finalizado')
+    print(statusfinal)
+    consulta.status_geral = statusfinal
+    consulta.save()
+    messages.success(request, 'Processo  de Aquisição finalizado com sucesso!')
+    return redirect('consultaumaaquisicao',pk=idpassado)
+
+
+# Função para finalizar o processo de Aquisicao
+def finalizarmanutencao(request,pk):
+    idpassado = pk
+    consulta = Manutencao_Acao.objects.get(id=idpassado)
+    statusfinal = Status.objects.get(descricao='Finalizado')
+    print(statusfinal)
+    consulta.status_geral = statusfinal
+    consulta.save()
+    messages.success(request, 'Processo  de Manutenção finalizado com sucesso!')
+    return redirect('consultaumamanutencao',pk=idpassado)
+
+
+# Função para listar locações em Compras
 def listloc_compras(request):
     locacoes_compras = Locacao_Acao.objects.filter(status_geral__descricao__startswith='Compras')
     tiposlocacao = TipoLocacao.objects.all()
@@ -1242,6 +1318,8 @@ def listloc_compras(request):
     }
     return render(request, 'locacao_acao_listview.html', context)
 
+
+# Função para listas aquisições em Compras
 def listaquis_compras(request):
     aquisicao_compras = Aquisicao_Acao.objects.filter(status_geral__descricao__startswith='Compras')
     acoes = Acao.objects.all()
@@ -1249,7 +1327,7 @@ def listaquis_compras(request):
     statuses = Status.objects.all()
 
     context = {
-        'locacoes': locacoes_compras,
+        'aquisicoes': aquisicoes_compras,
         'acoes': acoes,
         'memoriais': memoriais,
         'statuses': statuses
@@ -1257,6 +1335,23 @@ def listaquis_compras(request):
     return render(request, 'aquisicao_acao_listview.html', context)
 
 
+# Função para listar aquisições em Compras
+def listmanut_compras(request):
+    manutencoes_compras = Manutencao_Acao.objects.filter(status_geral__descricao__startswith='Compras')
+    acoes = Acao.objects.all()
+    memoriais = Memorial.objects.all()
+    statuses = Status.objects.all()
+
+    context = {
+        'manutencoes': manutencoes_compras,
+        'acoes': acoes,
+        'memoriais': memoriais,
+        'statuses': statuses
+    }
+    return render(request, 'manutencao_acao_listview.html', context)
+
+
+# Lista locações em Sede
 def listloc_sede(request):
     locacoes_sede = Locacao_Acao.objects.filter(status_geral__descricao__startswith='Sede')
     tiposlocacao = TipoLocacao.objects.all()
@@ -1274,6 +1369,39 @@ def listloc_sede(request):
     return render(request, 'locacao_acao_listview.html', context)
 
 
+# Lista aquisições em Sede
+def listaquis_sede(request):
+    aquisicoes_sede = Aquisicao_Acao.objects.filter(status_geral__descricao__startswith='Sede')
+    acoes = Acao.objects.all()
+    memoriais = Memorial.objects.all()
+    statuses = Status.objects.all()
+
+    context = {
+        'aquisicoes': aquisicoes_sede,
+        'acoes': acoes,
+        'memoriais': memoriais,
+        'statuses': statuses
+    }
+    return render(request, 'aquisicao_acao_listview.html', context)
+
+
+# Lista aquisições em Sede
+def listmanut_sede(request):
+    manutencoes_sede = Manutencao_Acao.objects.filter(status_geral__descricao__startswith='Sede')
+    acoes = Acao.objects.all()
+    memoriais = Memorial.objects.all()
+    statuses = Status.objects.all()
+
+    context = {
+        'manutencoes': manutencoes_sede,
+        'acoes': acoes,
+        'memoriais': memoriais,
+        'statuses': statuses
+    }
+    return render(request, 'manutencao_acao_listview.html', context)
+
+
+# Lista locações em Contrato
 def listloc_contr(request):
     locacoes_contr = Locacao_Acao.objects.filter(status_geral__descricao__startswith='Contratação')
     tiposlocacao = TipoLocacao.objects.all()
@@ -1291,6 +1419,39 @@ def listloc_contr(request):
     return render(request, 'locacao_acao_listview.html', context)
 
 
+# Lista aquisições em Contrato
+def listaquis_contr(request):
+    aquisicoes_contr = Aquisicao_Acao.objects.filter(status_geral__descricao__startswith='Contratação')
+    acoes = Acao.objects.all()
+    memoriais = Memorial.objects.all()
+    statuses = Status.objects.all()
+
+    context = {
+        'aquisicoes': aquisicoes_contr,
+        'acoes': acoes,
+        'memoriais': memoriais,
+        'statuses': statuses
+    }
+    return render(request, 'aquisicao_acao_listview.html', context)
+
+
+# Lista manutenções em Contrato
+def listmanut_contr(request):
+    manutencoes_contr = Manutencao_Acao.objects.filter(status_geral__descricao__startswith='Contratação')
+    acoes = Acao.objects.all()
+    memoriais = Memorial.objects.all()
+    statuses = Status.objects.all()
+
+    context = {
+        'manutencoes': manutencoes_contr,
+        'acoes': acoes,
+        'memoriais': memoriais,
+        'statuses': statuses
+    }
+    return render(request, 'manutencao_acao_listview.html', context)
+
+
+# Lista locações em Pagamento
 def listloc_pagto(request):
     locacoes_pagto = Locacao_Acao.objects.filter(status_geral__descricao__startswith='Pagamento')
     tiposlocacao = TipoLocacao.objects.all()
@@ -1307,6 +1468,40 @@ def listloc_pagto(request):
     }
     return render(request, 'locacao_acao_listview.html', context)
 
+
+# Lista aquisições em Pagamento
+def listaquis_pagto(request):
+    aquisicoes_pagto = Aquisicao_Acao.objects.filter(status_geral__descricao__startswith='Pagamento')
+    acoes = Acao.objects.all()
+    memoriais = Memorial.objects.all()
+    statuses = Status.objects.all()
+
+    context = {
+        'aquisicoes': aquisicoes_pagto,
+        'acoes': acoes,
+        'memoriais': memoriais,
+        'statuses': statuses
+    }
+    return render(request, 'aquisicao_acao_listview.html', context)
+
+
+# Lista manutenções em Pagamento
+def listmanut_pagto(request):
+    manutencoes_pagto = Manutencao_Acao.objects.filter(status_geral__descricao__startswith='Pagamento')
+    acoes = Acao.objects.all()
+    memoriais = Memorial.objects.all()
+    statuses = Status.objects.all()
+
+    context = {
+        'manutencoes': manutencoes_pagto,
+        'acoes': acoes,
+        'memoriais': memoriais,
+        'statuses': statuses
+    }
+    return render(request, 'manutencao_acao_listview.html', context)
+
+
+# Lista locações em Cronograma
 def listloc_crono(request):
     locacoes_crono = Locacao_Acao.objects.filter(status_geral__descricao__startswith='Recebimento')
     tiposlocacao = TipoLocacao.objects.all()
@@ -1323,6 +1518,40 @@ def listloc_crono(request):
     }
     return render(request, 'locacao_acao_listview.html', context)
 
+
+# Lista aquisicoes em Cronograma
+def listaquis_crono(request):
+    aquisicoes_crono = Aquisicao_Acao.objects.filter(status_geral__descricao__startswith='Recebimento')
+    acoes = Acao.objects.all()
+    memoriais = Memorial.objects.all()
+    statuses = Status.objects.all()
+
+    context = {
+        'aquisicoes': aquisicoes_crono,
+        'acoes': acoes,
+        'memoriais': memoriais,
+        'statuses': statuses
+    }
+    return render(request, 'aquisicao_acao_listview.html', context)
+
+
+# Lista manutencoes em Cronograma
+def listmanut_crono(request):
+    manutencoes_crono = Manutencao_Acao.objects.filter(status_geral__descricao__startswith='Recebimento')
+    acoes = Acao.objects.all()
+    memoriais = Memorial.objects.all()
+    statuses = Status.objects.all()
+
+    context = {
+        'manutencoes': manutencoes_crono,
+        'acoes': acoes,
+        'memoriais': memoriais,
+        'statuses': statuses
+    }
+    return render(request, 'manutencao_acao_listview.html', context)
+
+
+# Lista locações em Finalizados
 def listloc_fin(request):
     locacoes_fin = Locacao_Acao.objects.filter(status_geral__descricao__startswith='Finalizado')
     tiposlocacao = TipoLocacao.objects.all()
@@ -1340,6 +1569,39 @@ def listloc_fin(request):
     return render(request, 'locacao_acao_listview.html', context)
 
 
+# Lista aquisições em Finalizados
+def listaquis_fin(request):
+    aquisicoes_fin = Aquisicao_Acao.objects.filter(status_geral__descricao__startswith='Finalizado')
+    acoes = Acao.objects.all()
+    memoriais = Memorial.objects.all()
+    statuses = Status.objects.all()
+
+    context = {
+        'aquisicoes': aquisicoes_fin,
+        'acoes': acoes,
+        'memoriais': memoriais,
+        'statuses': statuses
+    }
+    return render(request, 'aquisicao_acao_listview.html', context)
+
+
+# Lista manutencoes em Finalizados
+def listmanut_fin(request):
+    manutencoes_fin = Manutencao_Acao.objects.filter(status_geral__descricao__startswith='Finalizado')
+    acoes = Acao.objects.all()
+    memoriais = Memorial.objects.all()
+    statuses = Status.objects.all()
+
+    context = {
+        'manutencoes': manutencoes_fin,
+        'acoes': acoes,
+        'memoriais': memoriais,
+        'statuses': statuses
+    }
+    return render(request, 'manutencao_acao_listview.html', context)
+
+
+
 def defcomprasupdumalocacao(request,pk):
     idpassado = pk
     consultacompras = Compras_Locacao.objects.get(locacao=idpassado)
@@ -1349,6 +1611,25 @@ def defcomprasupdumalocacao(request,pk):
     return render(request, 'form_upd_compras.html', context)
 
 
+def defcomprasupdumaaquisicao(request,pk):
+    idpassado = pk
+    consultacompras = Compras_Aquisicao.objects.get(aquisicao=idpassado)
+    context = {
+        'consultacompras': consultacompras,
+    }
+    return render(request, 'form_upd_compras_aquisicao.html', context)
+
+
+def defcomprasupdumamanutencao(request,pk):
+    idpassado = pk
+    consultacompras = Compras_Manutencao.objects.get(manutencao=idpassado)
+    context = {
+        'consultacompras': consultacompras,
+    }
+    return render(request, 'form_upd_compras_manutencao.html', context)
+
+
+# View para atualizar Compras Locacao
 class UpdComprasLocacaoView(UpdateView):
     model = Compras_Locacao
     template_name = 'locacao_acao_consulta.html'
@@ -1375,6 +1656,36 @@ class UpdComprasLocacaoView(UpdateView):
             super(UpdComprasLocacaoView, self).post(request, **kwargs)
             messages.success(request, 'Processo em compras atualizado com sucesso')
             return HttpResponseRedirect(reverse_lazy('consultaumalocacao', args=[locacao.id]))
+        return render(request, 'resultado.html', {'form': form})
+
+
+# View para atualizar Compras Aquisição
+class UpdComprasAquisicaoView(UpdateView):
+    model = Compras_Aquisicao
+    template_name = 'aquisicao_acao_consulta.html'
+    fields = ['descricao', 'numero', 'data', 'observacoes', 'aquisicao', 'trp', 'status', 'sede']
+    context_object_name = 'consultacompras'
+    success_url =  reverse_lazy('list_aquis')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['status_chave_sol'] = 'Solicitado'
+        context['status_compras_emaprov'] = 'Compras - Em Aprovação'
+        context['status_compras_emorc'] = 'Compras - Aguardando orçamento'
+        context['status_compras_orc'] = 'Compras - Orçado'
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = ComprasAquisicaoModelForm(request.POST)
+        if form.is_valid():
+            aquis = form.cleaned_data['aquisicao']
+            print(aquis)
+            aquisicao = Aquisicao_Acao.objects.get(descricao = aquis)
+            aquisicao.status_geral = form.cleaned_data['status']
+            aquisicao.save()
+            super(UpdComprasAquisicaoView, self).post(request, **kwargs)
+            messages.success(request, 'Processo de aquisição em compras atualizado com sucesso')
+            return HttpResponseRedirect(reverse_lazy('consultaumaaquisicao', args=[aquisicao.id]))
         return render(request, 'resultado.html', {'form': form})
 
 
@@ -1504,6 +1815,23 @@ def resultloc(request, id):
     return render(request, 'resultado.html', context)
 
 
+def resultaquis(request, id):
+    idpassado = id
+    context = {
+        'id': idpassado,
+    }
+    return render(request, 'resultado.html', context)
+
+
+def resultmanut(request, id):
+    idpassado = id
+    context = {
+        'id': idpassado,
+    }
+    return render(request, 'resultado.html', context)
+
+
+# Insere solicitação de Aquisição
 def add_aquisicao (request):
     acoes = Acao.objects.all()
     memoriais = Memorial.objects.all()
@@ -1517,6 +1845,7 @@ def add_aquisicao (request):
     return render(request, 'form_solicit_aquisicao.html', context)
 
 
+# Insere solicitação de Manutenção
 def add_manut (request):
     acoes = Acao.objects.all()
     memoriais = Memorial.objects.all()
