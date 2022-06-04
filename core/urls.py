@@ -9,7 +9,8 @@ from .views import IndexView, SistemaView, CreateSolicitView, ListLocacaoAcaoVie
                    CreateTipoPagtoView, UpdPagtoView, UpdCronoView, LocacaoAPIView, TipoLocacaoAPIView, LocacaoViewSet,\
                    TipoLocacaoViewSet, ConsultaAquisicaoAcaoView, ListAquisicaoAcaoView, CreateAquisicaoView, \
                    ComprasManutencaoModelForm, ConsultaManutencaoAcaoView, FornecedorAPIView, FornecedorViewSet, \
-                   CreateComprasAquisView, CreateComprasManutView, UpdComprasAquisicaoView, UpdComprasManutencaoView
+                   CreateComprasAquisView, CreateComprasManutView, UpdComprasAquisicaoView, UpdComprasManutencaoView, \
+                   CreateSedeAquisicaoView, CreateSedeManutencaoView
 
 from rest_framework.routers import SimpleRouter
 

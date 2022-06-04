@@ -85,7 +85,7 @@ class SedeAquisicaoModelForm(forms.ModelForm):
 
     class Meta:
          model = Sede_Aquisicao
-         fields = ['descricao', 'numero', 'dataminuta', 'datadca', 'anotacoes', 'licitacao', 'manutencao', 'prazo', 'status']
+         fields = ['descricao', 'numero', 'dataminuta', 'datadca', 'anotacoes', 'licitacao', 'aquisicao', 'prazo', 'status']
 
 
 class SedeManutencaoModelForm(forms.ModelForm):
