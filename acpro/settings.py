@@ -89,12 +89,11 @@ WSGI_APPLICATION = 'acpro.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-"""
+
 #Para usar no Heroku
 DATABASES = {
     'default': dj_database_url.config()
 }
-"""
 
 """
 DATABASES = {
@@ -109,7 +108,7 @@ DATABASES = {
 }
 """
 
-
+"""
 #Postgres
 DATABASES = {
     'default': {
@@ -121,7 +120,7 @@ DATABASES = {
         'PORT:': '5432',
     }
 }
-
+"""
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
