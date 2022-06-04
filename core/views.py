@@ -450,6 +450,72 @@ class CreateComprasLocView(SuccessMessageMixin, CreateView):
         return render(request, 'resultado.html', {'form': form})
 
 
+# View para criar etapa de Compras em Aquisições
+class CreateComprasAquisView(SuccessMessageMixin, CreateView):
+    model = Compras_Aquisicao
+    template_name = 'aquisicao_acao_consulta.html'
+    fields = ['descricao', 'numero', 'data', 'observacoes', 'aquisicao', 'trp', 'prazo', 'status', 'sede']
+    success_url = reverse_lazy('list_aquis')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['trps'] = TRP.objects.all()
+        context['statuses'] = Status.objects.all()
+        return context
+
+    def get_success_message(self, cleaned_data):
+        print(cleaned_data)
+        return "Processo em Compras cadastrado com sucesso!"
+
+    def post(self, request, *args, **kwargs):
+        form = ComprasAquisicaoModelForm(request.POST)
+        if form.is_valid():
+            compra = form.save()
+            print(compra.aquisicao)
+            aquisicao = Aquisicao_Acao.objects.get(descricao = compra.aquisicao)
+            aquisicao.status_geral = compra.status
+            print(aquisicao)
+            print(compra.status)
+            aquisicao.save()
+            compra.save()
+            messages.success(request, 'Processo em compras cadastrado com sucesso')
+            return HttpResponseRedirect(reverse_lazy('consultaumaaquisicao', args=[aquisicao.id]))
+        return render(request, 'resultado.html', {'form': form})
+
+
+# View para criar etapa de Compras em Manutenções
+class CreateComprasManutView(SuccessMessageMixin, CreateView):
+    model = Compras_Manutencao
+    template_name = 'manutencao_acao_consulta.html'
+    fields = ['descricao', 'numero', 'data', 'observacoes', 'manutencao', 'trp', 'prazo', 'status', 'sede']
+    success_url = reverse_lazy('list_manut')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['trps'] = TRP.objects.all()
+        context['statuses'] = Status.objects.all()
+        return context
+
+    def get_success_message(self, cleaned_data):
+        print(cleaned_data)
+        return "Processo em Compras cadastrado com sucesso!"
+
+    def post(self, request, *args, **kwargs):
+        form = ComprasManutencaoModelForm(request.POST)
+        if form.is_valid():
+            compra = form.save()
+            print(compra.manutencao)
+            manutencao = Manutencao_Acao.objects.get(descricao = compra.manutencao)
+            manutencao.status_geral = compra.status
+            print(manutencao)
+            print(compra.status)
+            manutencao.save()
+            compra.save()
+            messages.success(request, 'Processo em compras cadastrado com sucesso')
+            return HttpResponseRedirect(reverse_lazy('consultaumamanutencao', args=[manutencao.id]))
+        return render(request, 'resultado.html', {'form': form})
+
+
 # View para criar TRP
 class CreateTRPView(CreateView):
     model = TRP

@@ -619,17 +619,17 @@
                     </table>
                 </div>
 
-            <!--     Modal Criar Compras em Aquisição -->
+            <!--     Modal Criar Compras em Manutenção -->
             <div id="ModalCreateCompras" class="modal fade" role="dialog">
               <div class="modal-dialog modal-lg">
 
                 <!-- Modal content-->
                 <div class="modal-content" align="center">
                       <div class="modal-header">
-                           <div class="titulo_modal">Cadastrar Processo de Aquisição em Compras</div>
+                           <div class="titulo_modal">Cadastrar Processo de Manutenção em Compras</div>
                       </div>
                       <div class="modal-body">
-                            <form method="POST" autocomplete="off" action="{% url 'add_comprasloc' %}">
+                            <form method="POST" autocomplete="off" action="{% url 'add_comprasmanut' %}">
                                 {% csrf_token %}
                                 <table style="border-collapse:separate; border-spacing:20px 20px">
                                     <tbody>
@@ -654,8 +654,8 @@
                                                 <td></td>
                                             </tr>
                                             <tr>
-                                                <td  align="right"><div class="form-horizontal"><b>Solicitação de Locacao:</b></div></td>
-                                                <td  align="left"><input type="text" name="locacao" id="id_locacao" size="5" maxlength="5" value="{{consulta.id}}" readonly> {{ consulta.acao }}</td>
+                                                <td  align="right"><div class="form-horizontal"><b>Solicitação de Manutenção:</b></div></td>
+                                                <td  align="left"><input type="text" name="manutencao" id="id_manutencao" size="5" maxlength="5" value="{{consulta.id}}" readonly> {{ consulta.acao }}</td>
                                                 <td></td>
                                             </tr>
                                             <tr>
@@ -706,7 +706,7 @@
 
                                             <button type="submit" class="btn btn-primary">Salvar</button>
                                             <button type="button" class="btn btn-warning">
-                                                <a href="../../consultaumalocacao/{{consulta.id}}">Cancelar</a>
+                                                <a href="../../consultaumamanutencao/{{consulta.id}}">Cancelar</a>
                                             </button>
 
                                 </div>

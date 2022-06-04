@@ -8,7 +8,8 @@ from .views import IndexView, SistemaView, CreateSolicitView, ListLocacaoAcaoVie
                    CreateStatusView, CreateTipoStatusView, CreateLocalView, CreateProjetoView, CreateLinguagemView,\
                    CreateTipoPagtoView, UpdPagtoView, UpdCronoView, LocacaoAPIView, TipoLocacaoAPIView, LocacaoViewSet,\
                    TipoLocacaoViewSet, ConsultaAquisicaoAcaoView, ListAquisicaoAcaoView, CreateAquisicaoView, \
-                   ComprasManutencaoModelForm, ConsultaManutencaoAcaoView, FornecedorAPIView, FornecedorViewSet
+                   ComprasManutencaoModelForm, ConsultaManutencaoAcaoView, FornecedorAPIView, FornecedorViewSet \
+                   CreateComprasAquisView, CreateComprasManutView
 
 from rest_framework.routers import SimpleRouter
 
@@ -72,7 +73,13 @@ urlpatterns = [
     path('add_acao/', CreateAcaoView.as_view(), name='add_acao'),
     path('add_tipoloc/', CreateTipoLocView.as_view(), name='add_tipoloc'),
     path('add_memorial/', CreateMemorialView.as_view(), name='add_memorial'),
+
+    # URLs para adicionar compras nos processos
     path('add_comprasloc/', core.views.CreateComprasLocView.as_view(), name='add_comprasloc'),
+    path('add_comprasaquis/', core.views.CreateComprasAquisView.as_view(), name='add_comprasaquis'),
+    path('add_comprasmanut/', core.views.CreateComprasManutView.as_view(), name='add_comprasmanut'),
+
+
     path('add_trp/', CreateTRPView.as_view(), name='add_trp'),
     path('add_orc/', CreateOrcView.as_view(), name='add_orc'),
     path('add_sede/', CreateSedeView.as_view(), name='add_sede'),

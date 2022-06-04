@@ -629,7 +629,7 @@
                            <div class="titulo_modal">Cadastrar Processo de Aquisição em Compras</div>
                       </div>
                       <div class="modal-body">
-                            <form method="POST" autocomplete="off" action="{% url 'add_comprasaqui' %}">
+                            <form method="POST" autocomplete="off" action="{% url 'add_comprasaquis' %}">
                                 {% csrf_token %}
                                 <table style="border-collapse:separate; border-spacing:20px 20px">
                                     <tbody>
@@ -654,8 +654,8 @@
                                                 <td></td>
                                             </tr>
                                             <tr>
-                                                <td  align="right"><div class="form-horizontal"><b>Solicitação de Locacao:</b></div></td>
-                                                <td  align="left"><input type="text" name="locacao" id="id_locacao" size="5" maxlength="5" value="{{consulta.id}}" readonly> {{ consulta.acao }}</td>
+                                                <td  align="right"><div class="form-horizontal"><b>Solicitação de Aquisição:</b></div></td>
+                                                <td  align="left"><input type="text" name="aquisicao" id="id_aquisicao" size="5" maxlength="5" value="{{consulta.id}}" readonly> {{ consulta.acao }}</td>
                                                 <td></td>
                                             </tr>
                                             <tr>
