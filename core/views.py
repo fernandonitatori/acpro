@@ -27,7 +27,7 @@ from .forms import TipoLocacaoModelForm, MemorialModelForm, ComprasLocacaoModelF
 
 from rest_framework import generics
 from rest_framework import viewsets
-from .serializers import Locacao_AcaoSerializer, TipoLocacao_AcaoSerializer
+from .serializers import Locacao_AcaoSerializer, TipoLocacao_AcaoSerializer, FornecedorSerializer
 from  rest_framework import mixins
 
 
@@ -62,6 +62,10 @@ class TipoLocacaoAPIView(generics.ListAPIView):
     queryset = TipoLocacao.objects.all()
     serializer_class = TipoLocacao_AcaoSerializer
 
+class FornecedorAPIView(generics.ListAPIView):
+    queryset = Fornecedor.objects.all()
+    serializer_class = FornecedorSerializer
+
 
 # ViewSets da API V2
 class LocacaoViewSet(viewsets.ModelViewSet):
@@ -72,6 +76,9 @@ class TipoLocacaoViewSet(viewsets.ModelViewSet):
     queryset = TipoLocacao.objects.all()
     serializer_class = TipoLocacao_AcaoSerializer
 
+class FornecedorViewSet(viewsets.ModelViewSet):
+    queryset = Fornecedor.objects.all()
+    serializer_class = FornecedorSerializer
 
 # Listar Locações
 class ListLocacaoAcaoView(ListView):
@@ -267,7 +274,7 @@ class ConsultaLocacaoAcaoView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['status_chave_sol'] = 'Solicitado'
+        context['status_chave_sol'] = 'Solicitação - Concluída'
         context['tiposlocacao'] = TipoLocacao.objects.all()
         context['acoes'] = Acao.objects.all()
         context['memoriais'] = Memorial.objects.all()
@@ -295,7 +302,7 @@ class ConsultaAquisicaoAcaoView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['status_chave_sol'] = 'Solicitado'
+        context['status_chave_sol'] = 'Solicitação - Concluída'
         context['acoes'] = Acao.objects.all()
         context['memoriais'] = Memorial.objects.all()
         context['statuses'] = Status.objects.all()
@@ -333,7 +340,7 @@ class ConsultaManutencaoAcaoView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['status_chave_sol'] = 'Solicitado'
+        context['status_chave_sol'] = 'Solicitação - Concluída'
         # context['tiposlocacao'] = TipoLocacao.objects.all()
         context['acoes'] = Acao.objects.all()
         context['memoriais'] = Memorial.objects.all()
@@ -1027,7 +1034,7 @@ def consultaumalocacao(request,pk):
             'consultacontrat': consultacontrat,
             'consultapagto': consultapagto,
             'consultareceb': consultareceb,
-            'status_chave_sol': 'Solicitado',
+            'status_chave_sol': 'Solicitação - Concluída',
             'status_chave_compras': 'Compras - Aprovado',
             'status_chave_sede': 'Sede - Aprovado',
             'status_chave_contrat': 'Contratação - Aprovado',
@@ -1147,7 +1154,7 @@ def consultaumaaquisicao(request,pk):
             'consultacontrat': consultacontrat,
             'consultapagto': consultapagto,
             'consultareceb': consultareceb,
-            'status_chave_sol': 'Solicitado',
+            'status_chave_sol': 'Solicitação - Concluída',
             'status_chave_compras': 'Compras - Aprovado',
             'status_chave_sede': 'Sede - Aprovado',
             'status_chave_contrat': 'Contratação - Aprovado',
@@ -1266,7 +1273,7 @@ def consultaumamanutencao(request,pk):
             'consultacontrat': consultacontrat,
             'consultapagto': consultapagto,
             'consultareceb': consultareceb,
-            'status_chave_sol': 'Solicitado',
+            'status_chave_sol': 'Solicitação - Concluída',
             'status_chave_compras': 'Compras - Aprovado',
             'status_chave_sede': 'Sede - Aprovado',
             'status_chave_contrat': 'Contratação - Aprovado',
@@ -1673,7 +1680,7 @@ class UpdComprasLocacaoView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['status_chave_sol'] = 'Solicitado'
+        context['status_chave_sol'] = 'Solicitação - Concluída'
         context['status_compras_emaprov'] = 'Compras - Em Aprovação'
         context['status_compras_emorc'] = 'Compras - Aguardando orçamento'
         context['status_compras_orc'] = 'Compras - Orçado'
@@ -1703,7 +1710,7 @@ class UpdComprasAquisicaoView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['status_chave_sol'] = 'Solicitado'
+        context['status_chave_sol'] = 'Solicitação - Concluída'
         context['status_compras_emaprov'] = 'Compras - Em Aprovação'
         context['status_compras_emorc'] = 'Compras - Aguardando orçamento'
         context['status_compras_orc'] = 'Compras - Orçado'

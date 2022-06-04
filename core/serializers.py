@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Locacao_Acao, TipoLocacao
+from .models import Locacao_Acao, TipoLocacao, Fornecedor
 
 class Locacao_AcaoSerializer(serializers.ModelSerializer):
 
@@ -13,3 +13,10 @@ class TipoLocacao_AcaoSerializer(serializers.ModelSerializer):
     class Meta:
         model = TipoLocacao
         fields = ('id', 'descricao', 'criado', 'modificado', 'ativo')
+
+
+class FornecedorSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Fornecedor
+        fields = ('id', 'nome', 'cnpj', 'observacoes', 'ativo')

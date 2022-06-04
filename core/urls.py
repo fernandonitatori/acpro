@@ -8,7 +8,7 @@ from .views import IndexView, SistemaView, CreateSolicitView, ListLocacaoAcaoVie
                    CreateStatusView, CreateTipoStatusView, CreateLocalView, CreateProjetoView, CreateLinguagemView,\
                    CreateTipoPagtoView, UpdPagtoView, UpdCronoView, LocacaoAPIView, TipoLocacaoAPIView, LocacaoViewSet,\
                    TipoLocacaoViewSet, ConsultaAquisicaoAcaoView, ListAquisicaoAcaoView, CreateAquisicaoView, \
-                   ComprasManutencaoModelForm, ConsultaManutencaoAcaoView
+                   ComprasManutencaoModelForm, ConsultaManutencaoAcaoView, FornecedorAPIView, FornecedorViewSet
 
 from rest_framework.routers import SimpleRouter
 
@@ -18,6 +18,7 @@ from .views import salvatipoloc, consultalocacao, listloc_compras, listloc_contr
 router = SimpleRouter()
 router.register('locacoes',LocacaoViewSet)
 router.register('tipolocacoes',TipoLocacaoViewSet)
+router.register('fornecedores', FornecedorViewSet)
 
 from . import views
 from django.conf import settings
@@ -30,6 +31,7 @@ urlpatterns = [
     # URLS para APIs
     path('locacoes/', LocacaoAPIView.as_view(), name='locacoes'),
     path('tipolocacoes/', TipoLocacaoAPIView.as_view(), name='tipolocacoes'),
+    path('fornecedores/', FornecedorAPIView.as_view(), name='fornecedores'),
 
     # URLS para página inicial do sistema
     path('', IndexView.as_view(), name='index'),
