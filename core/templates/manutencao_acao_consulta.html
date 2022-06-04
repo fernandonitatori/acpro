@@ -726,7 +726,7 @@
                            <div class="titulo_modal">Alterar Processo de Aquisição em Compras</div>
                       </div>
                       <div class="modal-body">
-                            <form method="POST" autocomplete="off" action="../../updatecompras/{{consultacompras.id}}/">
+                            <form method="POST" autocomplete="off" action="../../updatecomprasmanut/{{consultacompras.id}}/">
                                 {% csrf_token %}
                                 <table style="border-collapse:separate; border-spacing:20px 20px">
                                     <tbody>
@@ -751,8 +751,8 @@
                                                 <td></td>
                                             </tr>
                                             <tr>
-                                                <td  align="right"><div class="form-horizontal"><b>Solicitação de Locacao:</b></div></td>
-                                                <td  align="left"><input type="text" name="locacao" id="id_locacao" size="50" maxlength="50" value="{{ consulta.id }}" required readonly></td>
+                                                <td  align="right"><div class="form-horizontal"><b>Solicitação de Manutenção:</b></div></td>
+                                                <td  align="left"><input type="text" name="manutencao" id="id_manutencao" size="50" maxlength="50" value="{{ consulta.id }}" required readonly></td>
                                                 <td></td>
                                             </tr>
                                             <tr>
@@ -813,7 +813,7 @@
 
                                             <button type="submit" class="btn btn-primary">Salvar</button>
                                             <button type="button" class="btn btn-warning">
-                                                <a href="../../consultaumaaquisicao/{{consulta.id}}">Cancelar</a>
+                                                <a href="../../consultaumamanutencao/{{consulta.id}}">Cancelar</a>
                                             </button>
 
                                 </div>
