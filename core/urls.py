@@ -82,7 +82,12 @@ urlpatterns = [
 
     path('add_trp/', CreateTRPView.as_view(), name='add_trp'),
     path('add_orc/', CreateOrcView.as_view(), name='add_orc'),
+
+    # URLs para adicionar Sede nos processos
     path('add_sede/', CreateSedeView.as_view(), name='add_sede'),
+    path('add_sede_aquis/', CreateSedeAquisicaoView.as_view(), name='add_sede_aquis'),
+    path('add_sede_manut/', CreateSedeManutencaoView.as_view(), name='add_sede_aquis'),
+
     path('add_lic/', CreateLicView.as_view(), name='add_lic'),
     path('add_contr/', CreateContrView.as_view(), name='add_contr'),
     path('add_pagto/', CreatePagtoView.as_view(), name='add_pagto'),
@@ -123,6 +128,8 @@ urlpatterns = [
     path('updatecomprasmanut/<int:pk>/', core.views.UpdComprasManutencaoView.as_view(), name='updatecomprasmanut'),
 
     path('updatesede/<int:pk>/', core.views.UpdSedeView.as_view(), name='updatesede'),
+    path('updatesedeaquis/<int:pk>/', core.views.UpdSedeAquisicaoView.as_view(), name='updatesedeaquis'),
+    path('updatesedemanut/<int:pk>/', core.views.UpdSedeManutencaoView.as_view(), name='updatesedemanut'),
 
     path('updatecontrat/<int:pk>/', core.views.UpdContratView.as_view(), name='updatecontrat'),
 

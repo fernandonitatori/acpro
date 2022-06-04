@@ -23,7 +23,7 @@ from .models import Locacao_Acao, Acao, TipoLocacao, Memorial, Compras_Locacao, 
 from .forms import TipoLocacaoModelForm, MemorialModelForm, ComprasLocacaoModelForm, LocacaoAcaoModelForm, \
                    SedeModelForm,  ContratoLocacaoModelForm, PagamentoModelForm, CronogramaModelForm, ProjetoModelForm,\
                    ComprasAquisicaoModelForm, ComprasManutencaoModelForm, AquisicaoAcaoModelForm, \
-                   ManutencaoAcaoModelForm
+                   ManutencaoAcaoModelForm, SedeManutencaoModelForm, SedeAquisicaoModelForm
 
 from rest_framework import generics
 from rest_framework import viewsets
@@ -580,6 +580,69 @@ class CreateSedeView(SuccessMessageMixin, CreateView):
             sede.save()
             messages.success(request, 'Processo em Sede cadastrado com sucesso')
             return HttpResponseRedirect(reverse_lazy('consultaumalocacao', args=[locacao.id]))
+        return render(request, 'resultado.html', {'form': form})
+
+
+
+# View para criar etapa de Sede em Aquisições
+class CreateSedeAquisicaoView(SuccessMessageMixin, CreateView):
+    model = Sede_Aquisicao
+    template_name = 'aquisicao_acao_consulta.html'
+    fields = ['descricao', 'numero', 'dataminuta', 'datadca', 'anotacoes', 'licitacao', 'aquisicao', 'prazo',  'status']
+    success_url = reverse_lazy('list_aquis')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+    def get_success_message(self, cleaned_data):
+        print(cleaned_data)
+        return "Processo em Sede cadastrado com sucesso!"
+
+    def post(self, request, *args, **kwargs):
+        form = SedeAquisicaoModelForm(request.POST)
+        if form.is_valid():
+            sede = form.save()
+            print(sede.aquisicao)
+            aquisicao = Aquisicao_Acao.objects.get(descricao = sede.aquisicao)
+            aquisicao.status_geral = sede.status
+            print(aquisicao)
+            print(sede.status)
+            aquisicao.save()
+            sede.save()
+            messages.success(request, 'Processo em Sede cadastrado com sucesso')
+            return HttpResponseRedirect(reverse_lazy('consultaumaaquisicao', args=[aquisicao.id]))
+        return render(request, 'resultado.html', {'form': form})
+
+
+# View para criar etapa de Sede em Manutenções
+class CreateSedeManutencaoView(SuccessMessageMixin, CreateView):
+    model = Sede_Manutencao
+    template_name = 'manutencao_acao_consulta.html'
+    fields = ['descricao', 'numero', 'dataminuta', 'datadca', 'anotacoes', 'licitacao', 'manutencao', 'prazo',  'status']
+    success_url = reverse_lazy('list_manut')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+    def get_success_message(self, cleaned_data):
+        print(cleaned_data)
+        return "Processo em Sede cadastrado com sucesso!"
+
+    def post(self, request, *args, **kwargs):
+        form = SedeManutencaoModelForm(request.POST)
+        if form.is_valid():
+            sede = form.save()
+            print(sede.manutencao)
+            manutencao = Manutencao_Acao.objects.get(descricao = sede.manutencao)
+            manutencao.status_geral = sede.status
+            print(manutencao)
+            print(sede.status)
+            manutencao.save()
+            sede.save()
+            messages.success(request, 'Processo em Sede cadastrado com sucesso')
+            return HttpResponseRedirect(reverse_lazy('consultaumamanutencao', args=[manutencao.id]))
         return render(request, 'resultado.html', {'form': form})
 
 
@@ -1827,7 +1890,7 @@ class UpdComprasManutencaoView(UpdateView):
         return render(request, 'resultado.html', {'form': form})
 
 
-
+# View para atualizar Sede em Locações
 class UpdSedeView(UpdateView):
     model = Sede
     template_name = 'locacao_acao_consulta.html'
@@ -1855,6 +1918,69 @@ class UpdSedeView(UpdateView):
             messages.success(request, 'Processo em Sede atualizado com sucesso')
             return HttpResponseRedirect(reverse_lazy('consultaumalocacao', args=[locacao.id]))
         return render(request, 'resultado.html', {'form': form})
+
+
+
+# View para atualizar Sede em Aquisições
+class UpdSedeAquisicaoView(UpdateView):
+    model = Sede_Aquisicao
+    template_name = 'aquisicao_acao_consulta.html'
+    fields = ['descricao', 'numero', 'dataminuta', 'datadca', 'anotacoes', 'licitacao', 'aquisicao', 'status']
+    success_url = reverse_lazy('list_aquis')
+    context_object_name = 'consultasede'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+    def get_success_message(self, cleaned_data):
+        print(cleaned_data)
+        return "Processo em Sede cadastrado com sucesso!"
+
+    def post(self, request, *args, **kwargs):
+        form = SedeAquisicaoModelForm(request.POST)
+        if form.is_valid():
+            aquis = form.cleaned_data['aquisicao']
+            print(aquis)
+            aquisicao = Aquisicao_Acao.objects.get(descricao = aquisicao)
+            aquisicao.status_geral = form.cleaned_data['status']
+            aquisicao.save()
+            super(UpdSedeAquisicaoView, self).post(request, **kwargs)
+            messages.success(request, 'Processo em Sede atualizado com sucesso')
+            return HttpResponseRedirect(reverse_lazy('consultaumaaquisicao', args=[aquisicao.id]))
+        return render(request, 'resultado.html', {'form': form})
+
+
+
+# View para atualizar Sede em Manutenções
+class UpdSedeManutencaoView(UpdateView):
+    model = Sede_Manutencao
+    template_name = 'manutencao_acao_consulta.html'
+    fields = ['descricao', 'numero', 'dataminuta', 'datadca', 'anotacoes', 'licitacao', 'manutencao', 'status']
+    success_url = reverse_lazy('list_manut')
+    context_object_name = 'consultasede'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+    def get_success_message(self, cleaned_data):
+        print(cleaned_data)
+        return "Processo em Sede cadastrado com sucesso!"
+
+    def post(self, request, *args, **kwargs):
+        form = SedeManutencaoModelForm(request.POST)
+        if form.is_valid():
+            manut = form.cleaned_data['manutencao']
+            print(manut)
+            manutencao = Aquisicao_Acao.objects.get(descricao = manutencao)
+            manutencao.status_geral = form.cleaned_data['status']
+            manutencao.save()
+            super(UpdSedeManutencaoView, self).post(request, **kwargs)
+            messages.success(request, 'Processo em Sede atualizado com sucesso')
+            return HttpResponseRedirect(reverse_lazy('consultaumamanutencao', args=[manutencao.id]))
+        return render(request, 'resultado.html', {'form': form})
+
 
 
 class UpdContratView(UpdateView):

@@ -716,7 +716,7 @@
                 </div>
               </div>
             </div>
-            <!--     Modal Update Compras -->
+            <!--     Modal Update Compras em Aquisicao-->
             <div id="ModalUpdCompras" class="modal fade" role="dialog">
               <div class="modal-dialog modal-lg">
 
@@ -952,7 +952,7 @@
               </div>
             </div>
 
-            <!--     Modal Criar sede -->
+            <!--     Modal Criar Sede em Aquisições -->
             <div id="ModalCreateSede" class="modal fade" role="dialog">
               <div class="modal-dialog modal-lg">
 
@@ -962,7 +962,7 @@
                            <div class="titulo_modal">Cadastrar Processo em Sede</div>
                       </div>
                       <div class="modal-body">
-                            <form method="POST" autocomplete="off" action="{% url 'add_sede'%}">
+                            <form method="POST" autocomplete="off" action="{% url 'add_sede_aquis'%}">
                                 {% csrf_token %}
                                 <table style="border-collapse:separate; border-spacing:20px 20px">
                                     <tbody>
@@ -1004,8 +1004,8 @@
                                                 <td></td>
                                             </tr>
                                             <tr>
-                                                <td  align="right"><div class="form-horizontal"><b>Solicitação de Locacao:</b></div></td>
-                                                <td  align="left"><input type="text" name="locacao" id="id_locacao" size="5" maxlength="5" value="{{consulta.id}}" readonly> {{ consulta.acao }}</td>
+                                                <td  align="right"><div class="form-horizontal"><b>Solicitação de Aquisição:</b></div></td>
+                                                <td  align="left"><input type="text" name="aquisicao" id="id_aquisicao" size="5" maxlength="5" value="{{consulta.id}}" readonly> {{ consulta.acao }}</td>
                                                 <td></td>
                                             </tr>
                                             <tr>
@@ -1033,7 +1033,7 @@
 
                                             <button type="submit" class="btn btn-primary">Salvar</button>
                                             <button type="button" class="btn btn-warning">
-                                                <a href="../../consultaumalocacao/{{consulta.id}}">Cancelar</a>
+                                                <a href="../../consultaumaaquisicao/{{consulta.id}}">Cancelar</a>
                                             </button>
 
                                 </div>
@@ -1043,7 +1043,7 @@
                 </div>
               </div>
             </div>
-            <!--     Modal Update Sede -->
+            <!--     Modal Update Sede em Locações -->
             <div id="ModalUpdSede" class="modal fade" role="dialog">
               <div class="modal-dialog modal-lg">
 
@@ -1053,7 +1053,7 @@
                            <div class="titulo_modal">Alterar Processo em Sede</div>
                       </div>
                       <div class="modal-body">
-                            <form method="POST" autocomplete="off" action="../../updatesede/{{consultasede.id}}/">
+                            <form method="POST" autocomplete="off" action="../../updatesedeaquis/{{consultasede.id}}/">
                                 {% csrf_token %}
                                 <table style="border-collapse:separate; border-spacing:20px 20px">
                                     <tbody>
@@ -1098,8 +1098,8 @@
                                                 <td></td>
                                             </tr>
                                             <tr>
-                                                <td  align="right"><div class="form-horizontal"><b>Solicitação de Locacao:</b></div></td>
-                                                <td  align="left"><input type="text" name="locacao" id="id_locacao" size="5" maxlength="5" value="{{consulta.id}}" readonly> {{ consulta.acao }}</td>
+                                                <td  align="right"><div class="form-horizontal"><b>Solicitação de Aquisição:</b></div></td>
+                                                <td  align="left"><input type="text" name="aquisicao" id="id_aquisicao" size="5" maxlength="5" value="{{consulta.id}}" readonly> {{ consulta.acao }}</td>
                                                 <td></td>
                                             </tr>
                                             <tr>
@@ -1130,7 +1130,7 @@
 
                                             <button type="submit" class="btn btn-primary">Salvar</button>
                                             <button type="button" class="btn btn-warning">
-                                                <a href="../../consultaumalocacao/{{consulta.id}}">Cancelar</a>
+                                                <a href="../../consultaumaaquisicao/{{consulta.id}}">Cancelar</a>
                                             </button>
 
                                 </div>
@@ -1150,7 +1150,7 @@
                            <div class="titulo_modal">Cadastrar Processo em Contratação</div>
                       </div>
                       <div class="modal-body">
-                            <form method="POST" autocomplete="off" action="{% url 'add_contr' %}">
+                            <form method="POST" autocomplete="off" action="{% url 'add_contr_aquis' %}">
                                 {% csrf_token %}
                                 <table style="border-collapse:separate; border-spacing:20px 20px">
                                     <tbody>
@@ -1192,8 +1192,8 @@
                                             </tr>
 
                                             <tr>
-                                                <td  align="right"><div class="form-horizontal"><b>Solicitação de Locacao:</b></div></td>
-                                                <td  align="left"><input type="text" name="locacao" id="id_locacao" size="5" maxlength="5" value="{{consulta.id}}" readonly> {{ consulta.acao }}</td>
+                                                <td  align="right"><div class="form-horizontal"><b>Solicitação de Aquisição:</b></div></td>
+                                                <td  align="left"><input type="text" name="aquisicao" id="id_aquisicao" size="5" maxlength="5" value="{{consulta.id}}" readonly> {{ consulta.acao }}</td>
                                                 <td></td>
                                             </tr>
                                             <tr>
@@ -1220,7 +1220,7 @@
 
                                             <button type="submit" class="btn btn-primary">Salvar</button>
                                             <button type="button" class="btn btn-warning">
-                                                <a href="../../consultaumalocacao/{{consulta.id}}">Cancelar</a>
+                                                <a href="../../consultaumaaquisicao/{{consulta.id}}">Cancelar</a>
                                             </button>
 
                                 </div>
@@ -1240,7 +1240,7 @@
                            <div class="titulo_modal">Alterar Processo em Contratação</div>
                       </div>
                       <div class="modal-body">
-                            <form method="POST" autocomplete="off" action="../../updatecontrat/{{consultacontrat.id}}/">
+                            <form method="POST" autocomplete="off" action="../../updatecontrataquis/{{consultacontrat.id}}/">
                                 {% csrf_token %}
                                 <table style="border-collapse:separate; border-spacing:20px 20px">
                                     <tbody>
@@ -1281,8 +1281,8 @@
                                             </tr>
 
                                             <tr>
-                                                <td  align="right"><div class="form-horizontal"><b>Solicitação de Locacao:</b></div></td>
-                                                <td  align="left"><input type="text" name="locacao" id="id_locacao" size="5" maxlength="5" value="{{consulta.id}}" readonly> {{ consulta.acao }}</td>
+                                                <td  align="right"><div class="form-horizontal"><b>Solicitação de Aquisição:</b></div></td>
+                                                <td  align="left"><input type="text" name="aquisicao" id="id_aquisicao" size="5" maxlength="5" value="{{consulta.id}}" readonly> {{ consulta.acao }}</td>
                                                 <td></td>
                                             </tr>
                                             <tr>
@@ -1314,7 +1314,7 @@
 
                                             <button type="submit" class="btn btn-primary">Salvar</button>
                                             <button type="button" class="btn btn-warning">
-                                                <a href="../../consultaumalocacao/{{consulta.id}}">Cancelar</a>
+                                                <a href="../../consultaumaaquisicao/{{consulta.id}}">Cancelar</a>
                                             </button>
 
                                 </div>
@@ -1334,7 +1334,7 @@
                            <div class="titulo_modal">Cadastrar Processo em Pagamento</div>
                       </div>
                       <div class="modal-body">
-                            <form method="POST" autocomplete="off" action="{% url 'add_pagto' %}">
+                            <form method="POST" autocomplete="off" action="{% url 'add_pagto_aquis' %}">
                                 {% csrf_token %}
                                 <table style="border-collapse:separate; border-spacing:20px 20px">
                                     <tbody>
@@ -1409,8 +1409,8 @@
                                                 <td></td>
                                             </tr>
                                             <tr>
-                                                <td  align="right"><div class="form-horizontal"><b>Solicitação de Locacao:</b></div></td>
-                                                <td  align="left"><input type="text" name="locacao" id="id_locacao" size="5" maxlength="5" value="{{consulta.id}}" readonly> {{ consulta.acao }}</td>
+                                                <td  align="right"><div class="form-horizontal"><b>Solicitação de Aquisição:</b></div></td>
+                                                <td  align="left"><input type="text" name="aquisicao" id="id_aquisicao" size="5" maxlength="5" value="{{consulta.id}}" readonly> {{ consulta.acao }}</td>
                                                 <td></td>
                                             </tr>
                                             <tr>
@@ -1438,7 +1438,7 @@
 
                                             <button type="submit" class="btn btn-primary">Salvar</button>
                                             <button type="button" class="btn btn-warning">
-                                                <a href="../../consultaumalocacao/{{consulta.id}}">Cancelar</a>
+                                                <a href="../../consultaumaaquisicao/{{consulta.id}}">Cancelar</a>
                                             </button>
 
                                 </div>
@@ -1458,7 +1458,7 @@
                            <div class="titulo_modal">Alterar Processo em Pagamento</div>
                       </div>
                       <div class="modal-body">
-                            <form method="POST" autocomplete="off" action="../../updatepagto/{{consultapagto.id}}/">
+                            <form method="POST" autocomplete="off" action="../../updatepagtoaquis/{{consultapagto.id}}/">
                                 {% csrf_token %}
                                 <table style="border-collapse:separate; border-spacing:20px 20px">
                                     <tbody>
@@ -1538,8 +1538,8 @@
                                                 <td></td>
                                             </tr>
                                             <tr>
-                                                <td  align="right"><div class="form-horizontal"><b>Solicitação de Locacao:</b></div></td>
-                                                <td  align="left"><input type="text" name="locacao" id="id_locacao" size="5" maxlength="5" value="{{consulta.id}}" readonly> {{ consulta.acao }}</td>
+                                                <td  align="right"><div class="form-horizontal"><b>Solicitação de Aquisição:</b></div></td>
+                                                <td  align="left"><input type="text" name="aquisicao" id="id_aquisicao" size="5" maxlength="5" value="{{consulta.id}}" readonly> {{ consulta.acao }}</td>
                                                 <td></td>
                                             </tr>
                                             <tr>
@@ -1570,7 +1570,7 @@
 
                                             <button type="submit" class="btn btn-primary">Salvar</button>
                                             <button type="button" class="btn btn-warning">
-                                                <a href="../../consultaumalocacao/{{consulta.id}}">Cancelar</a>
+                                                <a href="../../consultaumaaquisicao/{{consulta.id}}">Cancelar</a>
                                             </button>
 
                                 </div>
@@ -1590,13 +1590,13 @@
                            <div class="titulo_modal">Cadastrar Processo em Recebimento</div>
                       </div>
                       <div class="modal-body">
-                            <form method="POST" autocomplete="off" action="{% url 'add_crono' %}">
+                            <form method="POST" autocomplete="off" action="{% url 'add_crono_aquis' %}">
                                 {% csrf_token %}
                                 <table style="border-collapse:separate; border-spacing:20px 20px">
                                     <tbody>
                                              <tr>
-                                                <td  align="right"><div class="form-horizontal"><b>Solicitação de Locacao:</b></div></td>
-                                                <td  align="left"><input type="text" name="locacao" id="id_locacao" size="5" maxlength="5" value="{{consulta.id}}" readonly> {{ consulta.acao }}</td>
+                                                <td  align="right"><div class="form-horizontal"><b>Solicitação de Aquisição:</b></div></td>
+                                                <td  align="left"><input type="text" name="aquisicao" id="id_aquisicao" size="5" maxlength="5" value="{{consulta.id}}" readonly> {{ consulta.acao }}</td>
                                                 <td></td>
                                              </tr>
 
@@ -1648,7 +1648,7 @@
 
                                             <button type="submit" class="btn btn-primary">Salvar</button>
                                             <button type="button" class="btn btn-warning">
-                                                <a href="../../consultaumalocacao/{{consulta.id}}">Cancelar</a>
+                                                <a href="../../consultaumaaquisicao/{{consulta.id}}">Cancelar</a>
                                             </button>
 
                                 </div>
@@ -1668,13 +1668,13 @@
                            <div class="titulo_modal">Alterar Processo em Recebimento</div>
                       </div>
                       <div class="modal-body">
-                            <form method="POST" autocomplete="off" action="../../updatecrono/{{consultareceb.id}}/">
+                            <form method="POST" autocomplete="off" action="../../updatecronoaquis/{{consultareceb.id}}/">
                                 {% csrf_token %}
                                 <table style="border-collapse:separate; border-spacing:20px 20px">
                                     <tbody>
                                              <tr>
-                                                <td  align="right"><div class="form-horizontal"><b>Solicitação de Locacao:</b></div></td>
-                                                <td  align="left"><input type="text" name="locacao" id="id_locacao" size="5" maxlength="5" value="{{consulta.id}}" readonly> {{ consulta.acao }}</td>
+                                                <td  align="right"><div class="form-horizontal"><b>Solicitação de Aquisição:</b></div></td>
+                                                <td  align="left"><input type="text" name="aquisicao" id="id_aquisicao" size="5" maxlength="5" value="{{consulta.id}}" readonly> {{ consulta.acao }}</td>
                                                 <td></td>
                                              </tr>
                                              <tr>
@@ -1730,7 +1730,7 @@
 
                                             <button type="submit" class="btn btn-primary">Salvar</button>
                                             <button type="button" class="btn btn-warning">
-                                                <a href="../../consultaumalocacao/{{consulta.id}}">Cancelar</a>
+                                                <a href="../../consultaumaaquisicao/{{consulta.id}}">Cancelar</a>
                                             </button>
 
                                 </div>
@@ -1750,7 +1750,7 @@
                            <div class="titulo_modal">Finalizar Processo de Locação</div>
                       </div>
                       <div class="modal-body">
-                            <form method="POST" autocomplete="off" action="../../finalizarlocacao/{{consulta.id}}">
+                            <form method="POST" autocomplete="off" action="../../finalizarlocacaoaquis/{{consulta.id}}">
                                 {% csrf_token %}
                                 <table style="border-collapse:separate; border-spacing:20px 20px">
                                     <tbody>
@@ -1766,7 +1766,7 @@
 
                                             <button type="submit" class="btn btn-primary">Sim</button>
                                             <button type="button" class="btn btn-warning">
-                                                <a href="../../consultaumalocacao/{{consulta.id}}">Cancelar</a>
+                                                <a href="../../consultaumaaquisicao/{{consulta.id}}">Cancelar</a>
                                             </button>
 
                                 </div>
