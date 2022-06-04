@@ -629,7 +629,7 @@
                            <div class="titulo_modal">Cadastrar Processo de Aquisição em Compras</div>
                       </div>
                       <div class="modal-body">
-                            <form method="POST" autocomplete="off" action="{% url 'add_comprasloc' %}">
+                            <form method="POST" autocomplete="off" action="{% url 'add_comprasaqui' %}">
                                 {% csrf_token %}
                                 <table style="border-collapse:separate; border-spacing:20px 20px">
                                     <tbody>
@@ -706,7 +706,7 @@
 
                                             <button type="submit" class="btn btn-primary">Salvar</button>
                                             <button type="button" class="btn btn-warning">
-                                                <a href="../../consultaumalocacao/{{consulta.id}}">Cancelar</a>
+                                                <a href="../../consultaumaaquisicao/{{consulta.id}}">Cancelar</a>
                                             </button>
 
                                 </div>
