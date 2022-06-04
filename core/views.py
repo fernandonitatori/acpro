@@ -1814,7 +1814,7 @@ class UpdComprasManutencaoView(UpdateView):
         return context
 
     def post(self, request, *args, **kwargs):
-        form = ComprasAquisicaoModelForm(request.POST)
+        form = ComprasManutencaoModelForm(request.POST)
         if form.is_valid():
             manut = form.cleaned_data['manutencao']
             print(manut)
