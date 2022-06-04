@@ -726,7 +726,7 @@
                            <div class="titulo_modal">Alterar Processo de Aquisição em Compras</div>
                       </div>
                       <div class="modal-body">
-                            <form method="POST" autocomplete="off" action="../../updatecompras/{{consultacompras.id}}/">
+                            <form method="POST" autocomplete="off" action="../../updatecomprasaquis/{{consultacompras.id}}/">
                                 {% csrf_token %}
                                 <table style="border-collapse:separate; border-spacing:20px 20px">
                                     <tbody>
@@ -751,8 +751,8 @@
                                                 <td></td>
                                             </tr>
                                             <tr>
-                                                <td  align="right"><div class="form-horizontal"><b>Solicitação de Locacao:</b></div></td>
-                                                <td  align="left"><input type="text" name="locacao" id="id_locacao" size="50" maxlength="50" value="{{ consulta.id }}" required readonly></td>
+                                                <td  align="right"><div class="form-horizontal"><b>Solicitação de Aquisição:</b></div></td>
+                                                <td  align="left"><input type="text" name="aquisicao" id="id_aquisicao" size="50" maxlength="50" value="{{ consulta.id }}" required readonly></td>
                                                 <td></td>
                                             </tr>
                                             <tr>

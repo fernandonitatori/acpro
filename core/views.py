@@ -1796,6 +1796,38 @@ class UpdComprasAquisicaoView(UpdateView):
         return render(request, 'resultado.html', {'form': form})
 
 
+
+# View para atualizar Compras em Manutenção
+class UpdComprasManutencaoView(UpdateView):
+    model = Compras_Manutencao
+    template_name = 'manutencao_acao_consulta.html'
+    fields = ['descricao', 'numero', 'data', 'observacoes', 'manutencao', 'trp', 'status', 'sede']
+    context_object_name = 'consultacompras'
+    success_url =  reverse_lazy('list_manut')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['status_chave_sol'] = 'Solicitação - Concluída'
+        context['status_compras_emaprov'] = 'Compras - Em Aprovação'
+        context['status_compras_emorc'] = 'Compras - Aguardando orçamento'
+        context['status_compras_orc'] = 'Compras - Orçado'
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = ComprasAquisicaoModelForm(request.POST)
+        if form.is_valid():
+            manut = form.cleaned_data['manutencao']
+            print(manut)
+            manutencao = Manutencao_Acao.objects.get(descricao = manut)
+            manutencao.status_geral = form.cleaned_data['status']
+            manutencao.save()
+            super(UpdComprasManutencaoView, self).post(request, **kwargs)
+            messages.success(request, 'Processo de aquisição em compras atualizado com sucesso')
+            return HttpResponseRedirect(reverse_lazy('consultaumamanutencao', args=[manutencao.id]))
+        return render(request, 'resultado.html', {'form': form})
+
+
+
 class UpdSedeView(UpdateView):
     model = Sede
     template_name = 'locacao_acao_consulta.html'

@@ -9,7 +9,7 @@ from .views import IndexView, SistemaView, CreateSolicitView, ListLocacaoAcaoVie
                    CreateTipoPagtoView, UpdPagtoView, UpdCronoView, LocacaoAPIView, TipoLocacaoAPIView, LocacaoViewSet,\
                    TipoLocacaoViewSet, ConsultaAquisicaoAcaoView, ListAquisicaoAcaoView, CreateAquisicaoView, \
                    ComprasManutencaoModelForm, ConsultaManutencaoAcaoView, FornecedorAPIView, FornecedorViewSet, \
-                   CreateComprasAquisView, CreateComprasManutView
+                   CreateComprasAquisView, CreateComprasManutView, UpdComprasAquisicaoView, UpdComprasManutencaoView
 
 from rest_framework.routers import SimpleRouter
 
@@ -117,8 +117,10 @@ urlpatterns = [
     path('resultloc/<int:id>', core.views.resultloc, name='resultloc'),
 
 
-
+    # URLs para atualizar processos em compras
     path('updatecompras/<int:pk>/', core.views.UpdComprasLocacaoView.as_view(), name='updatecompras'),
+    path('updatecomprasaquis/<int:pk>/', core.views.UpdComprasAquisicaoView.as_view(), name='updatecomprasaquis'),
+    path('updatecomprasmanut/<int:pk>/', core.views.UpdComprasManutencaoView.as_view(), name='updatecomprasmanut'),
 
     path('updatesede/<int:pk>/', core.views.UpdSedeView.as_view(), name='updatesede'),
 
