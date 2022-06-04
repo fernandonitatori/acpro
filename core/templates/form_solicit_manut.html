@@ -95,7 +95,7 @@
                                                 <td  align="left"><select name="status"  id="id_status">
                                                                  {% for status in statuses %}
                                                                      {% if status.tipo_status|stringformat:'s' == 'Solicitação' %}
-                                                                        {% if status.descricao|stringformat:'s' == 'Solicitação - Aguardando cadastro de Compras' %}
+                                                                        {% if status.descricao|stringformat:'s' == 'Solicitação - Aguardando Cadastro de SC' %}
                                                                             <option value="{{status.id}}">{{status.descricao}}</option>
                                                                         {% endif %}
                                                                      {% endif %}
@@ -108,7 +108,7 @@
                                                 <td  align="right"><div class="form-horizontal"><b>Status Geral:</b></div></td>
                                                 <td  align="left"><select name="status_geral"  id="id_status_geral">
                                                                  {% for status in statuses %}
-                                                                        {% if status.descricao|stringformat:'s' == 'Solicitação - Aguardando cadastro de Compras' %}
+                                                                        {% if status.descricao|stringformat:'s' == 'Solicitação - Aguardando Cadastro de SC' %}
                                                                             <option value="{{status.id}}">{{status.descricao}}</option>
                                                                         {% endif %}
                                                                  {% endfor %}
