@@ -10,7 +10,10 @@ from .views import IndexView, SistemaView, CreateSolicitView, ListLocacaoAcaoVie
                    TipoLocacaoViewSet, ConsultaAquisicaoAcaoView, ListAquisicaoAcaoView, CreateAquisicaoView, \
                    ComprasManutencaoModelForm, ConsultaManutencaoAcaoView, FornecedorAPIView, FornecedorViewSet, \
                    CreateComprasAquisView, CreateComprasManutView, UpdComprasAquisicaoView, UpdComprasManutencaoView, \
-                   CreateSedeAquisicaoView, CreateSedeManutencaoView, UpdSedeAquisicaoView, UpdSedeManutencaoView
+                   CreateSedeAquisicaoView, CreateSedeManutencaoView, UpdSedeAquisicaoView, UpdSedeManutencaoView, \
+                   CreateContrAquisicaoView, CreateContrManutencaoView, UpdContratAquisicaoView, UpdContratManutencaoView,  \
+                   CreatePagtoAquisicaoView, CreatePagtoManutencaoView, UpdPagtoAquisicaoView, UpdPagtoManutencaoView, \
+                   CreateCronoAquisicaoView, CreateCronoManutencaoView, UpdCronoAquisicaoView, UpdCronoManutencaoView
 
 from rest_framework.routers import SimpleRouter
 
@@ -89,10 +92,22 @@ urlpatterns = [
     path('add_sede_aquis/', CreateSedeAquisicaoView.as_view(), name='add_sede_aquis'),
     path('add_sede_manut/', CreateSedeManutencaoView.as_view(), name='add_sede_aquis'),
 
-    path('add_lic/', CreateLicView.as_view(), name='add_lic'),
+    # URLs para adicionar Contratação nos processos
     path('add_contr/', CreateContrView.as_view(), name='add_contr'),
+    path('add_contr_aquis/', CreateContrAquisicaoView.as_view(), name='add_contr_aquis'),
+    path('add_contr_manut/', CreateContrManutencaoView.as_view(), name='add_contr_manut'),
+
+    # URLs para adicionar Pagamento nos processos
     path('add_pagto/', CreatePagtoView.as_view(), name='add_pagto'),
+    path('add_pagto_aquis/', CreatePagtoAquisicaoView.as_view(), name='add_pagto_aquis'),
+    path('add_pagto_manut/', CreatePagtoManutencaoView.as_view(), name='add_pagto_manut'),
+
+    # URLs para adicionar Cronograma nos processos
     path('add_crono/', CreateCronoView.as_view(), name='add_crono'),
+    path('add_crono_aquis/', CreateCronoAquisicaoView.as_view(), name='add_crono_aquis'),
+    path('add_crono_manut/', CreateCronoManutencaoView.as_view(), name='add_crono_manut'),
+
+    path('add_lic/', CreateLicView.as_view(), name='add_lic'),
     path('add_aprov/', CreateAprovView.as_view(), name='add_aprov'),
     path('add_fornec/', CreateFornecView.as_view(), name='add_fornec'),
     path('add_catfornec/', CreateCatFornecView.as_view(), name='add_catfornec'),
@@ -133,10 +148,16 @@ urlpatterns = [
     path('updatesedemanut/<int:pk>/', core.views.UpdSedeManutencaoView.as_view(), name='updatesedemanut'),
 
     path('updatecontrat/<int:pk>/', core.views.UpdContratView.as_view(), name='updatecontrat'),
+    path('updatecontrataquis/<int:pk>/', core.views.UpdContratAquisicaoView.as_view(), name='updatecontrataquis'),
+    path('updatecontratmanut/<int:pk>/', core.views.UpdContratManutencaoView.as_view(), name='updatecontratmanut'),
 
     path('updatepagto/<int:pk>/', core.views.UpdPagtoView.as_view(), name='updatepagto'),
+    path('updatepagtoaquis/<int:pk>/', core.views.UpdPagtoAquisicaoView.as_view(), name='updatepagtoaquis'),
+    path('updatepagtomanut/<int:pk>/', core.views.UpdPagtoManutencaoView.as_view(), name='updatepagtomanut'),
 
     path('updatecrono/<int:pk>/', core.views.UpdCronoView.as_view(), name='updatecrono'),
+    path('updatecronoaquis/<int:pk>/', core.views.UpdCronoAquisicaoView.as_view(), name='updatecronoaquis'),
+    path('updatecronomanut/<int:pk>/', core.views.UpdCronoManutencaoView.as_view(), name='updatecronomanut'),
 
     # URLs para consultar uma unica solicitacao
     path('consultaumalocacao/<int:pk>/', core.views.consultaumalocacao, name='consultaumalocacao'),

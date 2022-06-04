@@ -23,7 +23,9 @@ from .models import Locacao_Acao, Acao, TipoLocacao, Memorial, Compras_Locacao, 
 from .forms import TipoLocacaoModelForm, MemorialModelForm, ComprasLocacaoModelForm, LocacaoAcaoModelForm, \
                    SedeModelForm,  ContratoLocacaoModelForm, PagamentoModelForm, CronogramaModelForm, ProjetoModelForm,\
                    ComprasAquisicaoModelForm, ComprasManutencaoModelForm, AquisicaoAcaoModelForm, \
-                   ManutencaoAcaoModelForm, SedeManutencaoModelForm, SedeAquisicaoModelForm
+                   ManutencaoAcaoModelForm, SedeManutencaoModelForm, SedeAquisicaoModelForm, \
+                   ContratoAquisicaoModelForm, ContratoManutencaoModelForm, PagamentoAquisicaoModelForm, \
+                   PagamentoManutencaoModelForm, CronogramaAquisicaoModelForm, CronogramaManutencaoModelForm
 
 from rest_framework import generics
 from rest_framework import viewsets
@@ -695,7 +697,72 @@ class CreateContrView(CreateView, SuccessMessageMixin):
         return render(request, 'resultado.html', {'form': form})
 
 
-#View para criar Pagamentos
+#View para criar Contratos de Aquisição
+class CreateContrAquisicaoView(CreateView, SuccessMessageMixin):
+    model = Contrato_Aquisicao
+    template_name = 'aquisicao_acao_consulta.html'
+    fields = ['descricao', 'processo', 'dataprocesso', 'instrcontratual', 'datacontrato', 'valorservico',
+              'valorlocacao', 'aquisicao', 'prazo', 'status']
+    success_url = reverse_lazy('sistema')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+    def get_success_message(self, cleaned_data):
+        print(cleaned_data)
+        return "Processo em Contratação cadastrado com sucesso!"
+
+    def post(self, request, *args, **kwargs):
+        form = ContratoAquisicaoModelForm(request.POST)
+        if form.is_valid():
+            contrato = form.save()
+            print(contrato.aquisicao)
+            aquisicao = Aquisicao_Acao.objects.get(descricao = contrato.aquisicao)
+            aquisicao.status_geral = contrato.status
+            print(aquisicao)
+            print(contrato.status)
+            aquisicao.save()
+            contrato.save()
+            messages.success(request, 'Processo em Contratação cadastrado com sucesso')
+            return HttpResponseRedirect(reverse_lazy('consultaumaaquisicao', args=[aquisicao.id]))
+        return render(request, 'resultado.html', {'form': form})
+
+
+#View para criar Contratos de Manutenção
+class CreateContrManutencaoView(CreateView, SuccessMessageMixin):
+    model = Contrato_Manutencao
+    template_name = 'manutencao_acao_consulta.html'
+    fields = ['descricao', 'processo', 'dataprocesso', 'instrcontratual', 'datacontrato', 'valorservico',
+              'valorlocacao', 'manutencao', 'prazo', 'status']
+    success_url = reverse_lazy('sistema')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+    def get_success_message(self, cleaned_data):
+        print(cleaned_data)
+        return "Processo em Contratação cadastrado com sucesso!"
+
+    def post(self, request, *args, **kwargs):
+        form = ContratoManutencaoModelForm(request.POST)
+        if form.is_valid():
+            contrato = form.save()
+            print(contrato.manutencao)
+            manutencao = Manutencao_Acao.objects.get(descricao = contrato.manutencao)
+            manutencao.status_geral = contrato.status
+            print(manutencao)
+            print(contrato.status)
+            manutencao.save()
+            contrato.save()
+            messages.success(request, 'Processo em Contratação cadastrado com sucesso')
+            return HttpResponseRedirect(reverse_lazy('consultaumamanutencao', args=[manutencao.id]))
+        return render(request, 'resultado.html', {'form': form})
+
+
+
+#View para criar Pagamentos em Locações
 class CreatePagtoView(CreateView, SuccessMessageMixin):
     model = Pagamento
     template_name = 'locacao_acao_consulta.html'
@@ -727,7 +794,72 @@ class CreatePagtoView(CreateView, SuccessMessageMixin):
         return render(request, 'resultado.html', {'form': form})
 
 
-# View para criar Cronograma
+
+#View para criar Pagamentos em Aquisições
+class CreatePagtoAquisicaoView(CreateView, SuccessMessageMixin):
+    model = Pagamento_Aquisicao
+    template_name = 'aquisicao_acao_consulta.html'
+    fields = ['descricao', 'tipo_pagto', 'atividade', 'parcela', 'qtde_parcelas', 'valor', 'dataprevnota',
+              'tiponota', 'numnota', 'dataemissnota', 'serienota', 'xml', 'anotacoes', 'aquisicao', 'prazo', 'status']
+    success_url = reverse_lazy('list_aquis')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+    def get_success_message(self, cleaned_data):
+        print(cleaned_data)
+        return "Processo em Pagamento cadastrado com sucesso!"
+
+    def post(self, request, *args, **kwargs):
+        form = PagamentoAquisicaoModelForm(request.POST)
+        if form.is_valid():
+            pagto = form.save()
+            print(pagto.aquisicao)
+            aquisicao = Aquisicao_Acao.objects.get(descricao = pagto.aquisicao)
+            aquisicao.status_geral = pagto.status
+            print(aquisicao)
+            print(pagto.status)
+            aquisicao.save()
+            pagto.save()
+            messages.success(request, 'Processo em Contratação cadastrado com sucesso')
+            return HttpResponseRedirect(reverse_lazy('consultaumaaquisicao', args=[aquisicao.id]))
+        return render(request, 'resultado.html', {'form': form})
+
+
+#View para criar Pagamentos em Manutenções
+class CreatePagtoManutencaoView(CreateView, SuccessMessageMixin):
+    model = Pagamento_Manutencao
+    template_name = 'manutencao_acao_consulta.html'
+    fields = ['descricao', 'tipo_pagto', 'atividade', 'parcela', 'qtde_parcelas', 'valor', 'dataprevnota',
+              'tiponota', 'numnota', 'dataemissnota', 'serienota', 'xml', 'anotacoes', 'manutencao', 'prazo', 'status']
+    success_url = reverse_lazy('list_manut')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+    def get_success_message(self, cleaned_data):
+        print(cleaned_data)
+        return "Processo em Pagamento cadastrado com sucesso!"
+
+    def post(self, request, *args, **kwargs):
+        form = PagamentoManutencaoModelForm(request.POST)
+        if form.is_valid():
+            pagto = form.save()
+            print(pagto.manutencao)
+            manutencao = Manutencao_Acao.objects.get(descricao = pagto.manutencao)
+            manutencao.status_geral = pagto.status
+            print(manutencao)
+            print(pagto.status)
+            manutencao.save()
+            pagto.save()
+            messages.success(request, 'Processo em Contratação cadastrado com sucesso')
+            return HttpResponseRedirect(reverse_lazy('consultaumamanutencao', args=[manutencao.id]))
+        return render(request, 'resultado.html', {'form': form})
+
+
+# View para criar Cronograma para locações
 class CreateCronoView(SuccessMessageMixin, CreateView):
     model = Cronograma
     template_name = 'locacao_acao_consulta.html'
@@ -755,6 +887,68 @@ class CreateCronoView(SuccessMessageMixin, CreateView):
             crono.save()
             messages.success(request, 'Processo em Recebimento cadastrado com sucesso')
             return HttpResponseRedirect(reverse_lazy('consultaumalocacao', args=[locacao.id]))
+        return render(request, 'resultado.html', {'form': form})
+
+
+# View para criar Cronograma para Aquisições
+class CreateCronoAquisicaoView(SuccessMessageMixin, CreateView):
+    model = Cronograma_Aquisicao
+    template_name = 'aquisicao_acao_consulta.html'
+    fields = ['aquisicao', 'atividade', 'datainicio', 'datafim', 'anotacoes', 'prazo', 'status']
+    success_url = reverse_lazy('list_aquis')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+    def get_success_message(self, cleaned_data):
+        print(cleaned_data)
+        return "Processo em Recebimento cadastrado com sucesso!"
+
+    def post(self, request, *args, **kwargs):
+        form = CronogramaAquisicaoModelForm(request.POST)
+        if form.is_valid():
+            crono = form.save()
+            print(crono.aquisicao)
+            aquisicao = Aquisicao_Acao.objects.get(descricao = crono.aquisicao)
+            aquisicao.status_geral = crono.status
+            print(aquisicao)
+            print(crono.status)
+            aquisicao.save()
+            crono.save()
+            messages.success(request, 'Processo em Recebimento cadastrado com sucesso')
+            return HttpResponseRedirect(reverse_lazy('consultaumaaquisicao', args=[aquisicao.id]))
+        return render(request, 'resultado.html', {'form': form})
+
+
+# View para criar Cronograma para Manutenções
+class CreateCronoManutencaoView(SuccessMessageMixin, CreateView):
+    model = Cronograma_Manutencao
+    template_name = 'manutencao_acao_consulta.html'
+    fields = ['manutencao', 'atividade', 'datainicio', 'datafim', 'anotacoes', 'prazo', 'status']
+    success_url = reverse_lazy('list_manut')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+    def get_success_message(self, cleaned_data):
+        print(cleaned_data)
+        return "Processo em Recebimento cadastrado com sucesso!"
+
+    def post(self, request, *args, **kwargs):
+        form = CronogramaManutencaoModelForm(request.POST)
+        if form.is_valid():
+            crono = form.save()
+            print(crono.manutencao)
+            manutencao = Manutencao_Acao.objects.get(descricao = crono.manutencao)
+            manutencao.status_geral = crono.status
+            print(manutencao)
+            print(crono.status)
+            manutencao.save()
+            crono.save()
+            messages.success(request, 'Processo em Recebimento cadastrado com sucesso')
+            return HttpResponseRedirect(reverse_lazy('consultaumamanutencao', args=[manutencao.id]))
         return render(request, 'resultado.html', {'form': form})
 
 
@@ -1983,6 +2177,7 @@ class UpdSedeManutencaoView(UpdateView):
 
 
 
+# View para atualizar Contratos em Locações
 class UpdContratView(UpdateView):
     model = Contrato_Locacao
     template_name = 'locacao_acao_consulta.html'
@@ -2013,6 +2208,69 @@ class UpdContratView(UpdateView):
         return render(request, 'resultado.html', {'form': form})
 
 
+# View para atualizar Contratos em Aquisições
+class UpdContratAquisicaoView(UpdateView):
+    model = Contrato_Aquisicao
+    template_name = 'aquisicao_acao_consulta.html'
+    fields = ['descricao', 'processo', 'dataprocesso', 'instrcontratual', 'datacontrato', 'valorservico',
+                   'valorlocacao', 'aquisicao', 'status']
+    success_url = reverse_lazy('list_aquis')
+    context_object_name = 'consultacontrat'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+    def get_success_message(self, cleaned_data):
+        print(cleaned_data)
+        return "Processo em Contratação cadastrado com sucesso!"
+
+    def post(self, request, *args, **kwargs):
+        form = ContratoAquisicaoModelForm(request.POST)
+        if form.is_valid():
+            aquis = form.cleaned_data['aquisicao']
+            print(aquis)
+            aquisicao = Aquisicao_Acao.objects.get(descricao = aquis)
+            aquisicao.status_geral = form.cleaned_data['status']
+            aquisicao.save()
+            super(UpdContratAquisicaoView, self).post(request, **kwargs)
+            messages.success(request, 'Processo em Contratação atualizado com sucesso')
+            return HttpResponseRedirect(reverse_lazy('consultaumaaquisicao', args=[aquisicao.id]))
+        return render(request, 'resultado.html', {'form': form})
+
+
+# View para atualizar Contratos em Manutenções
+class UpdContratManutencaoView(UpdateView):
+    model = Contrato_Manutencao
+    template_name = 'manutencao_acao_consulta.html'
+    fields = ['descricao', 'processo', 'dataprocesso', 'instrcontratual', 'datacontrato', 'valorservico',
+                   'valorlocacao', 'manutencao', 'status']
+    success_url = reverse_lazy('list_manut')
+    context_object_name = 'consultacontrat'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+    def get_success_message(self, cleaned_data):
+        print(cleaned_data)
+        return "Processo em Contratação cadastrado com sucesso!"
+
+    def post(self, request, *args, **kwargs):
+        form = ContratoManutencaoModelForm(request.POST)
+        if form.is_valid():
+            manut = form.cleaned_data['manutencao']
+            print(manut)
+            manutencao = Manutencao_Acao.objects.get(descricao = manut)
+            manutencao.status_geral = form.cleaned_data['status']
+            manutencao.save()
+            super(UpdContratManutencaoView, self).post(request, **kwargs)
+            messages.success(request, 'Processo em Contratação atualizado com sucesso')
+            return HttpResponseRedirect(reverse_lazy('consultaumamanutencao', args=[manutencao.id]))
+        return render(request, 'resultado.html', {'form': form})
+
+
+# View para atualizar Pagamentos em Locações
 class UpdPagtoView(UpdateView):
     model = Pagamento
     template_name = 'locacao_acao_consulta.html'
@@ -2043,6 +2301,69 @@ class UpdPagtoView(UpdateView):
         return render(request, 'resultado.html', {'form': form})
 
 
+# View para atualizar Pagamentos em Locações
+class UpdPagtoAquisicaoView(UpdateView):
+    model = Pagamento_Aquisicao
+    template_name = 'aquisicao_acao_consulta.html'
+    fields = ['descricao', 'tipo_pagto', 'atividade', 'parcela', 'qtde_parcelas', 'valor', 'dataprevnota',
+              'tiponota', 'numnota', 'dataemissnota', 'serienota', 'xml', 'anotacoes', 'aquisicao', 'status']
+    success_url = reverse_lazy('list_aquis')
+    context_object_name = 'consultapagto'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+    def get_success_message(self, cleaned_data):
+        print(cleaned_data)
+        return "Processo em Pagamento atualizado com sucesso!"
+
+    def post(self, request, *args, **kwargs):
+        form = PagamentoAquisicaoModelForm(request.POST)
+        if form.is_valid():
+            aquis = form.cleaned_data['aquisicao']
+            print(aquis)
+            aquisicao = Aquisicao_Acao.objects.get(descricao = aquis)
+            aquisicao.status_geral = form.cleaned_data['status']
+            aquisicao.save()
+            super(UpdPagtoAquisicaoView, self).post(request, **kwargs)
+            messages.success(request, 'Processo em Pagamento atualizado com sucesso')
+            return HttpResponseRedirect(reverse_lazy('consultaumaaquisicao', args=[aquisicao.id]))
+        return render(request, 'resultado.html', {'form': form})
+
+
+# View para atualizar Pagamentos em Manutenções
+class UpdPagtoManutencaoView(UpdateView):
+    model = Pagamento_Manutencao
+    template_name = 'manutencao_acao_consulta.html'
+    fields = ['descricao', 'tipo_pagto', 'atividade', 'parcela', 'qtde_parcelas', 'valor', 'dataprevnota',
+              'tiponota', 'numnota', 'dataemissnota', 'serienota', 'xml', 'anotacoes', 'manutencao', 'status']
+    success_url = reverse_lazy('list_manut')
+    context_object_name = 'consultapagto'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+    def get_success_message(self, cleaned_data):
+        print(cleaned_data)
+        return "Processo em Pagamento atualizado com sucesso!"
+
+    def post(self, request, *args, **kwargs):
+        form = PagamentoManutencaoModelForm(request.POST)
+        if form.is_valid():
+            manut = form.cleaned_data['manutencao']
+            print(manut)
+            manutencao = Manutencao_Acao.objects.get(descricao = manut)
+            manutencao.status_geral = form.cleaned_data['status']
+            manutencao.save()
+            super(UpdPagtoManutencaoView, self).post(request, **kwargs)
+            messages.success(request, 'Processo em Pagamento atualizado com sucesso')
+            return HttpResponseRedirect(reverse_lazy('consultaumamanutencao', args=[manutencao.id]))
+        return render(request, 'resultado.html', {'form': form})
+
+
+#View para atualizar Cronograma em Locações
 class UpdCronoView(UpdateView):
     model = Cronograma
     fields = ['locacao', 'atividade', 'datainicio', 'datafim', 'anotacoes', 'status']
@@ -2071,6 +2392,65 @@ class UpdCronoView(UpdateView):
             return HttpResponseRedirect(reverse_lazy('consultaumalocacao', args=[locacao.id]))
         return render(request, 'resultado.html', {'form': form})
 
+
+#View para atualizar Cronograma em Aquisições
+class UpdCronoAquisicaoView(UpdateView):
+    model = Cronograma_Aquisicao
+    fields = ['aquisicao', 'atividade', 'datainicio', 'datafim', 'anotacoes', 'status']
+    template_name = 'aquisicao_acao_consulta.html'
+    success_url = reverse_lazy('list_aquis')
+    context_object_name = 'consultareceb'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+    def get_success_message(self, cleaned_data):
+        print(cleaned_data)
+        return "Processo em Recebimento atualizado com sucesso!"
+
+    def post(self, request, *args, **kwargs):
+        form = Cronograma_AquisicaoModelForm(request.POST)
+        if form.is_valid():
+            aquis = form.cleaned_data['aquisicao']
+            print(aquis)
+            aquisicao = Locacao_Acao.objects.get(descricao = aquis)
+            aquisicao.status_geral = form.cleaned_data['status']
+            aquisicao.save()
+            super(UpdCronoAquisicaoView, self).post(request, **kwargs)
+            messages.success(request, 'Processo em Recebimento atualizado com sucesso')
+            return HttpResponseRedirect(reverse_lazy('consultaumaaquisicao', args=[aquisicao.id]))
+        return render(request, 'resultado.html', {'form': form})
+
+
+# View para atualizar Cronograma em Manutenções
+class UpdCronoManutencaoView(UpdateView):
+    model = Cronograma_Manutencao
+    fields = ['manutencao', 'atividade', 'datainicio', 'datafim', 'anotacoes', 'status']
+    template_name = 'manutencao_acao_consulta.html'
+    success_url = reverse_lazy('list_manut')
+    context_object_name = 'consultareceb'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+    def get_success_message(self, cleaned_data):
+        print(cleaned_data)
+        return "Processo em Recebimento atualizado com sucesso!"
+
+    def post(self, request, *args, **kwargs):
+        form = Cronograma_ManutencaoModelForm(request.POST)
+        if form.is_valid():
+            manut = form.cleaned_data['manutencao']
+            print(manut)
+            manutencao = Manutencao_Acao.objects.get(descricao=aquis)
+            manutencao.status_geral = form.cleaned_data['status']
+            aquisicao.save()
+            super(UpdCronoManutencaoView, self).post(request, **kwargs)
+            messages.success(request, 'Processo em Recebimento atualizado com sucesso')
+            return HttpResponseRedirect(reverse_lazy('consultaumamanutencao', args=[manutencao.id]))
+        return render(request, 'resultado.html', {'form': form})
 
 def resultloc(request, id):
     idpassado = id

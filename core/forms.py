@@ -1,7 +1,8 @@
 from django import forms
 from core.models import Acao, Locacao_Acao, TipoLocacao, Memorial, Compras_Locacao, Sede, Contrato_Locacao, Pagamento,\
                         Cronograma, Projeto, Aquisicao_Acao, Manutencao_Acao, Compras_Aquisicao, Compras_Manutencao, \
-                        Sede_Aquisicao, Sede_Manutencao
+                        Sede_Aquisicao, Sede_Manutencao, Contrato_Aquisicao, Contrato_Manutencao, Pagamento_Aquisicao, \
+                        Pagamento_Manutencao, Cronograma_Aquisicao, Cronograma_Manutencao
 
 
 class LocacaoAcaoModelForm(forms.ModelForm):
@@ -103,11 +104,42 @@ class ContratoLocacaoModelForm(forms.ModelForm):
                    'valorlocacao', 'locacao', 'prazo', 'status']
 
 
+class ContratoAquisicaoModelForm(forms.ModelForm):
+
+    class Meta:
+         model = Contrato_Aquisicao
+         fields = ['descricao', 'processo', 'dataprocesso', 'instrcontratual', 'datacontrato', 'valorservico',
+                   'valorlocacao', 'aquisicao', 'prazo', 'status']
+
+
+class ContratoManutencaoModelForm(forms.ModelForm):
+
+    class Meta:
+         model = Contrato_Manutencao
+         fields = ['descricao', 'processo', 'dataprocesso', 'instrcontratual', 'datacontrato', 'valorservico',
+                   'valorlocacao', 'manutencao', 'prazo', 'status']
+
+
+
 class PagamentoModelForm(forms.ModelForm):
     class Meta:
         model = Pagamento
         fields = ['descricao', 'tipo_pagto', 'atividade', 'parcela', 'qtde_parcelas', 'valor', 'dataprevnota',
                    'tiponota', 'numnota', 'dataemissnota', 'serienota', 'xml', 'anotacoes', 'locacao', 'prazo', 'status']
+
+
+class PagamentoAquisicaoModelForm(forms.ModelForm):
+    class Meta:
+        model = Pagamento_Aquisicao
+        fields = ['descricao', 'tipo_pagto', 'atividade', 'parcela', 'qtde_parcelas', 'valor', 'dataprevnota',
+                   'tiponota', 'numnota', 'dataemissnota', 'serienota', 'xml', 'anotacoes', 'aquisicao', 'prazo', 'status']
+
+
+class PagamentoManutencaoModelForm(forms.ModelForm):
+    class Meta:
+        model = Pagamento_Manutencao
+        fields = ['descricao', 'tipo_pagto', 'atividade', 'parcela', 'qtde_parcelas', 'valor', 'dataprevnota',
+                   'tiponota', 'numnota', 'dataemissnota', 'serienota', 'xml', 'anotacoes', 'manutencao', 'prazo', 'status']
 
 
 class CronogramaModelForm(forms.ModelForm):
@@ -117,7 +149,18 @@ class CronogramaModelForm(forms.ModelForm):
         fields = ['locacao', 'atividade', 'datainicio', 'datafim', 'anotacoes', 'prazo', 'status']
 
 
+class CronogramaAquisicaoModelForm(forms.ModelForm):
 
+    class Meta:
+        model = Cronograma_Aquisicao
+        fields = ['aquisicao', 'atividade', 'datainicio', 'datafim', 'anotacoes', 'prazo', 'status']
+
+
+class CronogramaManutencaoModelForm(forms.ModelForm):
+
+    class Meta:
+        model = Cronograma_Manutencao
+        fields = ['manutencao', 'atividade', 'datainicio', 'datafim', 'anotacoes', 'prazo', 'status']
 
 
 
