@@ -13,7 +13,8 @@ from .views import IndexView, SistemaView, CreateSolicitView, ListLocacaoAcaoVie
                    CreateSedeAquisicaoView, CreateSedeManutencaoView, UpdSedeAquisicaoView, UpdSedeManutencaoView, \
                    CreateContrAquisicaoView, CreateContrManutencaoView, UpdContratAquisicaoView, UpdContratManutencaoView,  \
                    CreatePagtoAquisicaoView, CreatePagtoManutencaoView, UpdPagtoAquisicaoView, UpdPagtoManutencaoView, \
-                   CreateCronoAquisicaoView, CreateCronoManutencaoView, UpdCronoAquisicaoView, UpdCronoManutencaoView
+                   CreateCronoAquisicaoView, CreateCronoManutencaoView, UpdCronoAquisicaoView, UpdCronoManutencaoView, \
+                   CentralAjudaView, FaqsView
 
 from rest_framework.routers import SimpleRouter
 
@@ -38,9 +39,11 @@ urlpatterns = [
     path('tipolocacoes/', TipoLocacaoAPIView.as_view(), name='tipolocacoes'),
     path('fornecedores/', FornecedorAPIView.as_view(), name='fornecedores'),
 
-    # URLS para página inicial do sistema
+    # URLS para página inicial do sistema e central de ajuda
     path('', IndexView.as_view(), name='index'),
     path('sistema/', SistemaView.as_view(), name='sistema'),
+    path('central_de_ajuda', CentralAjudaView.as_view(), name='centralajuda'),
+    path('faqs/', FaqsView.as_view(), name='faqs'),
 
     # URLs de inserção de solicitações
     path('add/', core.views.CreateSolicitView.as_view(), name='add_loc'),

@@ -32,10 +32,11 @@
             </div>
             -->
             <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12">
-              <h3 class="footer-titel">Suporte</h3>
+              <h3 class="footer-titel"><a href="{% url 'centralajuda' %}">Central de Ajuda</a></h3>
               <ul class="footer-link">
-                <li><a href="#">FAQ</a></li>
-                <li><a href="#">Ajuda</a></li>
+                <li><a href="{% url 'centralajuda' %}#faqs">FAQs</a></li>
+                <li><a href="#">Manual do Sistema</a></li>
+                <li><a href="#">Suporte</a></li>
                 <!--
                 <li><a href="#">Getting Started</a></li>
                 <li><a href="#">Identity Verification</a></li>

@@ -47,6 +47,7 @@
            <ul class="nav nav-pills mr-auto w-100 justify-content-end clearfix">
 
            <!-- <ul class="nav nav-pills justify-content-end">-->
+           <!--
               <li class="nav-item active">
                 <a class="nav-link acessibilidade" href="#hero-area">
                     Início
@@ -60,7 +61,7 @@
                 </a>
               </li>
 
-             <!--
+
               <li class="nav-item">
                 <a class="nav-link acessibilidade" href="#team">
                   Equipe
@@ -68,11 +69,21 @@
               </li>
               -->
               <li class="nav-item">
-                <a class="nav-link acessibilidade" href="{% url 'centralajuda' %}">
-                  Central de Ajuda
+                <a class="nav-link acessibilidade" href="#faqs">
+                  FAQs
                 </a>
               </li>
-
+              <li class="nav-item">
+                <a class="nav-link acessibilidade" href="#suporte">
+                  Suporte
+                </a>
+              </li>
+               <li class="nav-item">
+                <a class="nav-link acessibilidade" href="#">
+                  Manual do sistema
+                </a>
+              </li>
+               <!--
               <li class="nav-item">
                 {% if user.is_anonymous %}
 
@@ -95,7 +106,7 @@
                 </a>
                 {% endif %}
               </li>
-
+               -->
               <li class="nav-item">
                   <a title="Aumentar fonte"  onClick="fonte('a');"><img src="{% static 'img/aumentar_fonte.png' %}"></a>
                   <a title="Diminuir fonte"  onClick="fonte('d');"><img src="{% static 'img/diminuir_fonte.png' %}"></a>
@@ -105,7 +116,7 @@
               <li class="nav-item">
                     &nbsp;&nbsp;&nbsp;&nbsp;
               </li>
-
+              <!--
               <li class="nav-item ">
                   {% if user.is_anonymous %}
                     <a class="nav-link acessibilidade active" href="admin/">
@@ -114,6 +125,7 @@
                   {% endif %}
 
               </li>
+              -->
             </ul>
           </div>
         </div>

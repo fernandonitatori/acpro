@@ -132,6 +132,13 @@ class ListManutencaoAcaoView(ListView):
 class IndexView(TemplateView):
     template_name = 'index.html'
 
+# View da Central de Ajuda
+class CentralAjudaView(TemplateView):
+    template_name = 'central_de_ajuda.html'
+
+# View das FAQs
+class FaqsView(TemplateView):
+    template_name = 'faqs_conteudo.html'
 
 # View da página inicial do sistema
 class SistemaView(TemplateView):
