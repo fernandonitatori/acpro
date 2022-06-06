@@ -405,6 +405,7 @@ class CreateAcaoView(SuccessMessageMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['acoes'] = Acao.objects.all()
         context['projetos'] = Projeto.objects.all()
         context['linguagens'] = Linguagem.objects.all()
         context['locais'] = Local.objects.all()
