@@ -399,9 +399,9 @@ class ListUpdManutencaoAcaoView(ListView):
 # View para criar Ação
 class CreateAcaoView(SuccessMessageMixin, CreateView):
     model = Acao
-    template_name = 'form_solicit_loc.html'
+    template_name = 'form_create_acao.html'
     fields = ['nome', 'descricao', 'observacoes', 'data_base', 'projeto', 'linguagem', 'local']
-    success_url = reverse_lazy('add_loc')
+    success_url = reverse_lazy('add_acao')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

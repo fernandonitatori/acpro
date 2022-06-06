@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-(_c+b4a*mm_)ns-=f=2$nt59tex6#l-z(qpoe!r**w#d!m@&_!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -89,12 +89,12 @@ WSGI_APPLICATION = 'acpro.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-
+"""
 #Para usar no Heroku
 DATABASES = {
     'default': dj_database_url.config()
 }
-
+"""
 
 """
 DATABASES = {
@@ -109,7 +109,7 @@ DATABASES = {
 }
 """
 
-"""
+
 #Postgres
 DATABASES = {
     'default': {
@@ -121,7 +121,7 @@ DATABASES = {
         'PORT:': '5432',
     }
 }
-"""
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
