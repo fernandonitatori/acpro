@@ -140,6 +140,11 @@ class CentralAjudaView(TemplateView):
 class FaqsView(TemplateView):
     template_name = 'faqs_conteudo.html'
 
+# View do Manual do Sistema
+class ManualSistemaView(TemplateView):
+    template_name = 'manual_conteudo.html'
+
+
 # View da página inicial do sistema
 class SistemaView(TemplateView):
     template_name = 'sistema.html'
