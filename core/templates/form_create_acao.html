@@ -66,6 +66,31 @@
                    </div>
                 </div>
            </div>
+            <div class="text-center"><hr style="height:4px;border-width:0;color:gray;background-color:gray"></div>
+                            <table class="table table-bordered table-sm">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Descrição</th>
+                                        th scope="col">Observações</th>
+                                        th scope="col">Projeto</th>
+                                        th scope="col">Local</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for acao in acoes %}
+                                        <tr>
+                                            <td>{{ acao.id }}</td>
+                                            <td>{{ acao.descricao }}</td>
+                                            <td>{{ acao.observacao }}</td>
+                                            <td>{{ acao.projeto }}</td>
+                                            <td>{{ acao.local }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+           </div>
 
     </div>
 {% endblock %}
