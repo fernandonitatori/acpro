@@ -48,7 +48,6 @@ import matplotlib
 matplotlib.use('Agg')
 
 
-
 # Pie Chart
 def piechart(request):
     # Pie chart, where the slices will be ordered and plotted
