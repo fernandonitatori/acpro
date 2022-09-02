@@ -1,6 +1,6 @@
-[1661986039.531][INFO]: Starting ChromeDriver 105.0.5195.52 (412c95e518836d8a7d97250d62b29c2ae6a26a85-refs/branch-heads/5195@{#853}) on port 51732
-[1661986039.531][INFO]: Please see https://chromedriver.chromium.org/security-considerations for suggestions on keeping ChromeDriver safe.
-[1661986040.008][INFO]: [b5ac13e999dc4aff180efabf44bc686e] COMMAND InitSession {
+[1662083645.559][INFO]: Starting ChromeDriver 105.0.5195.52 (412c95e518836d8a7d97250d62b29c2ae6a26a85-refs/branch-heads/5195@{#853}) on port 59915
+[1662083645.559][INFO]: Please see https://chromedriver.chromium.org/security-considerations for suggestions on keeping ChromeDriver safe.
+[1662083646.079][INFO]: [b0d80d3f7e4e36e71d51fbbe6a0ff880] COMMAND InitSession {
    "capabilities": {
       "alwaysMatch": {
          "browserName": "chrome",
@@ -14,7 +14,7 @@
       } ]
    }
 }
-[1661986040.011][INFO]: Populating Preferences file: {
+[1662083646.084][INFO]: Populating Preferences file: {
    "alternate_error_pages": {
       "enabled": false
    },
@@ -67,7 +67,7 @@
       "enabled": false
    }
 }
-[1661986040.011][INFO]: Populating Local State file: {
+[1662083646.085][INFO]: Populating Local State file: {
    "background_mode": {
       "enabled": false
    },
@@ -77,19 +77,19 @@
       }
    }
 }
-[1661986040.013][INFO]: Launching chrome: "C:\Program Files\Google\Chrome\Application\chrome.exe" --allow-pre-commit-input --disable-background-networking --disable-backgrounding-occluded-windows --disable-client-side-phishing-detection --disable-default-apps --disable-hang-monitor --disable-popup-blocking --disable-prompt-on-repost --disable-sync --enable-automation --enable-blink-features=ShadowDOMV0 --enable-logging --log-level=3 --no-first-run --no-service-autorun --password-store=basic --remote-debugging-port=0 --test-type=webdriver --use-mock-keychain --user-data-dir="C:\Users\Fernando\AppData\Local\Temp\scoped_dir5740_1910822747" data:,
-[1661986040.774][INFO]: resolved localhost to ["::1","127.0.0.1"]
-[1661986040.779][INFO]: [b5ac13e999dc4aff180efabf44bc686e] RESPONSE InitSession {
+[1662083646.087][INFO]: Launching chrome: "C:\Program Files\Google\Chrome\Application\chrome.exe" --allow-pre-commit-input --disable-background-networking --disable-backgrounding-occluded-windows --disable-client-side-phishing-detection --disable-default-apps --disable-hang-monitor --disable-popup-blocking --disable-prompt-on-repost --disable-sync --enable-automation --enable-blink-features=ShadowDOMV0 --enable-logging --log-level=3 --no-first-run --no-service-autorun --password-store=basic --remote-debugging-port=0 --test-type=webdriver --use-mock-keychain --user-data-dir="C:\Users\Fernando\AppData\Local\Temp\scoped_dir6156_506861238" data:,
+[1662083646.704][INFO]: resolved localhost to ["::1","127.0.0.1"]
+[1662083646.708][INFO]: [b0d80d3f7e4e36e71d51fbbe6a0ff880] RESPONSE InitSession {
    "capabilities": {
       "acceptInsecureCerts": false,
       "browserName": "chrome",
       "browserVersion": "105.0.5195.54",
       "chrome": {
          "chromedriverVersion": "105.0.5195.52 (412c95e518836d8a7d97250d62b29c2ae6a26a85-refs/branch-heads/5195@{#853})",
-         "userDataDir": "C:\\Users\\Fernando\\AppData\\Local\\Temp\\scoped_dir5740_1910822747"
+         "userDataDir": "C:\\Users\\Fernando\\AppData\\Local\\Temp\\scoped_dir6156_506861238"
       },
       "goog:chromeOptions": {
-         "debuggerAddress": "localhost:51741"
+         "debuggerAddress": "localhost:59921"
       },
       "networkConnectionEnabled": false,
       "pageLoadStrategy": "normal",
@@ -108,29 +108,22 @@
       "webauthn:extension:largeBlob": true,
       "webauthn:virtualAuthenticators": true
    },
-   "sessionId": "b5ac13e999dc4aff180efabf44bc686e"
+   "sessionId": "b0d80d3f7e4e36e71d51fbbe6a0ff880"
 }
-[1661986040.779][INFO]: [b5ac13e999dc4aff180efabf44bc686e] COMMAND Navigate {
+[1662083646.709][INFO]: [b0d80d3f7e4e36e71d51fbbe6a0ff880] COMMAND Navigate {
    "url": "http://localhost:8000"
 }
-[1661986040.780][INFO]: Waiting for pending navigations...
-[1661986040.781][INFO]: Done waiting for pending navigations. Status: ok
-[1661986041.122][INFO]: Waiting for pending navigations...
-[1661986041.695][INFO]: Done waiting for pending navigations. Status: ok
-[1661986041.695][INFO]: [b5ac13e999dc4aff180efabf44bc686e] RESPONSE Navigate
-[1661986041.696][INFO]: [b5ac13e999dc4aff180efabf44bc686e] COMMAND SetTimeouts {
-   "implicit": 30000
+[1662083646.709][INFO]: Waiting for pending navigations...
+[1662083646.710][INFO]: Done waiting for pending navigations. Status: ok
+[1662083649.086][INFO]: Waiting for pending navigations...
+[1662083649.132][INFO]: Done waiting for pending navigations. Status: ok
+[1662083649.335][INFO]: Waiting for pending navigations...
+[1662083649.344][INFO]: Done waiting for pending navigations. Status: ok
+[1662083651.474][INFO]: Waiting for pending navigations...
+[1662083651.481][INFO]: Done waiting for pending navigations. Status: ok
+[1662083651.481][INFO]: [b0d80d3f7e4e36e71d51fbbe6a0ff880] RESPONSE Navigate ERROR unknown error: net::ERR_CONNECTION_REFUSED
+  (Session info: chrome=105.0.5195.54)
+[1662083654.121][INFO]: [b0d80d3f7e4e36e71d51fbbe6a0ff880] COMMAND QuitAll {
 }
-[1661986041.696][INFO]: [b5ac13e999dc4aff180efabf44bc686e] RESPONSE SetTimeouts
-[1661986041.698][INFO]: [b5ac13e999dc4aff180efabf44bc686e] COMMAND FindElement {
-   "using": "xpath",
-   "value": "//*[@id=\"navbarCollapse\"]/ul/li[7]/a[1]/img"
-}
-[1661986041.698][INFO]: Waiting for pending navigations...
-[1661986041.698][INFO]: Done waiting for pending navigations. Status: ok
-[1661986049.664][INFO]: Waiting for pending navigations...
-[1661986049.664][INFO]: Done waiting for pending navigations. Status: disconnected: not connected to DevTools
-[1661986049.670][INFO]: [b5ac13e999dc4aff180efabf44bc686e] RESPONSE FindElement
-[1661986049.672][INFO]: [b5ac13e999dc4aff180efabf44bc686e] COMMAND QuitAll {
-}
-[1661986049.713][INFO]: [b5ac13e999dc4aff180efabf44bc686e] RESPONSE QuitAll
+[1662083654.160][INFO]: [b0d80d3f7e4e36e71d51fbbe6a0ff880] RESPONSE QuitAll
+ll
