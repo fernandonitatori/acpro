@@ -37,7 +37,7 @@ test-job:
     - pip install pytest-html
     - pip install -r requirements.txt
   script:
-    - pytest --html=pytest_reports/pytest-report.html --self-contained-html core\tests\test_07_views.py
+    - pytest core\tests\test_07_views.py
   artifacts:
     when: always
     paths:
