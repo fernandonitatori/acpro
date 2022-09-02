@@ -34,9 +34,10 @@ test-job:
   stage: test
   image: python:3.8.0-slim
   before_script:
-    - pip install pytest.ini-html
+    - pip install pytest-html
+    - pip install -r requirements.txt
   script:
-    - pytest --html=pytest_reports/pytest.ini-report.html --self-contained-html
+    - pytest --html=pytest_reports/pytest-report.html --self-contained-html
   artifacts:
     when: always
     paths:
