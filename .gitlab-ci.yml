@@ -37,7 +37,7 @@ test-job:
     - pip install pytest-html
     - pip install -r requirements.txt
   script:
-    - pytest core/tests/test_07_views.py
+    - pytest smoke_test.py
   artifacts:
     when: always
     paths:
