@@ -40,7 +40,8 @@ test-job:
     - pytest --html=pytest_reports/pytest-report.html --self-contained-html
   artifacts:
     when: always
-    paths: pytest_reports/
+    paths:
+      - pytest_reports/
 
 build-job:       # This job runs in the build stage, which runs first.
   stage: build
