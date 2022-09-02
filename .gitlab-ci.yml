@@ -30,8 +30,6 @@ variables:
   HEROKU_PRODUCTION: "registry.heroku.com/$PRODUCTION_APP/web"
 
 
-
-
 lint_test:
   stage: lint_test
   image: python:3.8.0-slim
