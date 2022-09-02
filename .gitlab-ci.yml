@@ -20,14 +20,15 @@ stages:          # List of stages for jobs, and their order of execution
   - lint_test
   - test
   - build
-  - deploy
+  - deploy staging
 
 variables:
   IMAGE_TAG: $CI_REGISTRY_IMAGE/acpro-image:$CI_COMMIT_REF_SLUG
-  STAGING_APP: acpro-sescv2-teste
+  STAGING_APP: acpro-sescv2-staging
   PRODUCTION_APP: acpro-sescv2
   HEROKU_STAGING: "registry.heroku.com/$STAGING_APP/web"
   HEROKU_PRODUCTION: "registry.heroku.com/$PRODUCTION_APP/web"
+
 
 
 
@@ -65,9 +66,17 @@ build:
     - docker push $IMAGE_TAG
 
 
-deploy-job:      # This job runs in the deploy stage.
-  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
-  environment: production
+deploy_stage:
+  image: docker:latest
+  services:
+    - docker:dind
+  stage: deploy staging
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
-    - echo "Deploying application..."
-    - echo "Application successfully deployed."
+    - docker pull $IMAGE_TAG
+    - docker tag  $IMAGE_TAG $HEROKU_STAGING
+    - docker login -u _ -p $HEROKU_STAGING_API_KEY registry.heroku.com
+    - docker push $HEROKU_STAGING
+    - docker run --rm -e HEROKU_API_KEY=$HEROKU_STAGING_API_KEY wingrunr21/alpine-heroku-cli container:release web --app $STAGING_APP
+    - echo "App deployed to stagig server at https://$STAGING_APP.herokuapp.com/"
