@@ -3,4 +3,4 @@ WORKDIR /core
 ADD . /core
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
-CMD gunicorn core:app --bind 0.0.0.0:$PORT --reload
+CMD gunicorn acpro:app --bind 0.0.0.0:$PORT --reload
