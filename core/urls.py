@@ -15,6 +15,8 @@ from .views import IndexView, SistemaView, \
                    CreateTipoPagtoView, \
                    LocacaoAPIView,\
                    TipoLocacaoAPIView, LocacaoViewSet,\
+                   LocalViewSet, LinguagemViewSet, ProjetoViewSet, \
+                   AcaoViewSet, StatusViewSet, \
                    TipoLocacaoViewSet, ConsultaAquisicaoAcaoView,\
                    ConsultaManutencaoAcaoView, \
                    FornecedorAPIView, FornecedorViewSet, \
@@ -34,6 +36,11 @@ router = SimpleRouter()
 router.register('locacoes', LocacaoViewSet)
 router.register('tipolocacoes', TipoLocacaoViewSet)
 router.register('fornecedores', FornecedorViewSet)
+router.register('locais', LocalViewSet)
+router.register('linguagens', LinguagemViewSet)
+router.register('projetos', ProjetoViewSet)
+router.register('acoes', AcaoViewSet)
+router.register('status', StatusViewSet)
 
 
 urlpatterns = [

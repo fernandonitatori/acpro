@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
-from .models import Locacao_Acao, TipoLocacao, Fornecedor
+from .models import Locacao_Acao, TipoLocacao, Fornecedor, Local,\
+                    Linguagem, Projeto, Acao, Status
 
 
 class Locacao_AcaoSerializer(serializers.ModelSerializer):
@@ -24,3 +25,38 @@ class FornecedorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Fornecedor
         fields = ('id', 'nome', 'cnpj', 'observacoes', 'ativo')
+
+
+class Local_Serializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Local
+        fields = ('id', 'descricao')
+
+
+class Linguagem_Serializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Linguagem
+        fields = ('id', 'descricao')
+
+
+class Projeto_Serializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Projeto
+        fields = ('id', 'descricao')
+
+
+class Acao_Serializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Acao
+        fields = ('id', 'nome', 'descricao', 'observacoes', 'data_base', 'projeto', 'linguagem', 'local' )
+
+
+class Status_Serializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Status
+        fields = ('id', 'tipo_status', 'descricao')

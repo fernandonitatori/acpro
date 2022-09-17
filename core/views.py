@@ -10,7 +10,10 @@ from dateutil.relativedelta import relativedelta
 from rest_framework import generics
 from rest_framework import viewsets
 from .serializers import Locacao_AcaoSerializer,\
-                         TipoLocacao_AcaoSerializer, FornecedorSerializer
+                         TipoLocacao_AcaoSerializer, FornecedorSerializerm, \
+                         Local_Serializer, Linguagem_Serializer, \
+                         Projeto_Serializer, Acao_Serializer, \
+                         Status_Serializer
 from .forms import TipoLocacaoModelForm, MemorialModelForm, \
                    ComprasLocacaoModelForm, LocacaoAcaoModelForm, \
                    SedeModelForm,  ContratoLocacaoModelForm, \
@@ -101,6 +104,30 @@ class FornecedorViewSet(viewsets.ModelViewSet):
     queryset = Fornecedor.objects.all()
     serializer_class = FornecedorSerializer
 
+
+class LocalViewSet(viewsets.ModelViewSet):
+    queryset = Local.objects.all()
+    serializer_class = Local_Serializer
+
+
+class LinguagemViewSet(viewsets.ModelViewSet):
+    queryset = Linguagem.objects.all()
+    serializer_class = Linguagem_Serializer
+
+
+class ProjetoViewSet(viewsets.ModelViewSet):
+    queryset = Projeto.objects.all()
+    serializer_class = Projeto_Serializer
+
+
+class AcaoViewSet(viewsets.ModelViewSet):
+    queryset = Acao.objects.all()
+    serializer_class = Acao_Serializer
+
+
+class StatusViewSet(viewsets.ModelViewSet):
+    queryset = Status.objects.all()
+    serializer_class = Status_Serializer
 
 # Listar Locações
 class ListLocacaoAcaoView(ListView):
