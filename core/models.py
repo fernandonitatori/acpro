@@ -283,6 +283,7 @@ class Locacao_Acao(Base):
                                      null=True, on_delete=models.SET_NULL)
     descricao = models.CharField('Descriçao', max_length=90)
     prazo = models.IntegerField('Prazo')
+    data_cadastro = models.DateField('Data de cadastro')
 
     class Meta:
         verbose_name = 'Solicitação de Locação'
@@ -306,6 +307,7 @@ class Aquisicao_Acao(Base):
                                      null=True, on_delete=models.SET_NULL)
     descricao = models.CharField('Descriçao', max_length=90)
     prazo = models.IntegerField('Prazo')
+    data_cadastro = models.DateField('Data de cadastro')
 
     class Meta:
         verbose_name = 'Solicitação de Aquisição'
@@ -329,6 +331,7 @@ class Manutencao_Acao(Base):
                                      null=True, on_delete=models.SET_NULL)
     descricao = models.CharField('Descriçao', max_length=90)
     prazo = models.IntegerField('Prazo')
+    data_cadastro = models.DateField('Data de cadastro')
 
     class Meta:
         verbose_name = 'Solicitação de Manutenção'

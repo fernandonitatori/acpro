@@ -264,7 +264,7 @@ class CreateSolicitView(SuccessMessageMixin, CreateView):
     model = Locacao_Acao
     template_name = 'form_solicit_loc.html'
     fields = ['tipo_locacao', 'acao', 'memorial', 'prazo',
-              'status', 'status_geral', 'descricao']
+              'status', 'status_geral', 'data_cadastro', 'descricao']
     success_url = reverse_lazy('add_loc')
 
     def get_context_data(self, **kwargs):
@@ -288,7 +288,7 @@ class CreateAquisicaoView(SuccessMessageMixin, CreateView):
     model = Aquisicao_Acao
     template_name = 'form_solicit_aquisicao.html'
     fields = ['acao', 'memorial', 'prazo', 'status',
-              'status_geral', 'descricao']
+              'status_geral', 'descricao', 'data_cadastro']
     success_url = reverse_lazy('add_aquisicao')
 
     def get_context_data(self, **kwargs):
@@ -312,7 +312,7 @@ class CreateManutencaoView(SuccessMessageMixin, CreateView):
     model = Manutencao_Acao
     template_name = 'form_solicit_manut.html'
     fields = ['acao', 'memorial', 'prazo', 'status',
-              'status_geral', 'descricao']
+              'status_geral', 'descricao', 'data_cadastro']
     success_url = reverse_lazy('add_manut')
 
     def get_context_data(self, **kwargs):

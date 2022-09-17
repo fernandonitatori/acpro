@@ -15,21 +15,23 @@ class LocacaoAcaoModelForm(forms.ModelForm):
     class Meta:
         model = Locacao_Acao
         fields = ['tipo_locacao', 'acao', 'memorial',
-                  'prazo', 'status', 'status_geral']
+                  'prazo', 'data_cadastro', 'status', 'status_geral']
 
 
 class AquisicaoAcaoModelForm(forms.ModelForm):
 
     class Meta:
         model = Aquisicao_Acao
-        fields = ['acao', 'memorial', 'prazo', 'status', 'status_geral']
+        fields = ['acao', 'memorial', 'prazo', 'data_cadastro',
+                  'status', 'status_geral']
 
 
 class ManutencaoAcaoModelForm(forms.ModelForm):
 
     class Meta:
         model = Manutencao_Acao
-        fields = ['acao', 'memorial', 'prazo', 'status', 'status_geral']
+        fields = ['acao', 'memorial', 'prazo', 'data_cadastro',
+                  'status', 'status_geral']
 
 
 class AcaoModelForm(forms.ModelForm):
