@@ -10,7 +10,7 @@ from dateutil.relativedelta import relativedelta
 from rest_framework import generics
 from rest_framework import viewsets
 from .serializers import Locacao_AcaoSerializer,\
-                         TipoLocacao_AcaoSerializer, FornecedorSerializerm, \
+                         TipoLocacao_AcaoSerializer, FornecedorSerializer, \
                          Local_Serializer, Linguagem_Serializer, \
                          Projeto_Serializer, Acao_Serializer, \
                          Status_Serializer
