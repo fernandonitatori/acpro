@@ -133,7 +133,7 @@ class StatusViewSet(viewsets.ModelViewSet):
 class ListLocacaoAcaoView(ListView):
     model = Locacao_Acao
     template_name = 'locacao_acao_listview.html'
-    queryset = Locacao_Acao.objects.all().order_by('-data_cadastro')
+    queryset = Locacao_Acao.objects.all().order_by(('-data_cadastro').desc())
     context_object_name = 'locacoes'
 
     def get_context_data(self, **kwargs):
