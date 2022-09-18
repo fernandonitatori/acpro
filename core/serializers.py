@@ -1,7 +1,8 @@
 from rest_framework import serializers
 
 from .models import Locacao_Acao, TipoLocacao, Fornecedor, Local,\
-                    Linguagem, Projeto, Acao, Status
+                    Linguagem, Projeto, Acao, Status, \
+                    Aquisicao_Acao, Manutencao_Acao
 
 
 class Locacao_AcaoSerializer(serializers.ModelSerializer):
@@ -9,8 +10,26 @@ class Locacao_AcaoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Locacao_Acao
         fields = ('id', 'tipo_locacao', 'acao', 'memorial', 'status',
-                  'status_geral', 'descricao', 'prazo', 'criado',
-                  'modificado', 'ativo')
+                  'status_geral', 'descricao', 'data_cadastro',
+                  'prazo', 'criado', 'modificado', 'ativo')
+
+
+class Aquisicao_AcaoSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Aquisicao_Acao
+        fields = ('id', 'acao', 'memorial', 'status',
+                  'status_geral', 'descricao', 'data_cadastro',
+                  'prazo', 'criado', 'modificado', 'ativo')
+
+
+class Manutencao_AcaoSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Manutencao_Acao
+        fields = ('id', 'acao', 'memorial', 'status',
+                  'status_geral', 'descricao', 'data_cadastro',
+                  'prazo', 'criado', 'modificado', 'ativo')
 
 
 class TipoLocacao_AcaoSerializer(serializers.ModelSerializer):
