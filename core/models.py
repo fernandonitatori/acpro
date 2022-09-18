@@ -281,7 +281,7 @@ class Locacao_Acao(Base):
                                null=True, on_delete=models.SET_NULL)
     status_geral = models.ForeignKey('Status', verbose_name='status geral',
                                      null=True, on_delete=models.SET_NULL)
-    descricao = models.CharField('Descriçao', max_length=90)
+    descricao = models.CharField('Descriçao', max_length=300)
     prazo = models.IntegerField('Prazo')
     data_cadastro = models.DateField('Data de cadastro', null=True)
 
@@ -305,7 +305,7 @@ class Aquisicao_Acao(Base):
     status_geral = models.ForeignKey('Status', verbose_name='status geral',
                                      related_name='status_geral_aquisicao',
                                      null=True, on_delete=models.SET_NULL)
-    descricao = models.CharField('Descriçao', max_length=90)
+    descricao = models.CharField('Descriçao', max_length=300)
     prazo = models.IntegerField('Prazo')
     data_cadastro = models.DateField('Data de cadastro', null=True)
 
@@ -329,7 +329,7 @@ class Manutencao_Acao(Base):
     status_geral = models.ForeignKey('Status', verbose_name='status geral',
                                      related_name='status_geral_manutencao',
                                      null=True, on_delete=models.SET_NULL)
-    descricao = models.CharField('Descriçao', max_length=90)
+    descricao = models.CharField('Descriçao', max_length=300)
     prazo = models.IntegerField('Prazo')
     data_cadastro = models.DateField('Data de cadastro', null=True)
 
