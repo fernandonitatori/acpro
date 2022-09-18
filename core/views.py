@@ -1297,7 +1297,7 @@ def consultalocacao(request):
     acoes = Acao.objects.all()
     memoriais = Memorial.objects.all()
     statuses = Status.objects.all()
-    context = {'locacoes': locacoes.order_by('-id'),
+    context = {'locacoes': locacoes.order_by('-data_cadastro'),
                'tiposlocacao': tiposlocacao,
                'acoes': acoes,
                'memoriais': memoriais,
