@@ -52,7 +52,7 @@
                                         <th scope="col">Tipo de locação</th>
                                         <th scope="col">Ação</th>
                                         <th scope="col">Memorial</th>
-                                        <th scope="col">Data e Hora da Solicitação</th>
+                                        <th scope="col">Data da Solicitação</th>
                                         <th scope="col">Status</th>
                                         <th scope="col"></th>
                                     </tr>
@@ -64,7 +64,7 @@
                                             <td>{{ updlocacao.tipo_locacao }}</td>
                                             <td> <a href="../{{updlocacao.pk}}/consultalocacao">{{ updlocacao.acao }}</a></td>
                                             <td> {{ updlocacao.memorial }}</td>
-                                            <td> {{ updlocacao.criado }} </td>
+                                            <td> {{ updlocacao.data_cadastro }} </td>
                                             <td> {{ updlocacao.status }}</td>
                                             <td> <a href="../{{updlocacao.pk}}/consultalocacao"><img src="/static/img/visualizar.png"></a></td>
                                         </tr>
