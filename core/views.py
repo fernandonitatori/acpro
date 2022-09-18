@@ -133,7 +133,7 @@ class StatusViewSet(viewsets.ModelViewSet):
 class ListLocacaoAcaoView(ListView):
     model = Locacao_Acao
     template_name = 'locacao_acao_listview.html'
-    queryset = Locacao_Acao.objects.all().order_by('-id')
+    queryset = Locacao_Acao.objects.all().order_by('-data_cadastro')
     context_object_name = 'locacoes'
 
     def get_context_data(self, **kwargs):
@@ -149,7 +149,7 @@ class ListLocacaoAcaoView(ListView):
 class ListAquisicaoAcaoView(ListView):
     model = Aquisicao_Acao
     template_name = 'aquisicao_acao_listview.html'
-    queryset = Aquisicao_Acao.objects.all().order_by('-id')
+    queryset = Aquisicao_Acao.objects.all().order_by('-data_cadastro')
     context_object_name = 'aquisicoes'
 
     def get_context_data(self, **kwargs):
@@ -164,7 +164,7 @@ class ListAquisicaoAcaoView(ListView):
 class ListManutencaoAcaoView(ListView):
     model = Manutencao_Acao
     template_name = 'manutencao_acao_listview.html'
-    queryset = Manutencao_Acao.objects.all().order_by('-id')
+    queryset = Manutencao_Acao.objects.all().order_by('-data_cadastro')
     context_object_name = 'manutencoes'
 
     def get_context_data(self, **kwargs):
