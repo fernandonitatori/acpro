@@ -378,7 +378,7 @@ class ConsultaLocacaoAcaoView(UpdateView):
 class ConsultaAquisicaoAcaoView(UpdateView):
     model = Aquisicao_Acao
     template_name = 'aquisicao_acao_consulta.html'
-    fields = ['acao', 'memorial', 'prazo', 'descricao',
+    fields = ['memorial', 'prazo', 'descricao',
               'status', 'status_geral']
     context_object_name = 'consulta_aquis'
     success_url = reverse_lazy('sistema')
@@ -386,7 +386,7 @@ class ConsultaAquisicaoAcaoView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['status_chave_sol'] = 'Solicitação - Concluída'
-        context['acoes'] = Acao.objects.all()
+        # context['acoes'] = Acao.objects.all()
         context['memoriais'] = Memorial.objects.all()
         context['statuses'] = Status.objects.all()
         return context
@@ -409,7 +409,7 @@ class ConsultaAquisicaoAcaoView(UpdateView):
 class ConsultaManutencaoAcaoView(UpdateView):
     model = Manutencao_Acao
     template_name = 'manutencao_acao_consulta.html'
-    fields = ['acao', 'memorial', 'prazo', 'descricao',
+    fields = ['memorial', 'prazo', 'descricao',
               'status', 'status_geral']
     context_object_name = 'consulta'
     success_url = reverse_lazy('sistema')
@@ -418,7 +418,7 @@ class ConsultaManutencaoAcaoView(UpdateView):
         context = super().get_context_data(**kwargs)
         context['status_chave_sol'] = 'Solicitação - Concluída'
         # context['tiposlocacao'] = TipoLocacao.objects.all()
-        context['acoes'] = Acao.objects.all()
+        # context['acoes'] = Acao.objects.all()
         context['memoriais'] = Memorial.objects.all()
         context['statuses'] = Status.objects.all()
         return context
