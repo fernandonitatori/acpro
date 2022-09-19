@@ -22,7 +22,7 @@ class AquisicaoAcaoModelForm(forms.ModelForm):
 
     class Meta:
         model = Aquisicao_Acao
-        fields = ['acao', 'memorial', 'prazo', 'data_cadastro',
+        fields = ['memorial', 'prazo', 'data_cadastro',
                   'status', 'status_geral']
 
 
@@ -30,7 +30,7 @@ class ManutencaoAcaoModelForm(forms.ModelForm):
 
     class Meta:
         model = Manutencao_Acao
-        fields = ['acao', 'memorial', 'prazo', 'data_cadastro',
+        fields = ['memorial', 'prazo', 'data_cadastro',
                   'status', 'status_geral']
 
 

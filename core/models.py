@@ -295,8 +295,8 @@ class Locacao_Acao(Base):
 
 # Solicitações de Aquisição
 class Aquisicao_Acao(Base):
-    acao = models.ForeignKey('Acao', verbose_name='açao', null=True,
-                             on_delete=models.SET_NULL)
+#    acao = models.ForeignKey('Acao', verbose_name='açao', null=True,
+#                             on_delete=models.SET_NULL)
     memorial = models.ForeignKey('Memorial', verbose_name='memorial',
                                  null=True, on_delete=models.SET_NULL)
     status = models.ForeignKey('Status', verbose_name='status',
@@ -319,8 +319,8 @@ class Aquisicao_Acao(Base):
 
 # Solicitações de Manutenção
 class Manutencao_Acao(Base):
-    acao = models.ForeignKey('Acao', verbose_name='açao', null=True,
-                             on_delete=models.SET_NULL)
+ #   acao = models.ForeignKey('Acao', verbose_name='açao', null=True,
+ #                            on_delete=models.SET_NULL)
     memorial = models.ForeignKey('Memorial', verbose_name='memorial',
                                  null=True, on_delete=models.SET_NULL)
     status = models.ForeignKey('Status', verbose_name='status',

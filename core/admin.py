@@ -73,12 +73,12 @@ class Locacao_AcaoAdmin(admin.ModelAdmin):
 
 @admin.register(Aquisicao_Acao)
 class Aquisicao_AcaoAdmin(admin.ModelAdmin):
-    list_display = ['acao', 'memorial', 'status', 'data_cadastro', 'status_geral', ]
+    list_display = ['memorial', 'status', 'data_cadastro', 'status_geral', ]
 
 
 @admin.register(Manutencao_Acao)
 class Manutencao_AcaoAdmin(admin.ModelAdmin):
-    list_display = ['acao', 'memorial', 'status', 'status_geral', 'data_cadastro', ]
+    list_display = ['memorial', 'status', 'status_geral', 'data_cadastro', ]
 
 
 @admin.register(TRP)
