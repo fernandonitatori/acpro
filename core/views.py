@@ -13,7 +13,8 @@ from .serializers import Locacao_AcaoSerializer,\
                          TipoLocacao_AcaoSerializer, FornecedorSerializer, \
                          Local_Serializer, Linguagem_Serializer, \
                          Projeto_Serializer, Acao_Serializer, \
-                         Status_Serializer
+                         Status_Serializer, Aquisicao_AcaoSerializer, \
+                         Manutencao_AcaoSerializer
 from .forms import TipoLocacaoModelForm, MemorialModelForm, \
                    ComprasLocacaoModelForm, LocacaoAcaoModelForm, \
                    SedeModelForm,  ContratoLocacaoModelForm, \
@@ -95,6 +96,16 @@ class LocacaoViewSet(viewsets.ModelViewSet):
     serializer_class = Locacao_AcaoSerializer
 
 
+class AquisicaoViewSet(viewsets.ModelViewSet):
+    queryset = Aquisicao_Acao.objects.all()
+    serializer_class = Aquisicao_AcaoSerializer
+
+
+class ManutencaoViewSet(viewsets.ModelViewSet):
+    queryset = Manutencao_Acao.objects.all()
+    serializer_class = Manutencao_AcaoSerializer
+
+
 class TipoLocacaoViewSet(viewsets.ModelViewSet):
     queryset = TipoLocacao.objects.all()
     serializer_class = TipoLocacao_AcaoSerializer
@@ -128,6 +139,7 @@ class AcaoViewSet(viewsets.ModelViewSet):
 class StatusViewSet(viewsets.ModelViewSet):
     queryset = Status.objects.all()
     serializer_class = Status_Serializer
+
 
 # Listar Locações
 class ListLocacaoAcaoView(ListView):

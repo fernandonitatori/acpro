@@ -15,6 +15,7 @@ from .views import IndexView, SistemaView, \
                    CreateTipoPagtoView, \
                    LocacaoAPIView,\
                    TipoLocacaoAPIView, LocacaoViewSet,\
+                   AquisicaoViewSet, ManutencaoViewSet, \
                    LocalViewSet, LinguagemViewSet, ProjetoViewSet, \
                    AcaoViewSet, StatusViewSet, \
                    TipoLocacaoViewSet, ConsultaAquisicaoAcaoView,\
@@ -34,6 +35,8 @@ from django.conf.urls.static import static
 
 router = SimpleRouter()
 router.register('locacoes', LocacaoViewSet)
+router.register('aquisicoes', AquisicaoViewSet)
+router.register('manutencoes', ManutencaoViewSet)
 router.register('tipolocacoes', TipoLocacaoViewSet)
 router.register('fornecedores', FornecedorViewSet)
 router.register('locais', LocalViewSet)
