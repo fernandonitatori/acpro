@@ -71,7 +71,9 @@ class Acao_Serializer(serializers.ModelSerializer):
 
     class Meta:
         model = Acao
-        fields = ('id', 'nome', 'descricao', 'observacoes', 'data_base', 'projeto', 'linguagem', 'local' )
+        fields = ('id', 'nome', 'descricao', 'observacoes',
+                  'data_base', 'projeto', 'linguagem',
+                  'local')
 
 
 class Status_Serializer(serializers.ModelSerializer):
