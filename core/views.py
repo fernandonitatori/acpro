@@ -1636,7 +1636,7 @@ def consultaumaaquisicao(request, pk):
 
     datahoje = date.today()
     statuses = Status.objects.all()
-    acoes = Acao.objects.all()
+    # acoes = Acao.objects.all()
     memoriais = Memorial.objects.all()
     trps = TRP.objects.all()
     licitacoes = Licitacao.objects.all()
@@ -1657,7 +1657,7 @@ def consultaumaaquisicao(request, pk):
             'status_chave_receb': 'Recebimento - Concluída',
             'statuses': statuses,
             'trps': trps,
-            'acoes': acoes,
+            # 'acoes': acoes,
             'licitacoes': licitacoes,
             'pagamentos': pagamentos,
             'tipospagto': tipospagto,
