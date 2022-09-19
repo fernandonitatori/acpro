@@ -29,19 +29,20 @@
                                                 <td  align="left">{{ consulta.tipo_locacao }}</td>
 
                                             </tr>
-                                            -->
+
                                             <tr>
                                                 <td align="right"><div class="form-horizontal"><b>Ação:</b></div></td>
                                                 <td align="left">{{ consulta.acao }}</td>
 
                                             </tr>
+                                            -->
                                             <tr>
                                                 <td align="right"><div class="form-horizontal"><b>Memorial:</b></div></td>
                                                 <td align="left">{{ consulta.memorial }}</td>
                                             </tr>
                                             <tr>
                                                 <td align="right"><div class="form-horizontal"><b>Data de Solicitação:</b></div></td>
-                                                <td align="left">{{ consulta.criado }}</td>
+                                                <td align="left">{{ consulta.data_cadastro }}</td>
                                             </tr>
                                             <tr>
                                                 <td align="right"><div class="form-horizontal"><b>Descrição:</b></div></td>
@@ -859,7 +860,7 @@
                                                 </td>
                                                 <td></td>
                                             </tr>
-                                            -->
+
                                             <tr>
                                                 <td  align="right"><div class="form-horizontal"><b>Ação:</b></div></td>
                                                 <td  align="left"><select name="acao" id="id_acao">
@@ -876,6 +877,7 @@
                                                 </td>
                                                 <td></td>
                                             </tr>
+                                            -->
                                             <tr>
                                                 <td  align="right"><div class="form-horizontal"><b>Memorial:</b></div></td>
                                                 <td  align="left"><select name="memorial" id="id_memorial">
@@ -896,7 +898,11 @@
                                                 <td  align="left"><input type="text" name="prazo" id="prazo" size="10" maxlength="10" value="{{consulta.prazo}}" required></td>
                                                 <td></td>
                                             </tr>
-
+                                            <tr>
+                                                <td  align="right"><div class="form-horizontal"><b>Data de Solicitação:</b></div></td>
+                                                <td  align="left"><input type="text" name="data_cadastro" id="data_cadastro" size="10" maxlength="10" value="{{consulta.data_cadastro}}" required></td>
+                                                <td></td>
+                                            </tr>
                                             <tr>
                                                 <td  align="right"><div class="form-horizontal"><b>Status:</b></div></td>
                                                 <td  align="left"><select name="status" id="id_status">
