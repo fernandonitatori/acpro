@@ -299,14 +299,14 @@ class CreateSolicitView(SuccessMessageMixin, CreateView):
 class CreateAquisicaoView(SuccessMessageMixin, CreateView):
     model = Aquisicao_Acao
     template_name = 'form_solicit_aquisicao.html'
-    fields = ['acao', 'memorial', 'prazo', 'status',
+    fields = ['memorial', 'prazo', 'status',
               'status_geral', 'descricao', 'data_cadastro']
     success_url = reverse_lazy('add_aquisicao')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # context['tiposlocacao'] = TipoLocacao.objects.all()
-        context['acoes'] = Acao.objects.all()
+        # context['acoes'] = Acao.objects.all()
         context['memoriais'] = Memorial.objects.all()
         context['statuses'] = Status.objects.all()
         context['projetos'] = Projeto.objects.all()
@@ -323,14 +323,14 @@ class CreateAquisicaoView(SuccessMessageMixin, CreateView):
 class CreateManutencaoView(SuccessMessageMixin, CreateView):
     model = Manutencao_Acao
     template_name = 'form_solicit_manut.html'
-    fields = ['acao', 'memorial', 'prazo', 'status',
+    fields = ['memorial', 'prazo', 'status',
               'status_geral', 'descricao', 'data_cadastro']
     success_url = reverse_lazy('add_manut')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # context['tiposlocacao'] = TipoLocacao.objects.all()
-        context['acoes'] = Acao.objects.all()
+        # context['acoes'] = Acao.objects.all()
         context['memoriais'] = Memorial.objects.all()
         context['statuses'] = Status.objects.all()
         context['projetos'] = Projeto.objects.all()
