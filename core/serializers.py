@@ -18,7 +18,7 @@ class Aquisicao_AcaoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Aquisicao_Acao
-        fields = ('id', 'acao', 'memorial', 'status',
+        fields = ('id', 'memorial', 'status',
                   'status_geral', 'descricao', 'data_cadastro',
                   'prazo', 'criado', 'modificado', 'ativo')
 
@@ -27,7 +27,7 @@ class Manutencao_AcaoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Manutencao_Acao
-        fields = ('id', 'acao', 'memorial', 'status',
+        fields = ('id', 'memorial', 'status',
                   'status_geral', 'descricao', 'data_cadastro',
                   'prazo', 'criado', 'modificado', 'ativo')
 
