@@ -494,7 +494,7 @@ class CreateMemorialView(CreateView):
     model = Memorial
     template_name = 'form_create_memorial.html'
     fields = ['descricao', 'data_memorial']
-    success_url = reverse_lazy('sistema')
+    success_url = reverse_lazy('add_memorial')
 
     def get_success_message(self, cleaned_data):
         print(cleaned_data)
