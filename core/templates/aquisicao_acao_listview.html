@@ -67,7 +67,7 @@
                                         <!-- <th scope="col">Tipo de locação</th> -->
                                         <th scope="col">Ação/Descrição</th>
                                         <th scope="col">Memorial</th>
-                                        <th scope="col">Data e Hora da Solicitação</th>
+                                        <th scope="col">Data da Solicitação</th>
                                         <th scope="col">Status Geral</th>
                                         <th scope="col"></th>
                                     </tr>
@@ -81,7 +81,7 @@
                                                  Descrição: {{aquisicao.descricao}}</a>
                                             </td>
                                             <td> {{ aquisicao.memorial }}</td>
-                                            <td> {{ aquisicao.criado}} </td>
+                                            <td> {{ aquisicao.data_cadastro}} </td>
                                             <td>{{ aquisicao.status_geral }}</td>
                                             <td> <a href="../consultaumaaquisicao/{{aquisicao.pk}}"><img src="/static/img/visualizar.png"></a></td>
                                         </tr>

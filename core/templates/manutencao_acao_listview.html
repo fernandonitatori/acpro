@@ -67,7 +67,7 @@
                                         <!-- <th scope="col">Tipo de locação</th> -->
                                         <th scope="col">Ação</th>
                                         <th scope="col">Memorial</th>
-                                        <th scope="col">Data e Hora da Solicitação</th>
+                                        <th scope="col">Data da Solicitação</th>
                                         <th scope="col">Status Geral</th>
                                         <th scope="col"></th>
                                     </tr>
@@ -80,7 +80,7 @@
                                             <td> <strong><a href="../consultaumamanutencao/{{manutencao.pk}}">{{ manutencao.acao }}</strong><br>
                                                  Descrição: {{ manutencao.descricao }}</a></td>
                                             <td> {{ manutencao.memorial }}</td>
-                                            <td> {{ manutencao.criado}} </td>
+                                            <td> {{ manutencao.data_cadastro}} </td>
                                             <td>{{ manutencao.status_geral }}</td>
                                             <td> <a href="../consultaumamanutencao/{{manutencao.pk}}"><img src="/static/img/visualizar.png"></a></td>
                                         </tr>
